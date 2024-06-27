@@ -1,9 +1,15 @@
-import React from 'react'
+import React from 'react';
+import { useUser } from '../UserContext';
 
-function Inicio() {
+const Inicio = () => {
+  const { user } = useUser();
+
   return (
-    <div>Inicio</div>
-  )
-}
+    <div>
+      <h1>Bienvenido, {user.usu_nombre}</h1>
+      {/* Otros contenidos */}
+    </div>
+  );
+};
 
-export default Inicio
+export default Inicio;

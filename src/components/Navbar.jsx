@@ -16,7 +16,7 @@ const data = [
   { link: '/confirmaciones', label: 'Confirmaciones', icon: faReceipt },
 ];
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
   const [active, setActive] = useState('Inicio');
   const [darkMode, setDarkMode] = useState(false);
 
@@ -53,7 +53,7 @@ const Navbar = () => {
           <FontAwesomeIcon icon={faExchangeAlt} className="linkIcon" />
           <span>Change account</span>
         </a>
-        <a href="#" className="link" onClick={(event) => event.preventDefault()}>
+        <a href="#" className="link" onClick={(event) => onLogout()}>
           <FontAwesomeIcon icon={faSignOutAlt} className="linkIcon" />
           <span>Logout</span>
         </a>

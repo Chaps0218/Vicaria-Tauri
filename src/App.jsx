@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import Login from './components/login';
+import { UserProvider, useUser } from './UserContext'; // Importa el contexto y el hook
+import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Inicio from './components/Inicio';
-import Confirmaciones from './components/Confirmaciones'
-import './App.css'
-
+import Confirmaciones from './components/Confirmaciones';
+import './App.css';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  const handleLogin = () => {
-    setLoggedIn(true);
-  };
+  const { loggedIn, handleLogin, handleLogout } = useUser();
 
   return (
     <Router>
       <div className="app-container">
-        {loggedIn && <Navbar />}
+        {loggedIn && <Navbar onLogout={handleLogout} />}
         <div className="main-content">
           <Routes>
             <Route path="/" element={loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />} />
@@ -30,4 +26,10 @@ function App() {
   );
 }
 
-export default App;
+export default function RootApp() {
+  return (
+    <UserProvider>
+      <App />
+    </UserProvider>
+  );
+}

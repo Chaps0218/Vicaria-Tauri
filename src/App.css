@@ -7,11 +7,89 @@ body.dark-mode {
   background-color: #121212;
   color: #e0e0e0;
 }
+
 .main-content {
   flex: 1;
   padding: 16px;
   overflow: auto;
 }
+
+.color-g1 {
+  background-color: #b9b9b9;
+}
+
+.overflow {
+  height: 95%;
+  overflow: auto;
+}
+
+.gridCentrao {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.gridTop {
+  display: grid;
+  place-items: top;
+  width: 100%;
+  height: 100%;
+}
+
+.gridCentrao2 {
+  display: grid;
+  place-items: left;
+  width: 100%;
+  height: 100%;
+}
+
+.fab-container {
+  position: fixed;
+  bottom: 4vh;
+  right: 2vw;
+  z-index: 1000;
+}
+
+.info {
+  grid-template-rows: repeat(3, 33%);
+  padding-top: 1.5vh;
+  grid-row-gap: 0.2vh;
+}
+
+.info-libro {
+  grid-template-columns: repeat(6, 17%);
+  height: auto;
+}
+
+.info-familiares {
+  grid-template-columns: 11% 39% 11% 39%;
+  grid-template-rows: repeat(2, 50%);
+  grid-row-gap: 1vh;
+}
+
+.info-lugar {
+  grid-template-columns: 10% 40% 17% 33%;
+  padding-top: 2vh;
+  height: auto;
+}
+
+.grid-3colum {
+  grid-template-columns: 10% 50% 40%;
+}
+
+.grid2-colum {
+  grid-template-columns: 90% 10%
+}
+
+.border-top {
+  border-top: #302f2f solid 1px;
+}
+
+.main-Conf {
+  grid-template-rows: 93% 7%;
+}
+
 
 .header {
   padding-bottom: 16px;

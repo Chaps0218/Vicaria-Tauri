@@ -1,32 +1,33 @@
 import React, { useState } from 'react';
+import { useUser } from '../UserContext';
 
-const Login = ({ onLogin }) => {
+function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const { handleLogin, errors } = useUser();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
-    // Aquí iría la lógica de autenticación
-    if (username === 'admin' && password === 'admin') {
-      onLogin();
-    } else {
-      alert('Credenciales incorrectas');
-    }
+  const onLogin = async () => {
+    await handleLogin({ usu_user: username, usu_password: password });
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        <label>Username:</label>
-        <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-      </div>
-      <div>
-        <label>Password:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      </div>
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={onLogin}>Login</button>
+      {errors.length > 0 && <div>{errors.join(', ')}</div>}
+    </div>
   );
-};
+}
 
 export default Login;
