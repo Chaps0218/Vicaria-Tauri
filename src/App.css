@@ -1,6 +1,7 @@
 .app-container {
   display: flex;
   height: 95vh;
+  overflow: hidden;
 }
 
 body.dark-mode {
@@ -11,7 +12,7 @@ body.dark-mode {
 .main-content {
   flex: 1;
   padding: 16px;
-  overflow: auto;
+  overflow: hidden;
 }
 
 .color-g1 {

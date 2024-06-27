@@ -11,12 +11,27 @@ use bcrypt::verify;
 use mysql::prelude::*;
 use mysql::*;
 use serde::Serialize;
+use tauri::Manager;
+use tauri::Window;
 use warp::{reject, Filter};
 
 async fn get_db_connection() -> Result<PooledConn, mysql::Error> {
     let url = "mysql://root:password@localhost:3306/confirmaciones_arcadia";
     let pool = Pool::new(url)?;
     pool.get_conn()
+}
+
+fn set_window_size(window: &Window) {
+    let monitor = window.primary_monitor().unwrap().unwrap();
+    let monitor_size = monitor.size();
+    let width = (monitor_size.width as f64 * 0.7) as f64;
+    let height = (monitor_size.height as f64 * 0.7) as f64;
+
+    window
+        .set_size(tauri::Size::Logical(tauri::LogicalSize { width, height }))
+        .unwrap();
+
+    window.center().unwrap();
 }
 
 #[tauri::command]
@@ -133,6 +148,11 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            let main_window = app.get_window("main").unwrap();
+            set_window_size(&main_window);
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             login,
             get_all_confirmados,

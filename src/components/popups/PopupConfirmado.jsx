@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import TextField from '@mui/material/TextField';
 import './popup.css'
 
 const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
@@ -58,28 +59,32 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2>{initialData ? 'Editar Confirmado' : 'Agregar Confirmado'}</h2>
-                <label>
-                    Nombres:
-                    <input
-                        type="text"
+                <div className='gridCentrao popup-inputs-conf'>
+                    <h2>{initialData ? 'Editar Confirmado' : 'Agregar Confirmado'}</h2>
+                    <TextField
+                        fullWidth
+                        required
                         name="conf_nombres"
+                        label="Nombres Confirmado"
                         value={formData.conf_nombres}
                         onChange={handleChange}
+                        variant="outlined"
                     />
-                </label>
-                <label>
-                    Apellidos:
-                    <input
-                        type="text"
+                    <TextField
+                        fullWidth
+                        required
                         name="conf_apellidos"
-                        value={formData.conf_apellidos}
+                        label="Apellidos Confirmado"
+                        value={formData.conf_nombres}
                         onChange={handleChange}
+                        variant="outlined"
                     />
-                </label>
+                </div>
                 {/* Agregar más campos según sea necesario */}
-                <button onClick={handleSubmit}>Guardar</button>
-                <button onClick={onClose}>Cancelar</button>
+                <div className='gridCentrao popup-botones'>
+                    <button onClick={handleSubmit}>Guardar</button>
+                    <button onClick={onClose}>Cancelar</button>
+                </div>
             </div>
         </div>
     );
