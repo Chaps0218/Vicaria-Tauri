@@ -6,12 +6,14 @@
 mod models;
 
 use models::{
-    Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento, Ministro, User, UserLogin,
+    Ciudad, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento, Ministro, Parroquia, User,
+    UserLogin,
 };
 
 use bcrypt::verify;
 use mysql::prelude::*;
 use mysql::*;
+use opener::open;
 use serde::Serialize;
 use tauri::Manager;
 use tauri::Window;
@@ -74,10 +76,17 @@ async fn login(user: UserLogin) -> Result<User, String> {
 }
 
 #[tauri::command]
+fn open_file(filepath: String) {
+    if let Err(e) = open(filepath) {
+        eprintln!("Error opening file: {}", e);
+    }
+}
+
+#[tauri::command]
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let confirmados: Vec<Confirmado> = conn
-        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.est_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id order by conf.conf_id desc")
+        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id order by conf.conf_id desc")
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
@@ -91,6 +100,26 @@ async fn get_all_establecimientos() -> Result<Vec<Establecimiento>, String> {
         .map_err(|e| e.to_string())?;
 
     Ok(establecimientos)
+}
+
+#[tauri::command]
+async fn get_all_ciudades() -> Result<Vec<Ciudad>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let ciudades: Vec<Ciudad> = conn
+        .query("select * from ciudad")
+        .map_err(|e| e.to_string())?;
+
+    Ok(ciudades)
+}
+
+#[tauri::command]
+async fn get_all_parroquias() -> Result<Vec<Parroquia>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let parroquias: Vec<Parroquia> = conn
+        .query("select * from parroquia")
+        .map_err(|e| e.to_string())?;
+
+    Ok(parroquias)
 }
 
 #[tauri::command]
@@ -182,8 +211,11 @@ fn main() {
             get_all_confirmados,
             get_all_establecimientos,
             get_all_ministros,
+            get_all_ciudades,
+            get_all_parroquias,
             handle_add_confirmado,
-            handle_modify_confirmado
+            handle_modify_confirmado,
+            open_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

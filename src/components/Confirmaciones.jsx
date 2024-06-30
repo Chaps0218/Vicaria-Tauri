@@ -9,6 +9,7 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import EditIcon from '@mui/icons-material/Edit';
 import Tooltip from '@mui/material/Tooltip';
 import PopupConfirmado from './popups/PopupConfirmado';
+import PopupCertificado from './popups/PopupCertificado';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
@@ -23,6 +24,8 @@ function Confirmaciones() {
   // const [popoverId, setPopoverId] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
+  const [isPopupOpenCert, setIsPopupOpenCert] = useState(false);
+  const [popupDataCert, setPopupDataCert] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
 
   // const handlePopoverOpen = (event, id) => {
@@ -45,6 +48,16 @@ function Confirmaciones() {
     setPopupData(null);
   };
 
+  const handleOpenPopupCert = (data = null) => {
+    setPopupDataCert(data);
+    setIsPopupOpenCert(true);
+  };
+
+  const handleClosePopupCert = () => {
+    setIsPopupOpenCert(false);
+    setPopupDataCert(null);
+  };
+
   const handleSavePopup = async (data) => {
     try {
       if (data.conf_id) {
@@ -61,6 +74,11 @@ function Confirmaciones() {
     }
     handleClosePopup();
   };
+
+  const handleSavePopupCert = async (data) => {
+    handleClosePopupCert();
+  };
+
 
   const fetchConfirmados = async () => {
     try {
@@ -81,8 +99,8 @@ function Confirmaciones() {
       const filtered = confirmados.filter((confirmado) =>
         confirmado.conf_nombres.toLowerCase().includes(query) ||
         confirmado.conf_apellidos.toLowerCase().includes(query) ||
-        (confirmado.conf_fecha && confirmado.conf_fecha.toLowerCase().includes(query)) ||
-        confirmado.conf_num_confirmacion.toLowerCase().includes(query)
+        (confirmado.conf_fecha && confirmado.conf_fecha.toLowerCase().includes(query)) //||
+        //confirmado.conf_num_confirmacion.toLowerCase().includes(query)
       );
       setFilteredConfirmados(filtered);
     }
@@ -185,6 +203,7 @@ function Confirmaciones() {
                       <IconButton
                         aria-label="Report"
                         color='secondary'
+                        onClick={() => handleOpenPopupCert(confirmado)}
                       >
                         <AssignmentIcon />
                       </IconButton>
@@ -208,6 +227,13 @@ function Confirmaciones() {
         onClose={handleClosePopup}
         onSave={handleSavePopup}
         initialData={popupData}
+      />
+
+      <PopupCertificado
+        isOpen={isPopupOpenCert}
+        onClose={handleClosePopupCert}
+        onGenerate={handleSavePopupCert}
+        initialData={popupDataCert}
       />
     </div>
   );

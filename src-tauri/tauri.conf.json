@@ -18,6 +18,15 @@
       },
       "dialog": {
         "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$DOCUMENT/certificados/*"
+        ]
       }
     },
     "windows": [

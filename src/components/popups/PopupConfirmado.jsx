@@ -124,10 +124,20 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
     };
 
     const handleAutocompleteChange = (event, value, field) => {
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [field]: value ? value.id : null,
-        }));
+        switch (field) {
+            case "min_id":
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [field]: value ? value.min_id : null,
+                }));
+                break;
+            case "est_id":
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [field]: value ? value.est_id : null,
+                }));
+                break;
+        }
     };
 
     const validateForm = () => {
