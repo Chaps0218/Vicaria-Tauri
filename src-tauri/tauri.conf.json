@@ -18,13 +18,24 @@
       },
       "dialog": {
         "all": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$DOCUMENT/certificados/*"
+        ]
       }
     },
     "windows": [
       {
         "title": "Vicaría Arcadia",
-        "width": 1200,
-        "height": 800
+        "width": 0,
+        "height": 0,
+        "center": true,
+        "resizable": true
       }
     ],
     "security": {

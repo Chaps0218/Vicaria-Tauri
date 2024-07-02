@@ -3,33 +3,40 @@ import { invoke } from '@tauri-apps/api/tauri';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
-import Typography from '@mui/material/Typography';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import IconButton from '@mui/material/IconButton';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import EditIcon from '@mui/icons-material/Edit';
-import Popover from '@mui/material/Popover';
+import Tooltip from '@mui/material/Tooltip';
 import PopupConfirmado from './popups/PopupConfirmado';
+import PopupCertificado from './popups/PopupCertificado';
 import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
+import SearchIcon from '@mui/icons-material/Search';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
 import '../App.css';
 
 function Confirmaciones() {
   const [confirmados, setConfirmados] = useState([]);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [popoverId, setPopoverId] = useState(null);
+  const [filteredConfirmados, setFilteredConfirmados] = useState([]);
+  // const [anchorEl, setAnchorEl] = useState(null);
+  // const [popoverId, setPopoverId] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [popupData, setPopupData] = useState(null);
+  const [isPopupOpenCert, setIsPopupOpenCert] = useState(false);
+  const [popupDataCert, setPopupDataCert] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handlePopoverOpen = (event, id) => {
-    setAnchorEl(event.currentTarget);
-    setPopoverId(id);
-  };
+  // const handlePopoverOpen = (event, id) => {
+  //   setAnchorEl(event.currentTarget);
+  //   setPopoverId(id);
+  // };
 
-  const handlePopoverClose = () => {
-    setAnchorEl(null);
-    setPopoverId(null);
-  };
+  // const handlePopoverClose = () => {
+  //   setAnchorEl(null);
+  //   setPopoverId(null);
+  // };
 
   const handleOpenPopup = (data = null) => {
     setPopupData(data);
@@ -41,48 +48,92 @@ function Confirmaciones() {
     setPopupData(null);
   };
 
+  const handleOpenPopupCert = (data = null) => {
+    setPopupDataCert(data);
+    setIsPopupOpenCert(true);
+  };
+
+  const handleClosePopupCert = () => {
+    setIsPopupOpenCert(false);
+    setPopupDataCert(null);
+  };
+
   const handleSavePopup = async (data) => {
     try {
       if (data.conf_id) {
-        await invoke('update_confirmado', { data });
+        console.log(data)
+        await invoke('handle_modify_confirmado', { input: data });
       } else {
-        await invoke('add_confirmado', { data });
+        await invoke('handle_add_confirmado', { input: data });
       }
-      setConfirmados(await invoke('get_all_confirmados'));
+      const updatedConfirmados = await invoke('get_all_confirmados');
+      setConfirmados(updatedConfirmados);
+      setFilteredConfirmados(updatedConfirmados);
     } catch (error) {
-      console.error('Error saving confirmado:', error);
+      console.error(error);
     }
     handleClosePopup();
   };
 
-  useEffect(() => {
-    async function fetchConfirmados() {
-      try {
-        const response = await invoke('get_all_confirmados');
-        setConfirmados(response);
-      } catch (error) {
-        console.error('Error fetching confirmados:', error);
-      }
-    }
+  const handleSavePopupCert = async (data) => {
+    handleClosePopupCert();
+  };
 
+
+  const fetchConfirmados = async () => {
+    try {
+      const confirmados = await invoke('get_all_confirmados');
+      setConfirmados(confirmados);
+      setFilteredConfirmados(confirmados);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSearch = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
+    if (query === '') {
+      setFilteredConfirmados(confirmados);
+    } else {
+      const filtered = confirmados.filter((confirmado) =>
+        confirmado.conf_nombres.toLowerCase().includes(query) ||
+        confirmado.conf_apellidos.toLowerCase().includes(query) ||
+        (confirmado.conf_fecha && confirmado.conf_fecha.toLowerCase().includes(query)) //||
+        //confirmado.conf_num_confirmacion.toLowerCase().includes(query)
+      );
+      setFilteredConfirmados(filtered);
+    }
+  };
+
+  useEffect(() => {
     fetchConfirmados();
-  }, [confirmados]);
+  }, []);
+
+  // const open = Boolean(anchorEl);
+  // const id = open ? 'simple-popover' : undefined;
 
   return (
     <div className='gridTop main-Conf'>
       <div>
-        <h1>Confirmados</h1>
+        <h2>Confirmados</h2>
+        <TextField
+          variant="outlined"
+          fullWidth
+          value={searchQuery}
+          onChange={handleSearch}
+          style={{ marginBottom: '20px' }}
+          InputProps={{
+            startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+          }}
+        />
         <div className='overflow'>
-          {confirmados.map((confirmado) => (
+          {filteredConfirmados.map((confirmado) => (
             <Accordion key={confirmado.conf_id}>
-              <AccordionSummary
-                expandIcon={<ArrowDropDownIcon />}
-                aria-controls={`panel-${confirmado.conf_id}-content`}
-                id={`panel-${confirmado.conf_id}-header`}
-              >
+              <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
                 <div className='gridCentrao grid-3colum'>
                   <div>
-                    {confirmado.conf_id}
+                    {confirmado.conf_num_confirmacion}
                   </div>
                   <div>
                     {confirmado.conf_nombres} {confirmado.conf_apellidos}
@@ -139,87 +190,51 @@ function Confirmaciones() {
                     </div>
                   </div>
                   <div className='acciones'>
-                    <IconButton
-                      aria-label="edit"
-                      color='success'
-                      aria-owns={popoverId === `edit-${confirmado.conf_id}` ? `mouse-over-popoverEdit-${confirmado.conf_id}` : undefined}
-                      aria-haspopup="true"
-                      onMouseEnter={(event) => handlePopoverOpen(event, `edit-${confirmado.conf_id}`)}
-                      onMouseLeave={handlePopoverClose}
-                      onClick={() => handleOpenPopup(confirmado)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                    <IconButton
-                      aria-label="Report"
-                      color='secondary'
-                      aria-owns={popoverId === `report-${confirmado.conf_id}` ? `mouse-over-popoverReport-${confirmado.conf_id}` : undefined}
-                      aria-haspopup="true"
-                      onMouseEnter={(event) => handlePopoverOpen(event, `report-${confirmado.conf_id}`)}
-                      onMouseLeave={handlePopoverClose}
-                    >
-                      <AssignmentIcon />
-                    </IconButton>
-                    <Popover
-                      id={`mouse-over-popoverEdit-${confirmado.conf_id}`}
-                      sx={{ pointerEvents: 'none' }}
-                      open={popoverId === `edit-${confirmado.conf_id}` && Boolean(anchorEl)}
-                      anchorEl={anchorEl}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                      onClose={handlePopoverClose}
-                      disableRestoreFocus
-                    >
-                      <Typography sx={{ p: 1 }}>Editar</Typography>
-                    </Popover>
-                    <Popover
-                      id={`mouse-over-popoverReport-${confirmado.conf_id}`}
-                      sx={{ pointerEvents: 'none' }}
-                      open={popoverId === `report-${confirmado.conf_id}` && Boolean(anchorEl)}
-                      anchorEl={anchorEl}
-                      anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                      transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-                      onClose={handlePopoverClose}
-                      disableRestoreFocus
-                    >
-                      <Typography sx={{ p: 1 }}>Generar Reporte</Typography>
-                    </Popover>
+                    <Tooltip title="Editar">
+                      <IconButton
+                        aria-label="edit"
+                        color='success'
+                        onClick={() => handleOpenPopup(confirmado)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Generar Reporte">
+                      <IconButton
+                        aria-label="Report"
+                        color='secondary'
+                        onClick={() => handleOpenPopupCert(confirmado)}
+                      >
+                        <AssignmentIcon />
+                      </IconButton>
+                    </Tooltip>
                   </div>
                 </div>
               </AccordionDetails>
             </Accordion>
           ))}
         </div>
-        <PopupConfirmado
-          isOpen={isPopupOpen}
-          onClose={handleClosePopup}
-          onSave={handleSavePopup}
-          initialData={popupData}
-        />
       </div>
       <div className='fab-container'>
-        <Fab color="primary" aria-label="add"
-          aria-owns={popoverId === 'add' ? 'mouse-over-popoverAdd' : undefined}
-          aria-haspopup="true"
-          onMouseEnter={(event) => handlePopoverOpen(event, 'add')}
-          onMouseLeave={handlePopoverClose}
-          onClick={() => handleOpenPopup()}
-        >
-          <AddIcon />
-        </Fab>
-        <Popover
-          id="mouse-over-popoverAdd"
-          sx={{ pointerEvents: 'none' }}
-          open={popoverId === 'add' && Boolean(anchorEl)}
-          anchorEl={anchorEl}
-          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-          transformOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-          onClose={handlePopoverClose}
-          disableRestoreFocus
-        >
-          <Typography sx={{ p: 1 }}>Añadir</Typography>
-        </Popover>
+        <Tooltip title="Agregar Confirmado">
+          <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+            <AddIcon />
+          </Fab>
+        </Tooltip>
       </div>
+      <PopupConfirmado
+        isOpen={isPopupOpen}
+        onClose={handleClosePopup}
+        onSave={handleSavePopup}
+        initialData={popupData}
+      />
+
+      <PopupCertificado
+        isOpen={isPopupOpenCert}
+        onClose={handleClosePopupCert}
+        onGenerate={handleSavePopupCert}
+        initialData={popupDataCert}
+      />
     </div>
   );
 }

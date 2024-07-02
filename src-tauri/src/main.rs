@@ -5,18 +5,37 @@
 
 mod models;
 
-use models::{Confirmado, ConfirmadoMod, User, UserLogin};
+use models::{
+    Ciudad, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento, Ministro, Parroquia, User,
+    UserLogin,
+};
 
 use bcrypt::verify;
 use mysql::prelude::*;
 use mysql::*;
+use opener::open;
 use serde::Serialize;
+use tauri::Manager;
+use tauri::Window;
 use warp::{reject, Filter};
 
 async fn get_db_connection() -> Result<PooledConn, mysql::Error> {
     let url = "mysql://root:password@localhost:3306/confirmaciones_arcadia";
     let pool = Pool::new(url)?;
     pool.get_conn()
+}
+
+fn set_window_size(window: &Window) {
+    let monitor = window.primary_monitor().unwrap().unwrap();
+    let monitor_size = monitor.size();
+    let width = (monitor_size.width as f64 * 0.7) as f64;
+    let height = (monitor_size.height as f64 * 0.7) as f64;
+
+    window
+        .set_size(tauri::Size::Logical(tauri::LogicalSize { width, height }))
+        .unwrap();
+
+    window.center().unwrap();
 }
 
 #[tauri::command]
@@ -57,21 +76,68 @@ async fn login(user: UserLogin) -> Result<User, String> {
 }
 
 #[tauri::command]
+fn open_file(filepath: String) {
+    if let Err(e) = open(filepath) {
+        eprintln!("Error opening file: {}", e);
+    }
+}
+
+#[tauri::command]
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let confirmados: Vec<Confirmado> = conn
-        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.est_nombre from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id")
+        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id order by conf.conf_id desc")
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
 }
 
 #[tauri::command]
-async fn handle_add_confirmado(input: ConfirmadoMod) -> Result<String, String> {
+async fn get_all_establecimientos() -> Result<Vec<Establecimiento>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let establecimientos: Vec<Establecimiento> = conn
+        .query("select * from establecimiento")
+        .map_err(|e| e.to_string())?;
+
+    Ok(establecimientos)
+}
+
+#[tauri::command]
+async fn get_all_ciudades() -> Result<Vec<Ciudad>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let ciudades: Vec<Ciudad> = conn
+        .query("select * from ciudad")
+        .map_err(|e| e.to_string())?;
+
+    Ok(ciudades)
+}
+
+#[tauri::command]
+async fn get_all_parroquias() -> Result<Vec<Parroquia>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let parroquias: Vec<Parroquia> = conn
+        .query("select * from parroquia")
+        .map_err(|e| e.to_string())?;
+
+    Ok(parroquias)
+}
+
+#[tauri::command]
+async fn get_all_ministros() -> Result<Vec<Ministro>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let ministros: Vec<Ministro> = conn
+        .query("select * from ministro")
+        .map_err(|e| e.to_string())?;
+
+    Ok(ministros)
+}
+
+#[tauri::command]
+async fn handle_add_confirmado(input: ConfirmadoAdd) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let insert_query = r#"
-        INSERT INTO confirmado (usu_id, min_id, est_id, conf_nombres, conf_apellidos, conf_fecha, conf_tomo, conf_pagina, conf_numero, conf_padre_nombre, conf_madre_nombre, conf_padrino1_nombre, conf_padrino1_apellido, conf_padrino2_nombre, conf_padrino2_apellido)
-        VALUES (:usu_id, :min_id, :est_id, :conf_nombres, :conf_apellidos, :conf_fecha, :conf_tomo, :conf_pagina, :conf_numero, :conf_padre_nombre, :conf_madre_nombre, :conf_padrino1_nombre, :conf_padrino1_apellido, :conf_padrino2_nombre, :conf_padrino2_apellido)
+        INSERT INTO confirmado (usu_id, min_id, est_id, conf_nombres, conf_apellidos, conf_fecha, conf_tomo, conf_pagina, conf_numero, conf_padre_nombre, conf_madre_nombre, conf_padrino1_nombre, conf_padrino1_apellido, conf_padrino2_nombre, conf_padrino2_apellido, conf_num_confirmacion)
+        VALUES (:usu_id, :min_id, :est_id, :conf_nombres, :conf_apellidos, :conf_fecha, :conf_tomo, :conf_pagina, :conf_numero, :conf_padre_nombre, :conf_madre_nombre, :conf_padrino1_nombre, :conf_padrino1_apellido, :conf_padrino2_nombre, :conf_padrino2_apellido, :conf_num_confirmacion)
     "#;
 
     conn.exec_drop(
@@ -92,6 +158,7 @@ async fn handle_add_confirmado(input: ConfirmadoMod) -> Result<String, String> {
             "conf_padrino1_apellido" => &input.conf_padrino1_apellido,
             "conf_padrino2_nombre" => &input.conf_padrino2_nombre,
             "conf_padrino2_apellido" => &input.conf_padrino2_apellido,
+            "conf_num_confirmacion" => &input.conf_num_confirmacion,
         },
     )
     .map_err(|e| e.to_string())?;
@@ -103,7 +170,7 @@ async fn handle_add_confirmado(input: ConfirmadoMod) -> Result<String, String> {
 async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let modify_query = r#"
-        UPDATE confirmado SET min_id = :min_id, est_id = :est_id, conf_nombres = :conf_nombres, conf_apellidos = :conf_apellidos, conf_fecha = :conf_fecha, conf_tomo = :conf_tomo, conf_pagina = :conf_pagina, conf_numero = :conf_numero, conf_padre_nombre = :conf_padre_nombre, conf_madre_nombre = :conf_madre_nombre, conf_padrino1_nombre = :conf_padrino1_nombre, conf_padrino1_apellido = :conf_padrino1_apellido, conf_padrino2_nombre = :conf_padrino2_nombre, conf_padrino2_apellido = :conf_padrino2_apellido WHERE conf_id = :conf_id
+        UPDATE confirmado SET min_id = :min_id, est_id = :est_id, conf_nombres = :conf_nombres, conf_apellidos = :conf_apellidos, conf_fecha = :conf_fecha, conf_tomo = :conf_tomo, conf_pagina = :conf_pagina, conf_numero = :conf_numero, conf_padre_nombre = :conf_padre_nombre, conf_madre_nombre = :conf_madre_nombre, conf_padrino1_nombre = :conf_padrino1_nombre, conf_padrino1_apellido = :conf_padrino1_apellido, conf_padrino2_nombre = :conf_padrino2_nombre, conf_padrino2_apellido = :conf_padrino2_apellido, conf_num_confirmacion = :conf_num_confirmacion WHERE conf_id = :conf_id
     "#;
 
     conn.exec_drop(
@@ -124,6 +191,7 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
             "conf_padrino1_apellido" => &input.conf_padrino1_apellido,
             "conf_padrino2_nombre" => &input.conf_padrino2_nombre,
             "conf_padrino2_apellido" => &input.conf_padrino2_apellido,
+            "conf_num_confirmacion" => &input.conf_num_confirmacion,
         },
     )
     .map_err(|e| e.to_string())?;
@@ -133,11 +201,21 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
 
 fn main() {
     tauri::Builder::default()
+        .setup(|app| {
+            let main_window = app.get_window("main").unwrap();
+            set_window_size(&main_window);
+            Ok(())
+        })
         .invoke_handler(tauri::generate_handler![
             login,
             get_all_confirmados,
+            get_all_establecimientos,
+            get_all_ministros,
+            get_all_ciudades,
+            get_all_parroquias,
             handle_add_confirmado,
-            handle_modify_confirmado
+            handle_modify_confirmado,
+            open_file
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
