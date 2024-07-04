@@ -97,6 +97,20 @@ pub struct Establecimiento {
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
+pub struct EstablecimientoAdd {
+    pub parr_id: i32,
+    pub est_nombre: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct EstablecimientoLista {
+    pub est_id: i32,
+    pub parr_id: i32,
+    pub est_nombre: String,
+    pub parr_nombre: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
 pub struct Parroquia {
     pub parr_id: i32,
     pub ciu_id: i32,

@@ -6,18 +6,16 @@
 mod models;
 
 use models::{
-    Ciudad, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento, Ministro, Parroquia, User,
-    UserLogin,
+    Ciudad, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento, EstablecimientoAdd,
+    EstablecimientoLista, Ministro, Parroquia, User, UserLogin,
 };
 
 use bcrypt::verify;
 use mysql::prelude::*;
 use mysql::*;
 use opener::open;
-use serde::Serialize;
 use tauri::Manager;
 use tauri::Window;
-use warp::{reject, Filter};
 
 async fn get_db_connection() -> Result<PooledConn, mysql::Error> {
     let url = "mysql://root:password@localhost:3306/confirmaciones_arcadia";
@@ -100,6 +98,56 @@ async fn get_all_establecimientos() -> Result<Vec<Establecimiento>, String> {
         .map_err(|e| e.to_string())?;
 
     Ok(establecimientos)
+}
+
+#[tauri::command]
+async fn get_all_establecimientos_list() -> Result<Vec<EstablecimientoLista>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let establecimientos: Vec<EstablecimientoLista> = conn
+        .query("select est.est_id, parr.parr_id, est.est_nombre, parr.parr_nombre from establecimiento as est inner join parroquia as parr on est.parr_id = parr.parr_id")
+        .map_err(|e| e.to_string())?;
+
+    Ok(establecimientos)
+}
+
+#[tauri::command]
+async fn handle_add_establecimiento(input: EstablecimientoAdd) -> Result<String, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let insert_query = r#"
+        INSERT INTO establecimiento (parr_id, est_nombre)
+        VALUES (:parr_id, :est_nombre)
+    "#;
+
+    conn.exec_drop(
+        insert_query,
+        params! {
+            "parr_id" => &input.parr_id,
+            "est_nombre" => &input.est_nombre,
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok("Establecimiento añadido".to_string())
+}
+
+#[tauri::command]
+async fn handle_modify_establecimiento(input: Establecimiento) -> Result<String, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let modify_query = r#"
+        UPDATE establecimiento SET parr_id = :parr_id, est_nombre = :est_nombre WHERE est_id = :est_id
+    "#;
+
+    conn.exec_drop(
+        modify_query,
+        params! {
+            "est_id" => &input.est_id,
+            "parr_id" => &input.parr_id,
+            "est_nombre" => &input.est_nombre,
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok("Establecimiento modificado".to_string())
 }
 
 #[tauri::command]
@@ -210,6 +258,9 @@ fn main() {
             login,
             get_all_confirmados,
             get_all_establecimientos,
+            get_all_establecimientos_list,
+            handle_add_establecimiento,
+            handle_modify_establecimiento,
             get_all_ministros,
             get_all_ciudades,
             get_all_parroquias,

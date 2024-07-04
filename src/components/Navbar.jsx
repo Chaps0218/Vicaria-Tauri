@@ -14,6 +14,7 @@ import {
 const data = [
   { link: '/home', label: 'Inicio', icon: faBell },
   { link: '/confirmaciones', label: 'Confirmaciones', icon: faReceipt },
+  { link: '/establecimientos', label: 'Establecimientos', icon: faExchangeAlt },
 ];
 
 const Navbar = ({ onLogout }) => {

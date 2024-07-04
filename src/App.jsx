@@ -5,6 +5,7 @@ import Login from './components/Login';
 import Navbar from './components/Navbar';
 import Inicio from './components/Inicio';
 import Confirmaciones from './components/Confirmaciones';
+import Establecimientos from './components/Establecimientos';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
             <Route path="/" element={loggedIn ? <Navigate to="/home" /> : <Login onLogin={handleLogin} />} />
             <Route path="/home" element={loggedIn ? <Inicio /> : <Navigate to="/" />} />
             <Route path="/confirmaciones" element={loggedIn ? <Confirmaciones /> : <Navigate to="/" />} />
+            <Route path="/establecimientos" element={loggedIn ? <Establecimientos /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>

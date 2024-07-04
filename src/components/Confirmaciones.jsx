@@ -110,9 +110,6 @@ function Confirmaciones() {
     fetchConfirmados();
   }, []);
 
-  // const open = Boolean(anchorEl);
-  // const id = open ? 'simple-popover' : undefined;
-
   return (
     <div className='gridTop main-Conf'>
       <div>
