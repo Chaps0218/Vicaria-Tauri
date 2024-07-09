@@ -15,6 +15,9 @@ const data = [
   { link: '/home', label: 'Inicio', icon: faBell },
   { link: '/confirmaciones', label: 'Confirmaciones', icon: faReceipt },
   { link: '/establecimientos', label: 'Establecimientos', icon: faExchangeAlt },
+  { link: '/ciudades', label: 'Ciudades', icon: faExchangeAlt },
+  { link: '/ministros', label: 'Ministros', icon: faExchangeAlt },
+  { link: '/parroquias', label: 'Parroquias', icon: faExchangeAlt },
 ];
 
 const Navbar = ({ onLogout }) => {

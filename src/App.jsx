@@ -6,6 +6,9 @@ import Navbar from './components/Navbar';
 import Inicio from './components/Inicio';
 import Confirmaciones from './components/Confirmaciones';
 import Establecimientos from './components/Establecimientos';
+import Ciudades from './components/Ciudades';
+import Ministro from './components/Ministro';
+import Parroquia from './components/Parroquia';
 import './App.css';
 
 function App() {
@@ -21,6 +24,9 @@ function App() {
             <Route path="/home" element={loggedIn ? <Inicio /> : <Navigate to="/" />} />
             <Route path="/confirmaciones" element={loggedIn ? <Confirmaciones /> : <Navigate to="/" />} />
             <Route path="/establecimientos" element={loggedIn ? <Establecimientos /> : <Navigate to="/" />} />
+            <Route path="/ciudades" element={loggedIn ? <Ciudades /> : <Navigate to="/" />} />
+            <Route path="/ministros" element={loggedIn ? <Ministro /> : <Navigate to="/" />} />
+            <Route path="/parroquias" element={loggedIn ? <Parroquia /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>

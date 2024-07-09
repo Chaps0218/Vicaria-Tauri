@@ -27,6 +27,11 @@ pub struct Ciudad {
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
+pub struct CiudadAdd {
+    pub ciu_nom: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
 pub struct Confirmado {
     pub conf_id: i32,
     pub usu_id: i32,
@@ -111,6 +116,14 @@ pub struct EstablecimientoLista {
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
+pub struct ParroquiaLista {
+    pub parr_id: i32,
+    pub ciu_id: i32,
+    pub parr_nombre: String,
+    pub ciu_nom: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
 pub struct Parroquia {
     pub parr_id: i32,
     pub ciu_id: i32,
@@ -118,7 +131,18 @@ pub struct Parroquia {
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
+pub struct ParroquiaAdd {
+    pub ciu_id: i32,
+    pub parr_nombre: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
 pub struct Ministro {
     pub min_id: i32,
+    pub min_nombre: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow)]
+pub struct MinistroAdd {
     pub min_nombre: String,
 }
