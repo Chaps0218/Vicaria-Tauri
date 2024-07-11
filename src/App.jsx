@@ -11,6 +11,7 @@ import Ciudades from './components/Ciudades';
 import Ministro from './components/Ministro';
 import Parroquia from './components/Parroquia';
 import Usuarios from './components/Usuarios';
+import Perfil from './components/Perfil';
 import './App.css';
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
             <Route path="/ministros" element={loggedIn ? <Ministro /> : <Navigate to="/" />} />
             <Route path="/parroquias" element={loggedIn ? <Parroquia /> : <Navigate to="/" />} />
             <Route path="/usuarios" element={loggedIn ? <Usuarios /> : <Navigate to="/" />} />
+            <Route path="/perfil" element={loggedIn ? <Perfil /> : <Navigate to="/" />} />
           </Routes>
         </div>
       </div>

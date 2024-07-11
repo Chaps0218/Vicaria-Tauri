@@ -8,7 +8,7 @@ mod models;
 use models::{
     Ciudad, CiudadAdd, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento,
     EstablecimientoAdd, EstablecimientoLista, Ministro, MinistroAdd, Parroquia, ParroquiaAdd,
-    ParroquiaLista, User, UserAdd, UserLista, UserLogin, UserMod,
+    ParroquiaLista, UserAdd, UserLista, UserLogin, UserMod,
 };
 
 use bcrypt::{hash, verify, DEFAULT_COST};
@@ -38,7 +38,7 @@ fn set_window_size(window: &Window) {
 }
 
 #[tauri::command]
-async fn login(user: UserLogin) -> Result<User, String> {
+async fn login(user: UserLogin) -> Result<UserLista, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     // println!("{:#?}", user);
     let stored_hash: Option<String> = conn
@@ -53,9 +53,9 @@ async fn login(user: UserLogin) -> Result<User, String> {
     match stored_hash {
         Some(hash) => {
             if verify(&user.usu_password, &hash).map_err(|e| e.to_string())? {
-                let authenticated_user: Option<User> = conn
+                let authenticated_user: Option<UserLista> = conn
                     .exec_first(
-                        "SELECT * FROM usuario WHERE usu_user = :usu_user",
+                        "select usu.usu_id, usu.usu_nombre, usu.usu_apellido, usu.usu_rol, usu.usu_user, est.est_id, est.est_nombre from usuario as usu inner join establecimiento as est on usu.est_id = est.est_id where usu.usu_user = :usu_user",
                         params! {
                             "usu_user" => &user.usu_user,
                         },
@@ -188,6 +188,30 @@ async fn handle_save_password(input: String, input2: u32) -> Result<bool, String
     .map_err(|e| e.to_string())?;
 
     Ok(true)
+}
+
+#[tauri::command]
+async fn check_password(input: String, input2: u32) -> Result<bool, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let stored_hash: Option<String> = conn
+        .exec_first(
+            "SELECT usu_password FROM usuario WHERE usu_id = :usu_id",
+            params! {
+                "usu_id" => input2,
+            },
+        )
+        .map_err(|e| e.to_string())?;
+
+    match stored_hash {
+        Some(hash) => {
+            if verify(&input, &hash).map_err(|e| e.to_string())? {
+                Ok(true)
+            } else {
+                Ok(false)
+            }
+        }
+        None => Ok(false),
+    }
 }
 
 #[tauri::command]
@@ -477,6 +501,7 @@ fn main() {
             check_username,
             handle_modify_usuario,
             handle_save_password,
+            check_password,
             get_all_confirmados,
             handle_add_confirmado,
             handle_modify_confirmado,

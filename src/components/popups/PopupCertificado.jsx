@@ -83,9 +83,9 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         bau_tomo: '',
         bau_pagina: '',
         bau_numero: '',
-        ciu_id: '',
-        parr_id: '',
-        min_id: '',
+        ciu_nombre: '',
+        parr_nombre: '',
+        min_nombre: '',
     });
 
     useEffect(() => {
@@ -95,9 +95,9 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 bau_tomo: '',
                 bau_pagina: '',
                 bau_numero: '',
-                ciu_id: '',
-                parr_id: '',
-                min_id: '',
+                ciu_nombre: '',
+                parr_nombre: '',
+                min_nombre: '',
             });
             setErrors({});
         }
@@ -124,37 +124,37 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         }
     };
 
-    const handleAutocompleteChange = (event, value, field) => {
-        switch (field) {
-            case "ciu_id":
-                setFormDataBau((prevFormData) => ({
-                    ...prevFormData,
-                    [field]: value ? value.ciu_id : null,
-                }));
-                break
-            case "parr_id":
-                setFormDataBau((prevFormData) => ({
-                    ...prevFormData,
-                    [field]: value ? value.parr_id : null,
-                }));
-                break
-            case "min_id":
-                setFormDataBau((prevFormData) => ({
-                    ...prevFormData,
-                    [field]: value ? value.min_id : null,
-                }));
-                break
-        }
-    };
+    // const handleAutocompleteChange = (event, value, field) => {
+    //     switch (field) {
+    //         case "ciu_id":
+    //             setFormDataBau((prevFormData) => ({
+    //                 ...prevFormData,
+    //                 [field]: value ? value.ciu_id : null,
+    //             }));
+    //             break
+    //         case "parr_id":
+    //             setFormDataBau((prevFormData) => ({
+    //                 ...prevFormData,
+    //                 [field]: value ? value.parr_id : null,
+    //             }));
+    //             break
+    //         case "min_id":
+    //             setFormDataBau((prevFormData) => ({
+    //                 ...prevFormData,
+    //                 [field]: value ? value.min_id : null,
+    //             }));
+    //             break
+    //     }
+    // };
 
     const validateForm = () => {
         const newErrors = {};
         if (!formDataBau.bau_tomo) newErrors.bau_tomo = true;
         if (!formDataBau.bau_pagina) newErrors.bau_pagina = true;
         if (!formDataBau.bau_numero) newErrors.bau_numero = true;
-        if (!formDataBau.parr_id) newErrors.parr_id = true;
-        if (!formDataBau.ciu_id) newErrors.ciu_id = true;
-        if (!formDataBau.min_id) newErrors.min_id = true;
+        if (!formDataBau.parr_nombre) newErrors.parr_id = true;
+        if (!formDataBau.ciu_nombre) newErrors.ciu_id = true;
+        if (!formDataBau.min_nombre) newErrors.min_id = true;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -211,9 +211,9 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         doc.text(`Tomo Bautizo: ${formDataBau.bau_tomo}`, 10, 150);
         doc.text(`Página Bautizo: ${formDataBau.bau_pagina}`, 10, 160);
         doc.text(`Número Bautizo: ${formDataBau.bau_numero}`, 10, 170);
-        doc.text(`Ciudad: ${ciudades.find(c => c.ciu_id === formDataBau.ciu_id)?.ciu_nom || ''}`, 10, 180);
-        doc.text(`Parroquia Bautizo: ${parroquias.find(p => p.parr_id === formDataBau.parr_id)?.parr_nombre || ''}`, 10, 190);
-        doc.text(`Ministro Bautizo: ${ministros.find(m => m.min_id === formDataBau.min_id)?.min_nombre || ''}`, 10, 200);
+        doc.text(`Ciudad: ${formDataBau.ciu_nombre}`, 10, 180);
+        doc.text(`Parroquia Bautizo: ${formDataBau.parr_nombre}`, 10, 190);
+        doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 200);
 
         const pdfBytes = doc.output('arraybuffer');
         const fileName = `certificado_${formData.conf_nombres}_${formData.conf_apellidos}_${now.format("YYYY-MM-DD_HH_mm_ss")}.pdf`;
@@ -313,29 +313,32 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             helperText={errors.bau_numero ? 'Debe ser un número entero positivo' : ''}
                                         />
                                     </div>
-                                    <Autocomplete
+                                    <TextField
+                                        label="Ciudad de Bautizo"
+                                        name="ciu_nombre"
+                                        value={formDataBau.ciu_nombre}
+                                        onChange={handleChange}
+                                        error={errors.ciu_nombre}
+                                        helperText={errors.ciu_nombre}
                                         fullWidth
-                                        options={ciudades}
-                                        getOptionLabel={(option) => option.ciu_nom}
-                                        onChange={(event, value) => handleAutocompleteChange(event, value, 'ciu_id')}
-                                        value={ciudades.find((ciu) => ciu.ciu_id === formDataBau.ciu_id) || null}
-                                        renderInput={(params) => <TextField {...params} label="Ciudad" />}
                                     />
-                                    <Autocomplete
+                                    <TextField
+                                        label="Parroquia de Bautizo"
+                                        name="parr_nombre"
+                                        value={formDataBau.parr_nombre}
+                                        onChange={handleChange}
+                                        error={errors.parr_nombre}
+                                        helperText={errors.parr_nombre}
                                         fullWidth
-                                        options={parroquias.filter((parroquia) => parroquia.ciu_id == formDataBau.ciu_id)}
-                                        getOptionLabel={(option) => option.parr_nombre}
-                                        onChange={(event, value) => handleAutocompleteChange(event, value, 'parr_id')}
-                                        value={parroquias.find((parr) => parr.parr_id === formDataBau.parr_id) || null}
-                                        renderInput={(params) => <TextField {...params} label="Parroquia" />}
                                     />
-                                    <Autocomplete
+                                    <TextField
+                                        label="Ministro de Bautizo"
+                                        name="min_nombre"
+                                        value={formDataBau.min_nombre}
+                                        onChange={handleChange}
+                                        error={errors.min_nombre}
+                                        helperText={errors.min_nombre}
                                         fullWidth
-                                        options={ministros}
-                                        getOptionLabel={(option) => option.min_nombre}
-                                        onChange={(event, value) => handleAutocompleteChange(event, value, 'min_id')}
-                                        value={ministros.find((min) => min.min_id === formDataBau.min_id) || null}
-                                        renderInput={(params) => <TextField {...params} label="Ministro" />}
                                     />
                                 </div>
                             </CardContent>
