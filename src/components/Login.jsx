@@ -16,16 +16,13 @@ function Login() {
   };
 
   return (
+    <div className='gridCentrao bg_login'>
 
-    <div className='login gridCentrao'>
-
-      <div className='grid-2colum-equal gridCentrao'>
-        <div className='titulo'>
-          <h1>Sistema de Confirmaciones</h1>
-          <h1>Vicaría Episcopal Nuestra Señora de la Merced</h1>
+      <div className='grid-2col-unido'>
+        <div className='logo'>
+          <img src="src/images/logo_6x.png" alt="Logo Vicaria"></img>
         </div>
-        <div>
-          <img src="../images/logo_arcadia.png" alt="Logo Vicaria"></img>
+        <div className='login'>
           <form onSubmit={handleLogin}>
             <FormControl variant="standard">
               <InputLabel htmlFor="input-with-icon-adornment">
@@ -34,6 +31,7 @@ function Login() {
               <Input
                 type="text"
                 id="input_user"
+                className='input_login'
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 startAdornment={
@@ -50,6 +48,7 @@ function Login() {
               <Input
                 type="password"
                 id="input_password"
+                className='input_login'
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 startAdornment={
@@ -61,8 +60,8 @@ function Login() {
             </FormControl>
             <br></br>
             <Button variant="contained" color="error" size="medium"
-            onClick={onLogin}>
-            Iniciar Sesión
+              onClick={onLogin}>
+              Iniciar Sesión
             </Button>
             {errors.length > 0 && <div>{errors.join(', ')}</div>}
           </form>

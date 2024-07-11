@@ -28,7 +28,7 @@
     align-items: center;
     text-decoration: none;
     font-size: 14px;
-    color: #666;
+    color: #ffffff;
     padding: 8px 12px;
     border-radius: 4px;
     font-weight: 500;
@@ -40,12 +40,12 @@
   }
   
   .link:hover .linkIcon {
-    color: #000;
+    color: #f8f7f7;
   }
   
   .link[data-active],
   .link.active {
-    background-color: #007bff;
+    background-color: #4F0404;
     color: #fff;
   }
   

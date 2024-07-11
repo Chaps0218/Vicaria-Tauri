@@ -113,7 +113,7 @@ function Confirmaciones() {
   return (
     <div className='gridTop main-Conf'>
       <div>
-        <h2>Confirmados</h2>
+        <h2>Confirmaciones</h2>
         <TextField
           variant="outlined"
           fullWidth
@@ -123,8 +123,17 @@ function Confirmaciones() {
           InputProps={{
             startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
           }}
+          placeholder='Buscar'
+          
         />
+        <div className='gridCentrao3 grid-header-conf'>
+            <p>Cédula</p>
+            <p> Nombres Apellidos </p>
+            <p>Fecha</p>
+            <p>Más</p>
+          </div>
         <div className='overflow'>
+          
           {filteredConfirmados.map((confirmado) => (
             <Accordion key={confirmado.conf_id}>
               <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
@@ -214,7 +223,7 @@ function Confirmaciones() {
       </div>
       <div className='fab-container'>
         <Tooltip title="Agregar Confirmado">
-          <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+          <Fab color="error" aria-label="add" onClick={() => handleOpenPopup()}>
             <AddIcon />
           </Fab>
         </Tooltip>

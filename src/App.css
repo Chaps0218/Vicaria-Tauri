@@ -1,36 +1,70 @@
-.root {
-  width: 100%;
+.root{
+  width: 100vw;
   height: 100vh;
 }
-
 .app-container {
   display: flex;
-  height: 100%;
+  height: 97vh;
   overflow: hidden;
 }
 
+.background{
+  background-image: url('src/images/bg_arcadia.jpg');
+}
 body.dark-mode {
   background-color: #121212;
   color: #e0e0e0;
 }
+.bg_login{
+  display: flex;
+  height: 100vh;
+}
+.logo{
+  width: 35vw;
+  height: 70vh;
+  background-color: #841414;
+  border-radius: 1.5% 0 0 1.5% ;
+  display: grid;
+  place-items: center;
+}
 
-.login {
-  background-image: url('./images/bg_login.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+.login{
+  width: 35vw;
+  height: 70vh;
+  background-color: #ffffff;
+  border-radius: 0 1.5% 1.5% 0;
+  display: grid;
+  place-items: center;
+}
+
+.grid-2col-unido{
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  grid-gap: 0
 }
 
 form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  /* Espacio entre los elementos */
-  margin-top: 20px;
-  /* Añade un margen superior */
+  gap: 10px; /* Espacio entre los elementos */
+  margin-top: 20px; /* Añade un margen superior */
+}
+.input_login {
+  color: rgb(99, 12, 12); /* Cambia el color del texto del input a blanco */
 }
 
+.input_login .MuiInputBase-input {
+  color: rgb(0, 0, 0); /* Asegura que el color del texto dentro del input sea blanco */
+}
+
+.input_login .MuiInputAdornment-root svg {
+  color: rgb(158, 0, 0); /* Cambia el color del icono a blanco */
+}
+
+.input_login .borderColor{
+  color: rgb(158, 0, 0); /* Cambia el color del icono a blanco */
+}
 .main-content {
   flex: 1;
   padding: 16px;
@@ -42,7 +76,7 @@ form {
 }
 
 .overflow {
-  height: 95%;
+  height: 80%;
   overflow: auto;
 }
 
@@ -51,6 +85,11 @@ form {
   place-items: center;
   width: 100%;
   height: 100%;
+}
+.gridCentrao3 {
+  display: grid;
+  place-items: center;
+  width: 100%;
 }
 
 .similarAccordion {
@@ -119,6 +158,7 @@ form {
   bottom: 4vh;
   right: 2vw;
   z-index: 1000;
+  color: #4F0404 ;
 }
 
 .info {
@@ -160,6 +200,13 @@ form {
   grid-template-rows: 93% 7%;
 }
 
+.grid-header-conf{
+  grid-template-columns: 15% 40% 38% 1%;
+}
+
+.grid-header-conf p{ 
+  font-weight: bold;
+}
 
 .header {
   padding-bottom: 16px;
@@ -186,54 +233,27 @@ form {
   background: none;
 }
 
-.theme-toggle:hover {
-  background-color: #e0e0e0;
-  color: #000;
+.light  {
+  background-color: #841414;
 }
-
-.dark .theme-toggle:hover {
-  background-color: #333;
+.light .theme-toggle:hover {
+  background-color: #4F0404;
   color: #fff;
 }
 
-.dark .navbar {
-  border-right-color: #444;
+.light .link {
+  color: #ffffff;
 }
 
-.dark .link {
-  color: #aaa;
-}
-
-.dark .link:hover {
-  background-color: #333;
+.light .link:hover {
+  background-color: #4F0404;
   color: #fff;
 }
 
-.dark .link.active {
-  background-color: #0056b3;
+.light .link.active {
+  background-color: #4F0404;
 }
 
-.dark .linkIcon {
-  color: #ccc;
-}
-
-body.dark-mode .navbar {
-  border-right-color: #444;
-}
-
-body.dark-mode .link {
-  color: #aaa;
-}
-
-body.dark-mode .link:hover {
-  background-color: #333;
-  color: #fff;
-}
-
-body.dark-mode .link.active {
-  background-color: #0056b3;
-}
-
-body.dark-mode .linkIcon {
-  color: #ccc;
+.light .linkIcon {
+  color: #ffffff;
 }
