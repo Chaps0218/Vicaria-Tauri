@@ -12,7 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const data = [
-  { link: '/home', label: 'Inicio', icon: faBell },
+  { link: '/home', label: 'Perfil', icon: faBell },
   { link: '/confirmaciones', label: 'Confirmaciones', icon: faReceipt },
   { link: '/establecimientos', label: 'Establecimientos', icon: faExchangeAlt },
   { link: '/ciudades', label: 'Ciudades', icon: faExchangeAlt },
@@ -42,13 +42,12 @@ const Navbar = ({ onLogout }) => {
   ));
 
   return (
-    <nav className={`navbar ${darkMode ? 'dark' : 'light'}`}>
+    <nav className="navbar light">
       <div className="navbarMain">
         <div className="header">
-          <code className="code">v3.1.2</code>
-          <button className="theme-toggle" onClick={toggleDarkMode}>
-            <FontAwesomeIcon icon={darkMode ? faSun : faMoon} className="linkIcon" />
-          </button>
+          <div className='aa'>
+            <img src="src/images/logo_4x.png" alt="Logo Vicaria"></img>
+          </div>
         </div>
         {links}
       </div>

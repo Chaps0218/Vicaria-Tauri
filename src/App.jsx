@@ -1,4 +1,5 @@
 import React from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { UserProvider, useUser } from './UserContext'; // Importa el contexto y el hook
 import Login from './components/Login';
@@ -13,6 +14,15 @@ import './App.css';
 
 function App() {
   const { loggedIn, handleLogin, handleLogout } = useUser();
+
+  useEffect(() => {
+    const rootElement = document.getElementById('root');
+    if (loggedIn) {
+      rootElement.classList.remove('background');
+    } else {
+      rootElement.classList.add('background');
+    }
+  }, [loggedIn]);
 
   return (
     <Router>
