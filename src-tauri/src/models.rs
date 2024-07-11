@@ -15,6 +15,37 @@ pub struct User {
 }
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct UserAdd {
+    pub usu_nombre: String,
+    pub usu_apellido: String,
+    pub usu_rol: String,
+    pub usu_user: String,
+    pub usu_password: String,
+    pub est_id: i32,
+}
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct UserMod {
+    pub usu_id: i32,
+    pub usu_nombre: String,
+    pub usu_apellido: String,
+    pub usu_rol: String,
+    pub usu_user: String,
+    pub est_id: i32,
+}
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
+pub struct UserLista {
+    pub usu_id: i32,
+    pub usu_nombre: String,
+    pub usu_apellido: String,
+    pub usu_rol: String,
+    pub usu_user: String,
+    pub est_id: i32,
+    pub est_nombre: String,
+}
+
+#[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct UserLogin {
     pub usu_user: String,
     pub usu_password: String,

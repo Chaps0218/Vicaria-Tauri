@@ -8,10 +8,10 @@ mod models;
 use models::{
     Ciudad, CiudadAdd, Confirmado, ConfirmadoAdd, ConfirmadoMod, Establecimiento,
     EstablecimientoAdd, EstablecimientoLista, Ministro, MinistroAdd, Parroquia, ParroquiaAdd,
-    ParroquiaLista, User, UserLogin,
+    ParroquiaLista, User, UserAdd, UserLista, UserLogin, UserMod,
 };
 
-use bcrypt::verify;
+use bcrypt::{hash, verify, DEFAULT_COST};
 use mysql::prelude::*;
 use mysql::*;
 use opener::open;
@@ -89,6 +89,105 @@ async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
+}
+
+#[tauri::command]
+async fn get_all_users() -> Result<Vec<UserLista>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let users: Vec<UserLista> = conn
+        .query("select usu.usu_id, usu.usu_nombre, usu.usu_apellido, usu.usu_rol, usu.usu_user, est.est_id, est.est_nombre from usuario as usu inner join establecimiento as est on usu.est_id = est.est_id order by usu.usu_id asc")
+        .map_err(|e| e.to_string())?;
+
+    Ok(users)
+}
+
+#[tauri::command]
+async fn handle_add_usuario(input: UserAdd) -> Result<String, String> {
+    let hashed_password = hash(&input.usu_password, DEFAULT_COST).map_err(|e| e.to_string())?;
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let insert_query = r#"
+        INSERT INTO usuario (usu_nombre, usu_apellido, usu_rol, usu_user, usu_password, est_id)
+        VALUES (:usu_nombre, :usu_apellido, :usu_rol, :usu_user, :usu_password, :est_id)
+    "#;
+
+    conn.exec_drop(
+        insert_query,
+        params! {
+            "usu_nombre" => &input.usu_nombre,
+            "usu_apellido" => &input.usu_apellido,
+            "usu_rol" => &input.usu_rol,
+            "usu_user" => &input.usu_user,
+            "usu_password" => &hashed_password,
+            "est_id" => &input.est_id,
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok("Usuario añadido".to_string())
+}
+
+#[tauri::command]
+async fn check_username(input: String) -> Result<u64, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let query = r#"
+        SELECT COUNT(*) as count FROM usuario WHERE usu_user LIKE :usu_user
+    "#;
+
+    let params = params! {
+        "usu_user" => format!("{}%", input),
+    };
+
+    let result: Option<u64> = tokio::task::block_in_place(|| conn.exec_first(query, params))
+        .map_err(|e| e.to_string())?;
+
+    match result {
+        Some(count) => Ok(count),
+        None => Ok(0), // Si no hay resultados, devolver 0
+    }
+}
+
+#[tauri::command]
+async fn handle_modify_usuario(input: UserMod) -> Result<String, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let modify_query = r#"
+        UPDATE usuario SET usu_nombre = :usu_nombre, usu_apellido = :usu_apellido, usu_rol = :usu_rol, usu_user = :usu_user, est_id = :est_id WHERE usu_id = :usu_id
+    "#;
+
+    conn.exec_drop(
+        modify_query,
+        params! {
+            "usu_id" => &input.usu_id,
+            "usu_nombre" => &input.usu_nombre,
+            "usu_apellido" => &input.usu_apellido,
+            "usu_rol" => &input.usu_rol,
+            "usu_user" => &input.usu_user,
+            "est_id" => &input.est_id,
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok("Usuario modificado".to_string())
+}
+
+#[tauri::command]
+async fn handle_save_password(input: String, input2: u32) -> Result<bool, String> {
+    let hashed_password = hash(&input, DEFAULT_COST).map_err(|e| e.to_string())?;
+
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let modify_query = r#"
+        UPDATE usuario SET usu_password = :usu_password WHERE usu_id = :usu_id
+    "#;
+
+    conn.exec_drop(
+        modify_query,
+        params! {
+            "usu_id" => input2,
+            "usu_password" => &hashed_password,
+        },
+    )
+    .map_err(|e| e.to_string())?;
+
+    Ok(true)
 }
 
 #[tauri::command]
@@ -373,6 +472,11 @@ fn main() {
         })
         .invoke_handler(tauri::generate_handler![
             login,
+            get_all_users,
+            handle_add_usuario,
+            check_username,
+            handle_modify_usuario,
+            handle_save_password,
             get_all_confirmados,
             handle_add_confirmado,
             handle_modify_confirmado,

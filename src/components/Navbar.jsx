@@ -18,6 +18,7 @@ const data = [
   { link: '/ciudades', label: 'Ciudades', icon: faExchangeAlt },
   { link: '/ministros', label: 'Ministros', icon: faExchangeAlt },
   { link: '/parroquias', label: 'Parroquias', icon: faExchangeAlt },
+  { link: '/usuarios', label: 'Usuarios', icon: faExchangeAlt },
 ];
 
 const Navbar = ({ onLogout }) => {
