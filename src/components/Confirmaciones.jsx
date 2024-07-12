@@ -119,9 +119,13 @@ function Confirmaciones() {
           fullWidth
           value={searchQuery}
           onChange={handleSearch}
-          style={{ marginBottom: '20px' }}
+          style={{ marginBottom: '10px' }}
           InputProps={{
             startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
+          style: {
+            padding: '3px 10px',  // Ajusta el padding según sea necesario
+            fontSize: '14px',  // Ajusta el tamaño de la fuente según sea necesario
+            },
           }}
           placeholder='Buscar'
           
@@ -150,8 +154,35 @@ function Confirmaciones() {
                 </div>
               </AccordionSummary>
               <AccordionDetails>
-                <div className='gridCentrao grid2-colum border-top'>
+                <div className='gridCentrao grid2-colum '>
                   <div className='gridCentrao info'>
+                    
+                    <div className='gridCentrao2  grid-2colum-datos'>
+                      <strong>Padre: </strong>
+                      <div>
+                        {confirmado.conf_padre_nombre}
+                      </div>
+                      <strong>Madre: </strong>
+                      <div>
+                        {confirmado.conf_madre_nombre}
+                      </div>
+                      <strong>Padrino: </strong>
+                      <div>
+                        {confirmado.conf_padrino1_nombre} {confirmado.conf_padrino1_apellido}
+                      </div>
+                      <strong>Madrina: </strong>
+                      <div>
+                        {confirmado.conf_padrino2_nombre} {confirmado.conf_padrino2_apellido}
+                      </div>
+                      <strong>Ministro:</strong>
+                      <div>
+                        {confirmado.min_nombre}
+                      </div>
+                      <strong>Establecimiento: </strong>
+                      <div>
+                        {confirmado.est_nombre}
+                      </div>
+                    </div>
                     <div className='gridCentrao2 info-libro'>
                       <strong>Tomo: </strong>
                       <div>
@@ -166,40 +197,12 @@ function Confirmaciones() {
                         {confirmado.conf_numero}
                       </div>
                     </div>
-                    <div className='gridCentrao2 info-familiares'>
-                      <strong>Padre: </strong>
-                      <div>
-                        {confirmado.conf_padre_nombre}
-                      </div>
-                      <strong>Madre: </strong>
-                      <div>
-                        {confirmado.conf_madre_nombre}
-                      </div>
-                      <strong>Padrino 1: </strong>
-                      <div>
-                        {confirmado.conf_padrino1_nombre} {confirmado.conf_padrino1_apellido}
-                      </div>
-                      <strong>Padrino 2: </strong>
-                      <div>
-                        {confirmado.conf_padrino2_nombre} {confirmado.conf_padrino2_apellido}
-                      </div>
-                    </div>
-                    <div className='gridCentrao2 info-lugar'>
-                      <strong>Ministro:</strong>
-                      <div>
-                        {confirmado.min_nombre}
-                      </div>
-                      <strong>Establecimiento: </strong>
-                      <div>
-                        {confirmado.est_nombre}
-                      </div>
-                    </div>
                   </div>
                   <div className='acciones'>
                     <Tooltip title="Editar">
                       <IconButton
                         aria-label="edit"
-                        color='success'
+                        color='black'
                         onClick={() => handleOpenPopup(confirmado)}
                       >
                         <EditIcon />
@@ -208,7 +211,7 @@ function Confirmaciones() {
                     <Tooltip title="Generar Reporte">
                       <IconButton
                         aria-label="Report"
-                        color='secondary'
+                        color='black'
                         onClick={() => handleOpenPopupCert(confirmado)}
                       >
                         <AssignmentIcon />

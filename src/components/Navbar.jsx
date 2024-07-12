@@ -59,17 +59,13 @@ const Navbar = ({ onLogout }) => {
     <nav className="navbar light">
       <div className="navbarMain">
         <div className="header">
-          <div className='aa'>
-            <img src="src/images/logo_4x.png" alt="Logo Vicaria"></img>
+          <div className='aa gridCentrao3' >
+            <img src="src/images/logo_4x.png" alt="Logo Vicaria" width="120vw" height="120vh"></img>
           </div>
         </div>
         {links}
       </div>
       <div className="footer">
-        <a href="#" className="link" onClick={(event) => event.preventDefault()}>
-          <FontAwesomeIcon icon={faExchangeAlt} className="linkIcon" />
-          <span>Change account</span>
-        </a>
         <a href="#" className="link" onClick={(event) => onLogout()}>
           <FontAwesomeIcon icon={faSignOutAlt} className="linkIcon" />
           <span>Logout</span>
