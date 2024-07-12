@@ -115,8 +115,6 @@ const PopupCambioPassword = ({ isOpen, onClose }) => {
         },
     }));
 
-
-
     return (
         <div className="popup-overlay">
             <div className="popup-content">

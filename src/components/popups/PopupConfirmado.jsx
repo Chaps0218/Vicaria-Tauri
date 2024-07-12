@@ -8,6 +8,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Autocomplete from '@mui/material/Autocomplete';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 import './popup.css';
 import '../../App.css';
 
@@ -173,6 +179,22 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
 
     if (!isOpen) return null;
 
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
+
+    const ColorButtonRed = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[900],
+        },
+    }));
+
     return (
         <div className="popup-overlay">
             <div className="popup-content">
@@ -336,9 +358,9 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             helperText={errors.conf_numero ? 'Debe ser un número entero positivo' : ''}
                         />
                     </div>
-                    <div className="form-buttons">
-                        <button id="cancelar" onClick={onClose}>Cancelar</button>
-                        <button onClick={handleSubmit}>Guardar</button>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
                     </div>
                 </div>
             </div>

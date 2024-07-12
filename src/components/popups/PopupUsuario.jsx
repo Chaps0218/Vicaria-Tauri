@@ -7,7 +7,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import './popup.css';
 import { useUser } from '../../UserContext';
 import '../../App.css';
-
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 
 const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
     const { user } = useUser();
@@ -141,6 +146,22 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
         return null;
     }
 
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
+
+    const ColorButtonRed = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[900],
+        },
+    }));
+
     return (
         <div className="popup-overlay">
             <div className="popup-content">
@@ -232,9 +253,9 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
                         <div className='gridCentraoNoFull'>
                             <p>Se necesitan permisos avanzados para cambiar la contraseña de un usuario</p>
                         </div>) : null}
-                    <div className="form-buttons">
-                        <button id="cancelar" onClick={onClose}>Cancelar</button>
-                        <button onClick={handleSubmit}>Guardar</button>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
                     </div>
                 </div>
             </div>

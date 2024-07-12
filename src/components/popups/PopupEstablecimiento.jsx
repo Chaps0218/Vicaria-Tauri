@@ -4,7 +4,12 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import './popup.css';
 import '../../App.css';
-import { Margin } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 
 const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
     const [formData, setFormData] = useState({
@@ -85,6 +90,22 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
         return null;
     }
 
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
+
+    const ColorButtonRed = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[900],
+        },
+    }));
+
     return (
         <div className="popup-overlay">
             <div className="popup-content">
@@ -109,9 +130,9 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
                             renderInput={(params) => <TextField {...params} label="Parroquia" />}
                         />
                     </div>
-                    <div className="form-buttons">
-                        <button id="cancelar" onClick={onClose}>Cancelar</button>
-                        <button onClick={handleSubmit}>Guardar</button>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
                     </div>
                 </div>
             </div>

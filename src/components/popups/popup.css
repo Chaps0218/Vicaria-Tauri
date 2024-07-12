@@ -44,10 +44,10 @@
 }
 
 .h2-est {
-    margin-bottom: 6.5vh;
+    margin-bottom: 6.5vmax;
 }
 
 /* -----------confirmados */
-.card{
+.card {
     background-color: #D9D9D9;
 }

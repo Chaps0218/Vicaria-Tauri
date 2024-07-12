@@ -1,8 +1,3 @@
-.root {
-  width: 100vw;
-  height: 100vh;
-}
-
 html,
 body {
   margin: 0;
@@ -15,7 +10,7 @@ body {
 
 .app-container {
   display: flex;
-  height: 97vh;
+  height: 100vh;
   overflow: hidden;
 }
 
@@ -99,7 +94,7 @@ form {
 }
 
 .perfilFontSize {
-  font-size: 1.07em;
+  font-size: 1.9vmax;
 }
 
 .overflow {
@@ -125,6 +120,7 @@ form {
   grid-template-columns: 70% 30%;
   height: 10vh;
   width: 73vw;
+  font-size: 1.2vmax;
 }
 
 .similarAccordionTaller {
@@ -132,6 +128,7 @@ form {
   grid-template-columns: 70% 30%;
   height: 20vh;
   width: 73vw;
+  font-size: 1.2vmax;
 }
 
 .titulo h1 {
@@ -185,7 +182,7 @@ form {
 
 .grid-2row-equal-lessSpace {
   grid-template-rows: 50% 50%;
-  grid-row-gap: 0.5vh;
+  grid-row-gap: 1.5vh;
 }
 
 .grid-2colum-equal-lessSpace {
@@ -211,8 +208,13 @@ form {
   grid-row-gap: 2vh;
 }
 
+.grid-2row-topPerfil {
+  grid-template-rows: 10% 80%;
+}
+
 .grid-3colum-equal {
-  grid-template-columns: repeat(3, 33.3%);
+  grid-template-columns: repeat(3, 30%);
+  grid-column-gap: 0.66vw;
 }
 
 .grid-3row-equal {
@@ -222,13 +224,13 @@ form {
 
 .grid-3row-equal-moreSpace {
   grid-template-rows: repeat(3, 30%);
-  grid-row-gap: 1.2vh;
+  grid-row-gap: 1.2vmax;
 }
 
 .cuadrado-gris {
   background-color: #b9b9b9;
   /* border-radius: 10px; */
-  padding: 10px 10px 15px 20px;
+  padding: 1vmax 1vmax 1.7vmax 2vmax;
   font-size: 1.1em;
   font-weight: bold;
 }
