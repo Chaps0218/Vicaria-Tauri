@@ -165,15 +165,15 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
     return (
         <div className="popup-overlay">
             <div className="popup-content">
-                <h2 className='h2-est'>{initialData ? 'Editar Usuario' : 'Agregar Usuario'}</h2>
-                <div className="gridCentraoNoFull grid-4row-equal">
-                    <div className='gridCentraoNoFull grid-2column-equal'>
+                <h2 className='h2-usu'>{initialData ? 'Editar Usuario' : 'Agregar Usuario'}</h2>
+                <div className="gridCentraoNoFull row-gap">
+                    <div className='gridCentraoNoFull grid-2colum-equal'>
                         <TextField
                             label="Nombre del Usuario"
                             name="usu_nombre"
                             value={formData.usu_nombre}
                             onChange={handleChange}
-                            error={errors.usu_nombre}
+                            error={!!errors.usu_nombre}
                             helperText={errors.usu_nombre}
                             fullWidth
                         />
@@ -182,12 +182,12 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
                             name="usu_apellido"
                             value={formData.usu_apellido}
                             onChange={handleChange}
-                            error={errors.usu_apellido}
+                            error={!!errors.usu_apellido}
                             helperText={errors.usu_apellido}
                             fullWidth
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-2column-equal'>
+                    <div className='gridCentraoNoFull grid-2colum-equal'>
                         <Autocomplete
                             fullWidth
                             options={roles}
@@ -206,47 +206,29 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
                         />
                     </div>
                     {initialData ? null : <div className='gridCentraoNoFull'>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="input-with-icon-adornment">
-                                Contraseña
-                            </InputLabel>
-                            <Input
-                                type="password"
-                                id="input_password"
-                                name="usu_pass"
-                                value={newPass}
-                                onChange={handleChangePass}
-                                error={errors.usu_pass}
-                                helpertext={errors.usu_pass}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <LockOutlinedIcon />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
+                        <TextField
+                            label="Contraseña"
+                            name="usu_pass"
+                            type='password'
+                            value={formData.usu_pass}
+                            onChange={handleChangePass}
+                            error={errors.usu_pass}
+                            helperText={errors.usu_pass}
+                            fullWidth
+                        />
                     </div>}
                     {initialData ? (user.usu_rol === "superadmin" ? <div className='gridCentraoNoFull grid-2colum-equal'>
-                        <FormControl variant="standard">
-                            <InputLabel htmlFor="input-with-icon-adornment">
-                                Contraseña
-                            </InputLabel>
-                            <Input
-                                type="password"
-                                id="superadmin_changepass"
-                                name="usu_pass"
-                                value={newPass}
-                                onChange={handleChangePass}
-                                error={errors.usu_pass}
-                                helpertext={errors.usu_pass}
-                                startAdornment={
-                                    <InputAdornment position="start">
-                                        <LockOutlinedIcon />
-                                    </InputAdornment>
-                                }
-                            />
-                        </FormControl>
-                        <button onClick={saveContraseña}>Guardar Contraseña</button>
+                        <TextField
+                            label="Contraseña"
+                            name="usu_pass"
+                            type='password'
+                            value={formData.usu_pass}
+                            onChange={handleChangePass}
+                            error={errors.usu_pass}
+                            helperText={errors.usu_pass}
+                            fullWidth
+                        />
+                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={saveContraseña}>Guardar Contraseña</ColorButton>
                         <p id="cambioE" className='escondio'>Contraseña cambiada</p>
                     </div>
                         :
