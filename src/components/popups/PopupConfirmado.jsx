@@ -304,7 +304,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             renderInput={(params) => <TextField {...params} label="Establecimiento" />}
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-3colum-equal trioNum'>
+                    <div className='gridCentraoNoFull grid-3colum-equal '>
                         <TextField
                             fullWidth
                             label="Tomo"

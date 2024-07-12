@@ -265,22 +265,22 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                         <h4>Nombres: {formData.conf_nombres} {formData.conf_apellidos}</h4>
                         <h4>No. Confirmación: {formData.conf_num_confirmacion}</h4>
                     </div>
-                    <div className='gridCentrao cartas grid-2colum-equal'>
+                    <div className='gridTop cartas grid-2colum-equal'>
                         <Card sx={{ minWidth: 275 }}>
                             <CardContent>
                                 <h2>Datos Confirmación</h2>
                                 <div>
                                     <p><strong>Fecha:</strong> {formData.conf_fecha}</p>
-                                    <div className='gridCentrao grid-3colum-equal'>
-                                        <p>Tomo: {formData.conf_tomo}</p>
-                                        <p>Página: {formData.conf_pagina}</p>
-                                        <p>Número: {formData.conf_numero}</p>
+                                    <div className='gridCentrao2 grid-3colum-equal'>
+                                        <div>Tomo: {formData.conf_tomo}</div>
+                                        <div>Página: {formData.conf_pagina}</div>
+                                        <div>Número: {formData.conf_numero}</div>
                                     </div>
-                                    <p>Padre: {formData.conf_padre_nombre}</p>
+                                    <p><strong>Padre:</strong> {formData.conf_padre_nombre}</p>
                                     <p>Madre: {formData.conf_madre_nombre}</p>
-                                    <div id="padrinos" className='gridCentrao'>
-                                        <p>Padrino 1: {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</p>
-                                        {initialData ? <p>Padrino 2: {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</p> : null}
+                                    <div id="padrinos" className='gridCentrao2'>
+                                        <div>Padrino 1: {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
+                                        {initialData ? <div>Padrino 2: {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</div> : null}
                                     </div>
                                     <p>Parroquia: {parroquiaEstable}</p>
                                     <p>Ministro: {formData.min_nombre}</p>
@@ -290,7 +290,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                         </Card>
                         <Card sx={{ minWidth: 275 }}>
                             <CardContent>
-                                <h2>Datos Confirmación</h2>
+                                <h2>Datos Bautizo</h2>
                                 <div >
                                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                                         <DatePicker
