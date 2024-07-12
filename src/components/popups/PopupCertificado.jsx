@@ -3,20 +3,23 @@ import { invoke } from '@tauri-apps/api/tauri';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es';
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import AssignmentIcon from '@mui/icons-material/Assignment';
+import CloseIcon from '@mui/icons-material/Close';
 import './popup.css';
 import { useUser } from '../../UserContext';
 import jsPDF from 'jspdf';
 import { writeBinaryFile } from '@tauri-apps/api/fs';
 import { documentDir } from '@tauri-apps/api/path';
+
+import { styled } from '@mui/material/styles';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 
 function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
     const { user } = useUser();
@@ -238,6 +241,22 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
     if (!isOpen) return null;
 
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
+
+    const ColorButtonRed = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[900],
+        },
+    }));
+
     return (
         <div className="popup-overlay">
             <div className="popup-content">
@@ -344,11 +363,9 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                             </CardContent>
                         </Card>
                     </div>
-                    <div className='gridCentrao'>
-                        <button id="cancelar" onClick={onClose}>Cancelar</button>
-                        <Button variant="contained" startIcon={<AssignmentIcon />} onClick={handleSubmit}>
-                            Generar Certificado
-                        </Button>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                        <ColorButton startIcon={<AssignmentIcon />} variant="contained" onClick={handleSubmit}>Generar</ColorButton>
                     </div>
                 </div>
             </div>

@@ -98,7 +98,7 @@ form {
 }
 
 .perfilFontSize {
-  font-size: 1.5vw;
+  font-size: 1.07em;
 }
 
 .overflow {
@@ -145,6 +145,12 @@ form {
   width: 90%;
 }
 
+.gridCentraoButtons {
+  display: grid;
+  place-items: center;
+  width: 40%;
+}
+
 .gridTop {
   display: grid;
   place-items: top;
@@ -186,7 +192,7 @@ form {
   grid-column-gap: 0.5vw;
 }
 
-.grid-2colum-datos{
+.grid-2colum-datos {
   grid-template-columns: 26% 75%;
   grid-column-gap: 0.5vw;
   grid-row-gap: 0.5vh;
@@ -194,7 +200,7 @@ form {
   padding-left: 2vw;
 }
 
-.grid-2colum-datos strong{
+.grid-2colum-datos strong {
   /* justify-self: right; */
   padding-bottom: 0.5vh;
 }
@@ -214,11 +220,17 @@ form {
   grid-row-gap: 0.2vh;
 }
 
+.grid-3row-equal-moreSpace {
+  grid-template-rows: repeat(3, 30%);
+  grid-row-gap: 1.2vh;
+}
+
 .cuadrado-gris {
   background-color: #b9b9b9;
   /* border-radius: 10px; */
-  padding: 10px;
-  font-size: 1.7vw;
+  padding: 10px 10px 15px 20px;
+  font-size: 1.1em;
+  font-weight: bold;
 }
 
 
@@ -254,7 +266,7 @@ form {
   height: auto;
 }
 
-.acciones{
+.acciones {
   justify-content: start;
 }
 

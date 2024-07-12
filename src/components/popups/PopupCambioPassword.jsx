@@ -2,6 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import TextField from '@mui/material/TextField';
 import { useUser } from '../../UserContext';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
+import CloseIcon from '@mui/icons-material/Close';
+import SaveIcon from '@mui/icons-material/Save';
 import './popup.css';
 import '../../App.css';
 
@@ -93,18 +99,36 @@ const PopupCambioPassword = ({ isOpen, onClose }) => {
         return null;
     }
 
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
+
+    const ColorButtonRed = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[500]),
+        backgroundColor: red[500],
+        '&:hover': {
+            backgroundColor: red[900],
+        },
+    }));
+
+
+
     return (
         <div className="popup-overlay">
             <div className="popup-content">
                 <h2 className='h2-est'>Cambiar Contraseña</h2>
                 <div className="gridCentraoNoFull grid-2row-equal">
-                    <div className='gridCentraoNoFull grid-3row-equal'>
+                    <div className='gridCentraoNoFull grid-3row-equal-moreSpace '>
                         <TextField
                             label="Contraseña antigua"
                             name="password"
                             value={formData.password}
                             onChange={handleChange}
-                            error={!!errors.password} // Convertir a booleano
+                            error={!!errors.password}
                             helperText={errors.password}
                             fullWidth
                         />
@@ -113,7 +137,7 @@ const PopupCambioPassword = ({ isOpen, onClose }) => {
                             name="newPassword"
                             value={formData.newPassword}
                             onChange={handleChange}
-                            error={!!errors.newPassword} // Convertir a booleano
+                            error={!!errors.newPassword}
                             helperText={errors.newPassword}
                             fullWidth
                         />
@@ -122,14 +146,14 @@ const PopupCambioPassword = ({ isOpen, onClose }) => {
                             name="confirmPassword"
                             value={formData.confirmPassword}
                             onChange={handleChange}
-                            error={!!errors.confirmPassword} // Convertir a booleano
+                            error={!!errors.confirmPassword}
                             helperText={errors.confirmPassword}
                             fullWidth
                         />
                     </div>
-                    <div className="form-buttons">
-                        <button id="cancelar" onClick={onClose}>Cancelar</button>
-                        <button onClick={handleSubmit}>Guardar</button>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
                     </div>
                 </div>
             </div>

@@ -2,7 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useUser } from '../UserContext';
 import '../App.css';
 import './popups/popup.css';
+
+import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
+import { blueGrey } from '@mui/material/colors';
+
 import PopupCambioPassword from './popups/PopupCambioPassword';
 
 function Perfil() {
@@ -16,6 +20,14 @@ function Perfil() {
     const handleClosePopup = () => {
         setOpenPopup(false);
     }
+
+    const ColorButton = styled(Button)(({ theme }) => ({
+        color: theme.palette.getContrastText(blueGrey[900]),
+        backgroundColor: blueGrey[900],
+        '&:hover': {
+            backgroundColor: blueGrey[500],
+        },
+    }));
 
     return (
         <div className='gridCentrao grid-2row-top perfilFontSize'>
@@ -62,7 +74,7 @@ function Perfil() {
                         </div>
                         <div className='gridCentraoNoFull grid-2colum-equal-lessSpace perfilFontSize'>
                             <strong>Contraseña:</strong>
-                            <Button variant="contained" onClick={handleOpenPopup}>Cambiar Contraseña</Button>
+                            <ColorButton variant="contained" onClick={handleOpenPopup}>Cambiar Contraseña</ColorButton>
                         </div>
                     </div>
                 </div>

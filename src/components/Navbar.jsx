@@ -4,21 +4,26 @@ import '../css/estilosNavbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useUser } from '../UserContext';
 import {
-  faBell,
-  faReceipt,
-  faExchangeAlt,
   faSignOutAlt,
+  faChurch,
+  faFireFlameCurved,
+  faUsers,
+  faUser,
+  faCity,
+  faBuilding,
+  faUserTie,
+  faCross,
 } from '@fortawesome/free-solid-svg-icons';
 
 const data = [
-  { link: '/home', label: 'Inicio', icon: faBell, permisos: 1 },
-  { link: '/confirmaciones', label: 'Confirmaciones', icon: faReceipt, permisos: 1 },
-  { link: '/establecimientos', label: 'Establecimientos', icon: faExchangeAlt, permisos: 2 },
-  { link: '/ciudades', label: 'Ciudades', icon: faExchangeAlt, permisos: 2 },
-  { link: '/ministros', label: 'Ministros', icon: faExchangeAlt, permisos: 2 },
-  { link: '/parroquias', label: 'Parroquias', icon: faExchangeAlt, permisos: 2 },
-  { link: '/usuarios', label: 'Usuarios', icon: faExchangeAlt, permisos: 2 },
-  { link: '/perfil', label: 'Perfil', icon: faExchangeAlt, permisos: 1 }
+  { link: '/perfil', label: 'Perfil', icon: faUser, permisos: 1 },
+  { link: '/home', label: 'Inicio', icon: faChurch, permisos: 1 },
+  { link: '/confirmaciones', label: 'Confirmaciones', icon: faFireFlameCurved, permisos: 1 },
+  { link: '/ministros', label: 'Ministros', icon: faUserTie, permisos: 2 },
+  { link: '/establecimientos', label: 'Establecimientos', icon: faBuilding, permisos: 2 },
+  { link: '/ciudades', label: 'Ciudades', icon: faCity, permisos: 2 },
+  { link: '/parroquias', label: 'Parroquias', icon: faCross, permisos: 2 },
+  { link: '/usuarios', label: 'Usuarios', icon: faUsers, permisos: 2 }
 ];
 
 const permisosData = [
