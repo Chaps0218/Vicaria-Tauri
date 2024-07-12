@@ -1,34 +1,47 @@
-.root{
+.root {
   width: 100vw;
   height: 100vh;
 }
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 .app-container {
   display: flex;
   height: 97vh;
   overflow: hidden;
 }
 
-.background{
+.background {
   background-image: url('src/images/bg_arcadia.jpg');
 }
+
 body.dark-mode {
   background-color: #121212;
   color: #e0e0e0;
 }
-.bg_login{
+
+.bg_login {
   display: flex;
   height: 100vh;
 }
-.logo{
+
+.logo {
   width: 35vw;
   height: 70vh;
   background-color: #841414;
-  border-radius: 1.5% 0 0 1.5% ;
+  border-radius: 1.5% 0 0 1.5%;
   display: grid;
   place-items: center;
 }
 
-.login{
+.login {
   width: 35vw;
   height: 70vh;
   background-color: #ffffff;
@@ -37,9 +50,10 @@ body.dark-mode {
   place-items: center;
 }
 
-.grid-2col-unido{
+.grid-2col-unido {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
+  grid-template-columns: 1fr 1fr;
+  /* Dos columnas iguales */
   grid-gap: 0
 }
 
@@ -47,24 +61,32 @@ form {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px; /* Espacio entre los elementos */
-  margin-top: 20px; /* Añade un margen superior */
+  gap: 10px;
+  /* Espacio entre los elementos */
+  margin-top: 20px;
+  /* Añade un margen superior */
 }
+
 .input_login {
-  color: rgb(99, 12, 12); /* Cambia el color del texto del input a blanco */
+  color: rgb(99, 12, 12);
+  /* Cambia el color del texto del input a blanco */
 }
 
 .input_login .MuiInputBase-input {
-  color: rgb(0, 0, 0); /* Asegura que el color del texto dentro del input sea blanco */
+  color: rgb(0, 0, 0);
+  /* Asegura que el color del texto dentro del input sea blanco */
 }
 
 .input_login .MuiInputAdornment-root svg {
-  color: rgb(158, 0, 0); /* Cambia el color del icono a blanco */
+  color: rgb(158, 0, 0);
+  /* Cambia el color del icono a blanco */
 }
 
-.input_login .borderColor{
-  color: rgb(158, 0, 0); /* Cambia el color del icono a blanco */
+.input_login .borderColor {
+  color: rgb(158, 0, 0);
+  /* Cambia el color del icono a blanco */
 }
+
 .main-content {
   flex: 1;
   padding: 16px;
@@ -73,6 +95,10 @@ form {
 
 .color-g1 {
   background-color: #b9b9b9;
+}
+
+.perfilFontSize {
+  font-size: 1.5vw;
 }
 
 .overflow {
@@ -86,6 +112,7 @@ form {
   width: 100%;
   height: 100%;
 }
+
 .gridCentrao3 {
   display: grid;
   place-items: center;
@@ -132,6 +159,13 @@ form {
   height: 100%;
 }
 
+.gridCentrao5 {
+  display: grid;
+  place-items: left;
+  width: 90%;
+  height: 100%;
+}
+
 .grid-2colum-equal {
   grid-template-columns: 50% 50%;
   grid-column-gap: 2vw;
@@ -139,6 +173,21 @@ form {
 
 .grid-2row-equal {
   grid-template-rows: 50% 50%;
+  grid-row-gap: 2vh;
+}
+
+.grid-2row-equal-lessSpace {
+  grid-template-rows: 50% 50%;
+  grid-row-gap: 0.5vh;
+}
+
+.grid-2colum-equal-lessSpace {
+  grid-template-columns: 50% 50%;
+  grid-column-gap: 0.5vw;
+}
+
+.grid-2row-top {
+  grid-template-rows: 10% 90%;
   grid-row-gap: 2vh;
 }
 
@@ -152,13 +201,20 @@ form {
   grid-row-gap: 0.2vh;
 }
 
+.cuadrado-gris {
+  background-color: #b9b9b9;
+  /* border-radius: 10px; */
+  padding: 10px;
+  font-size: 1.7vw;
+}
+
 
 .fab-container {
   position: fixed;
   bottom: 4vh;
   right: 2vw;
   z-index: 1000;
-  color: #4F0404 ;
+  color: #4F0404;
 }
 
 .info {
@@ -200,11 +256,11 @@ form {
   grid-template-rows: 93% 7%;
 }
 
-.grid-header-conf{
+.grid-header-conf {
   grid-template-columns: 15% 40% 38% 1%;
 }
 
-.grid-header-conf p{ 
+.grid-header-conf p {
   font-weight: bold;
 }
 
@@ -233,9 +289,10 @@ form {
   background: none;
 }
 
-.light  {
+.light {
   background-color: #841414;
 }
+
 .light .theme-toggle:hover {
   background-color: #4F0404;
   color: #fff;
