@@ -42,7 +42,10 @@
 .trioNum {
     padding-left: 5vw;
 }
-
+.input-separado{
+    padding-top: 2.5vh;
+    
+}
 .h2-est {
     margin-bottom: 6.5vmax;
 }

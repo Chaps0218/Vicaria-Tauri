@@ -7,6 +7,8 @@ import Fab from '@mui/material/Fab';
 import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import '../App.css';
 import PopupCiudad from './popups/PopupCiudad';
@@ -68,6 +70,13 @@ function Ciudades() {
             console.error(error);
         }
     }
+    const ColorButtonRed = styled(Fab)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[900]),
+        backgroundColor: red[900],
+        '&:hover': {
+            backgroundColor: red[500],
+        },
+    }));
 
     return (
         <div className='gridTop main-Conf'>
@@ -87,7 +96,7 @@ function Ciudades() {
                     {filteredCiudades.map((ciudad) => (
                         <div className='gridCentrao similarAccordion' key={ciudad.ciu_id}>
                             <div className="gridCentrao">
-                                <h2>{ciudad.ciu_nom}</h2>
+                                <h3>{ciudad.ciu_nom}</h3>
                             </div>
                             <div className="ciudad-actions">
                                 <Tooltip title="Editar">
@@ -104,9 +113,9 @@ function Ciudades() {
             </div>
             <div className='fab-container'>
                 <Tooltip title="Agregar Confirmado">
-                    <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+                    <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
                         <AddIcon />
-                    </Fab>
+                    </ColorButtonRed >
                 </Tooltip>
             </div>
             <PopupCiudad

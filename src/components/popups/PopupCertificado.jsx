@@ -41,24 +41,39 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
     useEffect(() => {
         const fetchCiudades = async () => {
-            const response = await invoke('get_all_ciudades');
-            setCiudades(response);
+            try {
+                const response = await invoke('get_all_ciudades');
+                setCiudades(response);
+            } catch (error) {
+                console.error('Error fetching ciudades:', error);
+                // Maneja el error de alguna manera, por ejemplo, mostrando un mensaje al usuario
+            }
         };
-
+    
         const fetchParroquias = async () => {
-            const response = await invoke('get_all_parroquias');
-            setParroquias(response);
-            mostrarParroquia();
+            try {
+                const response = await invoke('get_all_parroquias');
+                setParroquias(response);
+                mostrarParroquia();
+            } catch (error) {
+                console.error('Error fetching parroquias:', error);
+                // Maneja el error de alguna manera
+            }
         };
-
+    
         const fetchMinistros = async () => {
-            const response = await invoke('get_all_ministros');
-            setMinistros(response);
+            try {
+                const response = await invoke('get_all_ministros');
+                setMinistros(response);
+            } catch (error) {
+                console.error('Error fetching ministros:', error);
+                // Maneja el error de alguna manera
+            }
         };
-
+    
         fetchCiudades();
-        fetchMinistros();
         fetchParroquias();
+        fetchMinistros();
     }, []);
 
     const [formData, setFormData] = useState({
@@ -233,9 +248,13 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
             formDataBau.bau_pagina = Number(formDataBau.bau_pagina);
             formDataBau.bau_numero = Number(formDataBau.bau_numero);
             formData.conf_num_confirmacion = Number(formData.conf_num_confirmacion);
-            formDataBau.bau_fecha = formDataBau.bau_fecha.format('YYYY-MM-DD')
+            formDataBau.bau_fecha = formDataBau.bau_fecha.format('YYYY-MM-DD');
+            
+            console.log('Generating PDF with data:', formDataBau, formData); 
             generatePDF();
             onGenerate(formDataBau);
+        } else {
+            console.log('Form validation failed:', errors); 
         }
     };
 
@@ -262,8 +281,9 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
             <div className="popup-content">
                 <div className='gridCentrao grid-3row-center'>
                     <div className='gridCentrao info-per'>
-                        <h4>Nombres: {formData.conf_nombres} {formData.conf_apellidos}</h4>
-                        <h4>No. Confirmación: {formData.conf_num_confirmacion}</h4>
+                        <div><strong>Nombres: {formData.conf_nombres} {formData.conf_apellidos}</strong></div>
+                        <div><strong>No. Confirmación: {formData.conf_num_confirmacion}</strong></div>
+                        <br></br>
                     </div>
                     <div className='gridTop cartas grid-2colum-equal'>
                         <Card sx={{ minWidth: 275 }}>
@@ -272,19 +292,22 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                 <div>
                                     <p><strong>Fecha:</strong> {formData.conf_fecha}</p>
                                     <div className='gridCentrao2 grid-3colum-equal'>
-                                        <div>Tomo: {formData.conf_tomo}</div>
-                                        <div>Página: {formData.conf_pagina}</div>
-                                        <div>Número: {formData.conf_numero}</div>
+                                        <div><strong>Tomo:</strong></div>
+                                        <div><strong>Página:</strong></div>
+                                        <div><strong>Número:</strong></div>
+                                        <div>{formData.conf_tomo}</div>
+                                        <div>{formData.conf_pagina}</div>
+                                        <div>{formData.conf_numero}</div>
                                     </div>
                                     <p><strong>Padre:</strong> {formData.conf_padre_nombre}</p>
-                                    <p>Madre: {formData.conf_madre_nombre}</p>
+                                    <p><strong>Madre:</strong> {formData.conf_madre_nombre}</p>
                                     <div id="padrinos" className='gridCentrao2'>
-                                        <div>Padrino 1: {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
-                                        {initialData ? <div>Padrino 2: {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</div> : null}
+                                        <div><strong>Padrino:</strong> {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
+                                        {initialData ? <div><strong>Madrina:</strong> {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</div> : null}
                                     </div>
-                                    <p>Parroquia: {parroquiaEstable}</p>
-                                    <p>Ministro: {formData.min_nombre}</p>
-                                    <p>Establecimiento: {formData.est_nombre}</p>
+                                    <p><strong>Parroquia:</strong> {parroquiaEstable}</p>
+                                    <p><strong>Ministro:</strong> {formData.min_nombre}</p>
+                                    <p><strong>Establecimiento:</strong> {formData.est_nombre}</p>
                                 </div>
                             </CardContent>
                         </Card>
@@ -294,17 +317,19 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                 <div >
                                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                                         <DatePicker
-                                            label="Fecha de Confirmación"
+                                            label="Fecha de Bautizo"
                                             value={dayjs(formDataBau.bau_fecha).locale('es')}
                                             onChange={handleDateChange}
                                             textField={(params) => <TextField {...params} />}
                                         />
                                     </LocalizationProvider>
-                                    <div className='gridCentraoNoFull grid-3colum-equal'>
+                                    <div className='gridCentraoNoFull grid-3colum-equal input-separado'>
                                         <TextField
                                             fullWidth
                                             label="Tomo"
                                             name="bau_tomo"
+                                            defaultValue="Small"
+                                            size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             value={formDataBau.bau_tomo}
@@ -315,6 +340,8 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             fullWidth
                                             label="Página"
                                             name="bau_pagina"
+                                            defaultValue="Small"
+                                            size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             value={formDataBau.bau_pagina}
@@ -325,6 +352,8 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             fullWidth
                                             label="Número"
                                             name="bau_numero"
+                                            defaultValue="Small"
+                                            size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             value={formDataBau.bau_numero}
@@ -332,37 +361,50 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             helperText={errors.bau_numero ? 'Debe ser un número entero positivo' : ''}
                                         />
                                     </div>
-                                    <TextField
-                                        label="Ciudad de Bautizo"
-                                        name="ciu_nombre"
-                                        value={formDataBau.ciu_nombre}
-                                        onChange={handleChange}
-                                        error={errors.ciu_nombre}
-                                        helperText={errors.ciu_nombre}
-                                        fullWidth
-                                    />
-                                    <TextField
-                                        label="Parroquia de Bautizo"
-                                        name="parr_nombre"
-                                        value={formDataBau.parr_nombre}
-                                        onChange={handleChange}
-                                        error={errors.parr_nombre}
-                                        helperText={errors.parr_nombre}
-                                        fullWidth
-                                    />
-                                    <TextField
-                                        label="Ministro de Bautizo"
-                                        name="min_nombre"
-                                        value={formDataBau.min_nombre}
-                                        onChange={handleChange}
-                                        error={errors.min_nombre}
-                                        helperText={errors.min_nombre}
-                                        fullWidth
-                                    />
+                                    <div className='input-separado'>
+                                        <TextField
+                                            label="Ciudad de Bautizo"
+                                            name="ciu_nombre"
+                                            defaultValue="Small"
+                                            size="small"
+                                            value={formDataBau.ciu_nombre}
+                                            onChange={handleChange}
+                                            error={errors.ciu_nombre}
+                                            helperText={errors.ciu_nombre}
+                                            fullWidth
+                                        />
+                                    </div>
+                                    <div className='input-separado'>
+                                        <TextField
+                                            label="Parroquia de Bautizo"
+                                            name="parr_nombre"
+                                            defaultValue="Small"
+                                            size="small"
+                                            value={formDataBau.parr_nombre}
+                                            onChange={handleChange}
+                                            error={errors.parr_nombre}
+                                            helperText={errors.parr_nombre}
+                                            fullWidth
+                                        />
+                                    </div>
+                                    <div className='input-separado'>
+                                        <TextField
+                                            label="Ministro de Bautizo"
+                                            name="min_nombre"
+                                            defaultValue="Small"
+                                            size="small"
+                                            value={formDataBau.min_nombre}
+                                            onChange={handleChange}
+                                            error={errors.min_nombre}
+                                            helperText={errors.min_nombre}
+                                            fullWidth
+                                        />
+                                    </div>
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
+                    <br></br>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
                         <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
                         <ColorButton startIcon={<AssignmentIcon />} variant="contained" onClick={handleSubmit}>Generar</ColorButton>

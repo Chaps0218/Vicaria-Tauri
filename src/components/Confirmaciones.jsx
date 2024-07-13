@@ -15,6 +15,8 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import '../App.css';
 
 function Confirmaciones() {
@@ -106,6 +108,14 @@ function Confirmaciones() {
     }
   };
 
+  const ColorButtonRed = styled(Fab)(({ theme }) => ({
+    color: theme.palette.getContrastText(red[900]),
+    backgroundColor: red[900],
+    '&:hover': {
+      backgroundColor: red[500],
+    },
+  }));
+
   useEffect(() => {
     fetchConfirmados();
   }, []);
@@ -122,22 +132,22 @@ function Confirmaciones() {
           style={{ marginBottom: '10px' }}
           InputProps={{
             startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
-          style: {
-            padding: '3px 10px',  // Ajusta el padding según sea necesario
-            fontSize: '14px',  // Ajusta el tamaño de la fuente según sea necesario
+            style: {
+              padding: '3px 10px',  // Ajusta el padding según sea necesario
+              fontSize: '14px',  // Ajusta el tamaño de la fuente según sea necesario
             },
           }}
           placeholder='Buscar'
-          
+
         />
         <div className='gridCentrao3 grid-header-conf'>
-            <p>Cédula</p>
-            <p> Nombres Apellidos </p>
-            <p>Fecha</p>
-            <p>Más</p>
-          </div>
+          <p>Cédula</p>
+          <p> Nombres Apellidos </p>
+          <p>Fecha</p>
+          <p>Más</p>
+        </div>
         <div className='overflow'>
-          
+
           {filteredConfirmados.map((confirmado) => (
             <Accordion key={confirmado.conf_id}>
               <AccordionSummary expandIcon={<ArrowDropDownIcon />}>
@@ -154,9 +164,9 @@ function Confirmaciones() {
                 </div>
               </AccordionSummary>
               <AccordionDetails>
-                <div className='gridCentrao grid2-colum '>
+                <div className='gridCentrao2 grid2-colum '>
                   <div className='gridCentrao info'>
-                    
+
                     <div className='gridCentrao2  grid-2colum-datos'>
                       <strong>Padre: </strong>
                       <div>
@@ -185,14 +195,14 @@ function Confirmaciones() {
                     </div>
                     <div className='gridCentrao2 info-libro'>
                       <strong>Tomo: </strong>
+                      <strong>Página: </strong>
+                      <strong>Número: </strong>
                       <div>
                         {confirmado.conf_tomo}
                       </div>
-                      <strong>Página: </strong>
                       <div>
                         {confirmado.conf_pagina}
                       </div>
-                      <strong>Número: </strong>
                       <div>
                         {confirmado.conf_numero}
                       </div>
@@ -202,7 +212,7 @@ function Confirmaciones() {
                     <Tooltip title="Editar">
                       <IconButton
                         aria-label="edit"
-                        color='black'
+                        color='success'
                         onClick={() => handleOpenPopup(confirmado)}
                       >
                         <EditIcon />
@@ -211,7 +221,7 @@ function Confirmaciones() {
                     <Tooltip title="Generar Reporte">
                       <IconButton
                         aria-label="Report"
-                        color='black'
+                        color="success"
                         onClick={() => handleOpenPopupCert(confirmado)}
                       >
                         <AssignmentIcon />
@@ -226,9 +236,9 @@ function Confirmaciones() {
       </div>
       <div className='fab-container'>
         <Tooltip title="Agregar Confirmado">
-          <Fab color="error" aria-label="add" onClick={() => handleOpenPopup()}>
+          <ColorButtonRed  color="error" aria-label="add" onClick={() => handleOpenPopup()}>
             <AddIcon />
-          </Fab>
+          </ColorButtonRed >
         </Tooltip>
       </div>
       <PopupConfirmado

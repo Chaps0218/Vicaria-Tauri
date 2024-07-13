@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupMinistro from './popups/PopupMinistro';
 
@@ -69,6 +71,14 @@ function Ministro() {
         }
     }
 
+    const ColorButtonRed = styled(Fab)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[900]),
+        backgroundColor: red[900],
+        '&:hover': {
+            backgroundColor: red[500],
+        },
+    }));
+
     return (
         <div className='gridTop main-Conf'>
             <div>
@@ -85,9 +95,9 @@ function Ministro() {
                 />
                 <div className='overflow'>
                     {filteredMinistros.map((ministro) => (
-                        <div className='gridCentrao similarAccordion' key={ministro.min_id}>
+                        <div className='gridCentrao3 similarAccordion' key={ministro.min_id}>
                             <div className="gridCentrao">
-                                <h2>{ministro.min_nombre}</h2>
+                                <h3>{ministro.min_nombre}</h3>
                             </div>
                             <div className="ministro-actions">
                                 <Tooltip title="Editar">
@@ -104,9 +114,9 @@ function Ministro() {
             </div>
             <div className='fab-container'>
                 <Tooltip title="Agregar Confirmado">
-                    <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+                    <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
                         <AddIcon />
-                    </Fab>
+                    </ColorButtonRed >
                 </Tooltip>
             </div>
             <PopupMinistro

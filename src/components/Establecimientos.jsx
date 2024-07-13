@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupEstablecimiento from './popups/PopupEstablecimiento';
 
@@ -73,6 +75,14 @@ function Establecimientos() {
         }
     }
 
+    const ColorButtonRed = styled(Fab)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[900]),
+        backgroundColor: red[900],
+        '&:hover': {
+            backgroundColor: red[500],
+        },
+    }));
+
     return (
         <div className='gridTop main-Conf'>
             <div>
@@ -91,8 +101,8 @@ function Establecimientos() {
                     {filteredEstablecimientos.map((establecimiento) => (
                         <div className='gridCentrao similarAccordion' key={establecimiento.est_id}>
                             <div className="gridCentrao grid-2colum-equal">
-                                <h2>{establecimiento.est_nombre}</h2>
-                                <p>{establecimiento.parr_nombre}</p>
+                                <h3>{establecimiento.est_nombre}</h3>
+                                <h3>{establecimiento.parr_nombre}</h3>
                             </div>
                             <div className="establecimiento-actions">
                                 <Tooltip title="Editar">
@@ -109,9 +119,9 @@ function Establecimientos() {
             </div>
             <div className='fab-container'>
                 <Tooltip title="Agregar Confirmado">
-                    <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+                    <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
                         <AddIcon />
-                    </Fab>
+                    </ColorButtonRed >
                 </Tooltip>
             </div>
             <PopupEstablecimiento

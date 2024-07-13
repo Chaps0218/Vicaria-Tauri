@@ -116,19 +116,32 @@ form {
 }
 
 .similarAccordion {
-  border: 1px solid #919191;
+  border: 2px solid #919191;
+  border-radius: 3vh;
   grid-template-columns: 70% 30%;
-  height: 10vh;
-  width: 73vw;
+  height: 9vh;
+  width: 63vw;
   font-size: 1.2vmax;
+  margin-bottom: 2vh;
+}
+.similarAccordion2 {
+  border: 2px solid #919191;
+  border-radius: 3vh;
+  grid-template-columns: 80% 20%;
+  height: 9vh;
+  width: 70vw;
+  font-size: 1.2vmax;
+  margin-bottom: 2vh;
 }
 
 .similarAccordionTaller {
-  border: 1px solid #919191;
+  border: 2px solid #919191;
+  border-radius: 3vh;
   grid-template-columns: 70% 30%;
-  height: 20vh;
-  width: 73vw;
+  height: auto;
+  width: 63vw;
   font-size: 1.2vmax;
+  margin-bottom: 2vh;
 }
 
 .titulo h1 {
@@ -141,6 +154,7 @@ form {
   display: grid;
   place-items: center;
   width: 90%;
+  height: 60;
 }
 
 .gridCentraoButtons {
@@ -160,7 +174,6 @@ form {
   display: grid;
   place-items: left;
   width: 100%;
-  height: 100%;
 }
 
 .gridCentrao5 {
@@ -191,18 +204,13 @@ form {
 }
 
 .grid-2colum-datos {
-  grid-template-columns: 26% 75%;
+  grid-template-columns: 35% 75%;
   grid-column-gap: 0.5vw;
-  grid-row-gap: 0.5vh;
-  padding-bottom: 3vh;
+  grid-row-gap:2vh;
+  padding-bottom: 7vh;
+  margin: 6vw;
   padding-left: 2vw;
 }
-
-.grid-2colum-datos strong {
-  /* justify-self: right; */
-  padding-bottom: 0.5vh;
-}
-
 .grid-2row-top {
   grid-template-rows: 10% 90%;
   grid-row-gap: 2vh;
@@ -213,7 +221,7 @@ form {
 }
 
 .grid-3colum-equal {
-  grid-template-columns: repeat(3, 30%);
+  grid-template-columns: repeat(3, 35.5%);
   grid-column-gap: 0.66vw;
 }
 
@@ -245,13 +253,12 @@ form {
 }
 
 .info {
-  grid-template-rows: repeat(2, 53%);
-  padding-top: 0.5vh;
-  grid-row-gap: 0.2vh;
+  grid-template-rows: 40% 10%;
+  padding-top: 3vh;
 }
 
 .info-libro {
-  grid-template-columns: 27% 20% 20% 20% 20% 20%;
+  grid-template-columns: repeat(3, 35.5%);
   height: auto;
   padding-left: 2vw;
 }
@@ -277,7 +284,8 @@ form {
 }
 
 .grid2-colum {
-  grid-template-columns: 80% 15%
+  grid-template-columns: 80% 20%;
+  height: 38vh;
 }
 
 .border-top {

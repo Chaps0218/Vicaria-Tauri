@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupUsuario from './popups/PopupUsuario';
 
@@ -70,6 +72,13 @@ function Usuarios() {
             console.error(error);
         }
     };
+    const ColorButtonRed = styled(Fab)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[900]),
+        backgroundColor: red[900],
+        '&:hover': {
+            backgroundColor: red[500],
+        },
+    }));
 
     return (
         <div className='gridTop main-Conf'>
@@ -88,16 +97,22 @@ function Usuarios() {
                 <div className='overflow'>
                     {filteredUsuarios.map((usuario) => (
                         <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
-                            <div className="gridCentrao grid-3row-equal">
+                            <div className="gridCentrao ">
                                 <div>
                                     <h2>{usuario.usu_nombre} {usuario.usu_apellido}</h2>
                                 </div>
                                 <div className='gridCentraoNoFull grid-2colum-equal'>
-                                    <p>{usuario.usu_rol}</p>
-                                    <p>{usuario.usu_user}</p>
+                                    <h3>Rol: </h3>
+                                    <h3>{usuario.usu_rol}</h3>
+                                    
                                 </div>
-                                <div>
-                                    <p>{usuario.est_nombre}</p>
+                                <div className='gridCentraoNoFull grid-2colum-equal'>
+                                    <h3>Usuario:</h3>
+                                    <h3>{usuario.usu_user}</h3>
+                                </div>
+                                <div className='gridCentraoNoFull grid-2colum-equal'>
+                                    <h3>Establecimiento</h3>
+                                    <h3>{usuario.est_nombre}</h3>
                                 </div>
                             </div>
                             <div className="usuario-actions">
@@ -116,9 +131,9 @@ function Usuarios() {
             </div>
             <div className='fab-container'>
                 <Tooltip title="Agregar Confirmado">
-                    <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+                    <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
                         <AddIcon />
-                    </Fab>
+                    </ColorButtonRed >
                 </Tooltip>
             </div>
             <PopupUsuario

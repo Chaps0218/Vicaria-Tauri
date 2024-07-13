@@ -206,6 +206,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             label="Cédula de Confirmación"
                             type="number"
                             name="conf_num_confirmacion"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={formData.conf_num_confirmacion}
@@ -229,6 +231,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Nombres del Confirmado"
                             name="conf_nombres"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_nombres}
@@ -239,6 +243,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Apellidos del Confirmado"
                             name="conf_apellidos"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_apellidos}
@@ -251,6 +257,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Padre del Confirmado"
                             name="conf_padre_nombre"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_padre_nombre}
@@ -261,6 +269,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Madre del Confirmado"
                             name="conf_madre_nombre"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_madre_nombre}
@@ -273,6 +283,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Nombres Padrino 1"
                             name="conf_padrino1_nombre"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_padrino1_nombre}
@@ -283,6 +295,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Apellidos Padrino 1"
                             name="conf_padrino1_apellido"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_padrino1_apellido}
@@ -295,6 +309,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Nombres Padrino 2"
                             name="conf_padrino2_nombre"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_padrino2_nombre}
@@ -303,6 +319,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Apellidos Padrino 2"
                             name="conf_padrino2_apellido"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleChange}
                             value={formData.conf_padrino2_apellido}
@@ -312,6 +330,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                         <Autocomplete
                             fullWidth
                             options={ministros}
+                            defaultValue="Small"
+                            size="small"
                             getOptionLabel={(option) => option.min_nombre}
                             onChange={(event, value) => handleAutocompleteChange(event, value, 'min_id')}
                             value={ministros.find((ministro) => ministro.min_id === formData.min_id) || null}
@@ -320,6 +340,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                         <Autocomplete
                             fullWidth
                             options={establecimientos}
+                            defaultValue="Small"
+                            size="small"
                             getOptionLabel={(option) => option.est_nombre}
                             onChange={(event, value) => handleAutocompleteChange(event, value, 'est_id')}
                             value={establecimientos.find((est) => est.est_id === formData.est_id) || null}
@@ -331,6 +353,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Tomo"
                             name="conf_tomo"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={formData.conf_tomo}
@@ -341,6 +365,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Página"
                             name="conf_pagina"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={formData.conf_pagina}
@@ -351,6 +377,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                             label="Número"
                             name="conf_numero"
+                            defaultValue="Small"
+                            size="small"
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={formData.conf_numero}

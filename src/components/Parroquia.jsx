@@ -8,6 +8,8 @@ import AddIcon from '@mui/icons-material/Add';
 import SearchIcon from '@mui/icons-material/Search';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
+import { styled } from '@mui/material/styles';
+import { red } from '@mui/material/colors';
 import '../App.css';
 
 import PopupParroquia from './popups/PopupParroquia';
@@ -70,6 +72,14 @@ function Parroquia() {
         }
     }
 
+    const ColorButtonRed = styled(Fab)(({ theme }) => ({
+        color: theme.palette.getContrastText(red[900]),
+        backgroundColor: red[900],
+        '&:hover': {
+            backgroundColor: red[500],
+        },
+    }));
+
     return (
         <div className='gridTop main-Conf'>
             <div>
@@ -86,10 +96,10 @@ function Parroquia() {
                 />
                 <div className='overflow'>
                     {filteredParroquias.map((parroquia) => (
-                        <div className='gridCentrao similarAccordion' key={parroquia.parr_id}>
+                        <div className='gridCentrao similarAccordion2' key={parroquia.parr_id}>
                             <div className="gridCentrao grid-2colum-equal">
-                                <h2>{parroquia.parr_nombre}</h2>
-                                <p>{parroquia.ciu_nom}</p>
+                                <h3>{parroquia.parr_nombre}</h3>
+                                <h3>{parroquia.ciu_nom}</h3>
                             </div>
                             <div className="parroquia-actions">
                                 <Tooltip title="Editar">
@@ -106,9 +116,9 @@ function Parroquia() {
             </div>
             <div className='fab-container'>
                 <Tooltip title="Agregar Confirmado">
-                    <Fab color="primary" aria-label="add" onClick={() => handleOpenPopup()}>
+                    <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
                         <AddIcon />
-                    </Fab>
+                    </ColorButtonRed >
                 </Tooltip>
             </div>
             <PopupParroquia
