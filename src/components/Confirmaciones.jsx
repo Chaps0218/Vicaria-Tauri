@@ -142,7 +142,7 @@ function Confirmaciones() {
         />
         <div className='gridCentrao3 grid-header-conf'>
           <p>Cédula</p>
-          <p> Nombres Apellidos </p>
+          <p>Nombres Apellidos </p>
           <p>Fecha</p>
           <p>Más</p>
         </div>
@@ -213,6 +213,7 @@ function Confirmaciones() {
                       <IconButton
                         aria-label="edit"
                         color='success'
+                        fontSize='large'
                         onClick={() => handleOpenPopup(confirmado)}
                       >
                         <EditIcon />
@@ -221,7 +222,7 @@ function Confirmaciones() {
                     <Tooltip title="Generar Reporte">
                       <IconButton
                         aria-label="Report"
-                        color="success"
+                        color="info"
                         onClick={() => handleOpenPopupCert(confirmado)}
                       >
                         <AssignmentIcon />
@@ -236,7 +237,7 @@ function Confirmaciones() {
       </div>
       <div className='fab-container'>
         <Tooltip title="Agregar Confirmado">
-          <ColorButtonRed  color="error" aria-label="add" onClick={() => handleOpenPopup()}>
+          <ColorButtonRed color="error" aria-label="add" onClick={() => handleOpenPopup()}>
             <AddIcon />
           </ColorButtonRed >
         </Tooltip>

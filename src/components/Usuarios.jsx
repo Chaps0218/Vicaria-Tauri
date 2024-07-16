@@ -94,39 +94,35 @@ function Usuarios() {
                         startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
                     }}
                 />
-                <div className='overflow'>
-                    {filteredUsuarios.map((usuario) => (
-                        <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
-                            <div className="gridCentrao ">
-                                <div>
-                                    <h2>{usuario.usu_nombre} {usuario.usu_apellido}</h2>
-                                </div>
-                                <div className='gridCentraoNoFull grid-2colum-equal'>
-                                    <h3>Rol: </h3>
-                                    <h3>{usuario.usu_rol}</h3>
-                                    
-                                </div>
-                                <div className='gridCentraoNoFull grid-2colum-equal'>
-                                    <h3>Usuario:</h3>
-                                    <h3>{usuario.usu_user}</h3>
-                                </div>
-                                <div className='gridCentraoNoFull grid-2colum-equal'>
-                                    <h3>Establecimiento</h3>
-                                    <h3>{usuario.est_nombre}</h3>
-                                </div>
-                            </div>
-                            <div className="usuario-actions">
-                                <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleOpenPopup(usuario)}
-                                        aria-label="edit"
-                                        color='success'>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </div>
+                <div className='gridCentrao3 grid-header-usu'>
+                    <p>Nombre</p>
+                    <p>Rol</p>
+                    <p>Usuario</p>
+                    <p>Establecimiento</p>
+                    <p>Editar</p>
+                </div>
+                <div className='overflow gridCentrao3'>
+                    <div className='gridCentrao-lista'>
+                        {filteredUsuarios.map((usuario) => (
+                            <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
+                                <h4>{usuario.usu_nombre} {usuario.usu_apellido}</h4>
+                                <p>{usuario.usu_rol}</p>
+                                <p>{usuario.usu_user}</p>
+                                <p>{usuario.est_nombre}</p>
 
-                    ))}
+                                <div className="usuario-actions">
+                                    <Tooltip title="Editar">
+                                        <IconButton onClick={() => handleOpenPopup(usuario)}
+                                            aria-label="edit"
+                                            color='success'>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                            </div>
+
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className='fab-container'>

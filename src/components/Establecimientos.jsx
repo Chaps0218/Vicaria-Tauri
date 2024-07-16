@@ -97,24 +97,31 @@ function Establecimientos() {
                         startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
                     }}
                 />
+                <div className='gridCentrao3 grid-header-est'>
+                    <p>Establecimiento</p>
+                    <p>Parroquia</p>
+                    <p>Editar</p>
+                </div>
                 <div className='overflow'>
-                    {filteredEstablecimientos.map((establecimiento) => (
-                        <div className='gridCentrao similarAccordion' key={establecimiento.est_id}>
-                            <div className="gridCentrao grid-2colum-equal">
-                                <h3>{establecimiento.est_nombre}</h3>
-                                <h3>{establecimiento.parr_nombre}</h3>
+                    <div className='gridCentrao-lista'>
+                        {filteredEstablecimientos.map((establecimiento) => (
+                            <div className='gridCentrao similarAccordion' key={establecimiento.est_id}>
+                                <div className="gridCentrao grid-2colum-equal">
+                                    <h3>{establecimiento.est_nombre}</h3>
+                                    <h3>{establecimiento.parr_nombre}</h3>
+                                </div>
+                                <div className="establecimiento-actions">
+                                    <Tooltip title="Editar">
+                                        <IconButton onClick={() => handleOpenPopup(establecimiento)}
+                                            aria-label="edit"
+                                            color='success'>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
                             </div>
-                            <div className="establecimiento-actions">
-                                <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleOpenPopup(establecimiento)}
-                                        aria-label="edit"
-                                        color='success'>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className='fab-container'>

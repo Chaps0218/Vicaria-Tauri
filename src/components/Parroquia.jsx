@@ -94,24 +94,31 @@ function Parroquia() {
                         startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
                     }}
                 />
+                <div className='gridCentrao3 grid-header-par'>
+                    <p>Parroquia</p>
+                    <p>Ciudad</p>
+                    <p>Editar</p>
+                </div>
                 <div className='overflow'>
-                    {filteredParroquias.map((parroquia) => (
-                        <div className='gridCentrao similarAccordion2' key={parroquia.parr_id}>
-                            <div className="gridCentrao grid-2colum-equal">
-                                <h3>{parroquia.parr_nombre}</h3>
-                                <h3>{parroquia.ciu_nom}</h3>
+                    <div className='gridCentrao-lista'>
+                        {filteredParroquias.map((parroquia) => (
+                            <div className='gridCentrao similarAccordion2' key={parroquia.parr_id}>
+                                <div className="gridCentrao grid-2colum-equal">
+                                    <h3>{parroquia.parr_nombre}</h3>
+                                    <h3>{parroquia.ciu_nom}</h3>
+                                </div>
+                                <div className="parroquia-actions">
+                                    <Tooltip title="Editar">
+                                        <IconButton onClick={() => handleOpenPopup(parroquia)}
+                                            aria-label="edit"
+                                            color='success'>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
                             </div>
-                            <div className="parroquia-actions">
-                                <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleOpenPopup(parroquia)}
-                                        aria-label="edit"
-                                        color='success'>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
             </div>
             <div className='fab-container'>

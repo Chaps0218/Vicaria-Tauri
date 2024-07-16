@@ -93,23 +93,30 @@ function Ministro() {
                         startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
                     }}
                 />
+                <div className='gridCentrao3 grid-header-min'>
+                    <p>Nombre Ministro</p>
+                    <p> Editar </p>
+                </div>
                 <div className='overflow'>
-                    {filteredMinistros.map((ministro) => (
-                        <div className='gridCentrao3 similarAccordion' key={ministro.min_id}>
-                            <div className="gridCentrao">
-                                <h3>{ministro.min_nombre}</h3>
+                    <div className='gridCentrao-lista'>
+                        {filteredMinistros.map((ministro) => (
+                            <div className='gridCentrao3 similarAccordion' key={ministro.min_id}>
+                                <div className="gridCentrao">
+                                    <h3>{ministro.min_nombre}</h3>
+                                </div>
+                                <div className="ministro-actions">
+                                    <Tooltip title="Editar">
+                                        <IconButton onClick={() => handleOpenPopup(ministro)}
+                                            aria-label="edit"
+                                            color='success'>
+                                            <EditIcon />
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
                             </div>
-                            <div className="ministro-actions">
-                                <Tooltip title="Editar">
-                                    <IconButton onClick={() => handleOpenPopup(ministro)}
-                                        aria-label="edit"
-                                        color='success'>
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
+
                 </div>
             </div>
             <div className='fab-container'>

@@ -98,7 +98,7 @@ form {
 }
 
 .overflow {
-  height: 80%;
+  height: 65%;
   overflow: auto;
 }
 
@@ -113,6 +113,14 @@ form {
   display: grid;
   place-items: center;
   width: 100%;
+  height: auto;
+}
+
+.gridCentrao-lista {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: auto;
 }
 
 .similarAccordion {
@@ -124,6 +132,7 @@ form {
   font-size: 1.2vmax;
   margin-bottom: 2vh;
 }
+
 .similarAccordion2 {
   border: 2px solid #919191;
   border-radius: 3vh;
@@ -137,9 +146,9 @@ form {
 .similarAccordionTaller {
   border: 2px solid #919191;
   border-radius: 3vh;
-  grid-template-columns: 70% 30%;
+  grid-template-columns: 27% 13% 20% 22% 20%;
   height: auto;
-  width: 63vw;
+  width: 70vw;
   font-size: 1.2vmax;
   margin-bottom: 2vh;
 }
@@ -154,7 +163,6 @@ form {
   display: grid;
   place-items: center;
   width: 90%;
-  height: 60;
 }
 
 .gridCentraoButtons {
@@ -206,11 +214,12 @@ form {
 .grid-2colum-datos {
   grid-template-columns: 35% 75%;
   grid-column-gap: 0.5vw;
-  grid-row-gap:2vh;
+  grid-row-gap: 2vh;
   padding-bottom: 7vh;
   margin: 6vw;
   padding-left: 2vw;
 }
+
 .grid-2row-top {
   grid-template-rows: 10% 90%;
   grid-row-gap: 2vh;
@@ -303,6 +312,27 @@ form {
 .grid-header-conf p {
   font-weight: bold;
 }
+
+.grid-header-min {
+  grid-template-columns: 75% 10%;
+  font-weight: bold;
+}
+
+.grid-header-est {
+  grid-template-columns: 45% 12% 45%;
+  font-weight: bold;
+}
+
+.grid-header-par {
+  grid-template-columns: 45% 35% 15%;
+  font-weight: bold;
+}
+
+.grid-header-usu {
+  grid-template-columns: 27% 13% 20% 22% 17%;
+  font-weight: bold;
+}
+
 
 .header {
   padding-bottom: 16px;

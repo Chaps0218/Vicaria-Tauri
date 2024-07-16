@@ -1,31 +1,33 @@
-import React, { useState } from 'react';
-import { invoke } from '@tauri-apps/api/tauri';
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from '@mui/icons-material/Edit';
+import { blueGrey } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 
-const CheckUsername = () => {
-    const [input, setInput] = useState('');
-    const [count, setCount] = useState(null);
+const CustomIconButton = styled(IconButton)(({ theme }) => ({
+    color: red[900],
+    '&:hover': {
+        color: red[500],
+    },
+}));
 
-    const handleCheckUsername = async () => {
-        try {
-            const response = await invoke('check_username', { input: input });
-            setCount(response);
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    };
+const CustomEditIcon = styled(EditIcon)(({ theme }) => ({
+    color: red[900],
+    '&:hover': {
+        color: red[500],
+    },
+}));
 
+function Inicio({ handleOpenPopupCert, confirmado }) {
     return (
-        <div>
-            <input
-                type="text"
-                placeholder="Enter input"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-            />
-            <button onClick={handleCheckUsername}>Check Username</button>
-            {count !== null && <p>Count: {count}</p>}
-        </div>
+        <IconButton
+            aria-label="Report"
+            onClick={() => handleOpenPopupCert(confirmado)}
+        >
+            <CustomEditIcon>edit</CustomEditIcon> {/* Cambia 'report' por el nombre del ícono que estés usando */}
+        </IconButton>
     );
-};
+}
 
-export default CheckUsername;
+export default Inicio;
