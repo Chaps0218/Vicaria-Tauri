@@ -101,27 +101,29 @@ function Usuarios() {
                     <p>Establecimiento</p>
                     <p>Editar</p>
                 </div>
-                <div className='overflow gridCentrao3'>
-                    <div className='gridCentrao-lista'>
-                        {filteredUsuarios.map((usuario) => (
-                            <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
-                                <h4>{usuario.usu_nombre} {usuario.usu_apellido}</h4>
-                                <p>{usuario.usu_rol}</p>
-                                <p>{usuario.usu_user}</p>
-                                <p>{usuario.est_nombre}</p>
+                <div className='overflow'>
+                    <div className='gridCentrao3'>
+                        <div className='gridCentrao-lista'>
+                            {filteredUsuarios.map((usuario) => (
+                                <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
+                                    <h4>{usuario.usu_nombre} {usuario.usu_apellido}</h4>
+                                    <p>{usuario.usu_rol}</p>
+                                    <p>{usuario.usu_user}</p>
+                                    <p>{usuario.est_nombre}</p>
 
-                                <div className="usuario-actions">
-                                    <Tooltip title="Editar">
-                                        <IconButton onClick={() => handleOpenPopup(usuario)}
-                                            aria-label="edit"
-                                            color='success'>
-                                            <EditIcon />
-                                        </IconButton>
-                                    </Tooltip>
+                                    <div className="usuario-actions">
+                                        <Tooltip title="Editar">
+                                            <IconButton onClick={() => handleOpenPopup(usuario)}
+                                                aria-label="edit"
+                                                color='success'>
+                                                <EditIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </div>
                                 </div>
-                            </div>
 
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
             </div>

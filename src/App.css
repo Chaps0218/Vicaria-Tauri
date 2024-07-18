@@ -98,7 +98,7 @@ form {
 }
 
 .overflow {
-  height: 65%;
+  height: 70vh;
   overflow: auto;
 }
 

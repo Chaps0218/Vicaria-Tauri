@@ -14,7 +14,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import './popup.css';
 import { useUser } from '../../UserContext';
 import jsPDF from 'jspdf';
-import { writeBinaryFile } from '@tauri-apps/api/fs';
+import { writeBinaryFile, BaseDirectory } from '@tauri-apps/api/fs';
 import { documentDir } from '@tauri-apps/api/path';
 
 import { styled } from '@mui/material/styles';
@@ -49,7 +49,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 // Maneja el error de alguna manera, por ejemplo, mostrando un mensaje al usuario
             }
         };
-    
+
         const fetchParroquias = async () => {
             try {
                 const response = await invoke('get_all_parroquias');
@@ -60,7 +60,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 // Maneja el error de alguna manera
             }
         };
-    
+
         const fetchMinistros = async () => {
             try {
                 const response = await invoke('get_all_ministros');
@@ -70,7 +70,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 // Maneja el error de alguna manera
             }
         };
-    
+
         fetchCiudades();
         fetchParroquias();
         fetchMinistros();
@@ -238,8 +238,8 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         const dirPath = await documentDir();
         const filePath = `${dirPath}\certificados\\${fileName}`;
 
-        await writeBinaryFile(filePath, pdfBytes);
-        invoke("open_file", { filepath: filePath });
+        await writeBinaryFile({ path: filePath, contents: pdfBytes }, { dir: BaseDirectory.Document });
+        await invoke("open_file", { filepath: filePath });
     }
 
     const handleSubmit = () => {
@@ -249,12 +249,12 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
             formDataBau.bau_numero = Number(formDataBau.bau_numero);
             formData.conf_num_confirmacion = Number(formData.conf_num_confirmacion);
             formDataBau.bau_fecha = formDataBau.bau_fecha.format('YYYY-MM-DD');
-            
-            console.log('Generating PDF with data:', formDataBau, formData); 
+
+            console.log('Generating PDF with data:', formDataBau, formData);
             generatePDF();
             onGenerate(formDataBau);
         } else {
-            console.log('Form validation failed:', errors); 
+            console.log('Form validation failed:', errors);
         }
     };
 
