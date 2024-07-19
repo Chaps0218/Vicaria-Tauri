@@ -54,7 +54,7 @@ export const UserProvider = ({ children }) => {
                 setErrors(['Invalid credentials']);
             }
         } catch (error) {
-            setErrors(['Login failed']);
+            setErrors(['Usuario o contraseña incorrectos']);
         }
     };
 

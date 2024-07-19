@@ -209,37 +209,87 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
     async function generatePDF() {
         const doc = new jsPDF();
 
-        doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 10, 10);
-        doc.text(`No. Confirmación: ${formData.conf_num_confirmacion}`, 10, 20);
-        doc.text(`Fecha de Confirmación: ${formData.conf_fecha}`, 10, 30);
-        doc.text(`Tomo: ${formData.conf_tomo}`, 10, 40);
-        doc.text(`Página: ${formData.conf_pagina}`, 10, 50);
-        doc.text(`Número: ${formData.conf_numero}`, 10, 60);
-        doc.text(`Padre: ${formData.conf_padre_nombre}`, 10, 70);
-        doc.text(`Madre: ${formData.conf_madre_nombre}`, 10, 80);
-        doc.text(`Padrino 1: ${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, 10, 90);
-        if (formData.conf_padrino2_nombre) {
-            doc.text(`Padrino 2: ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, 10, 100);
-        }
-        doc.text(`Parroquia: ${parroquiaEstable}`, 10, 110);
-        doc.text(`Ministro: ${formData.min_nombre}`, 10, 120);
-        doc.text(`Establecimiento: ${formData.est_nombre}`, 10, 130);
+        doc.setFontSize(16);
+        doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 105, 20, null, null, 'center');
 
-        doc.text(`Fecha de Bautizo: ${formDataBau.bau_fecha}`, 10, 140);
-        doc.text(`Tomo Bautizo: ${formDataBau.bau_tomo}`, 10, 150);
-        doc.text(`Página Bautizo: ${formDataBau.bau_pagina}`, 10, 160);
-        doc.text(`Número Bautizo: ${formDataBau.bau_numero}`, 10, 170);
-        doc.text(`Ciudad: ${formDataBau.ciu_nombre}`, 10, 180);
-        doc.text(`Parroquia Bautizo: ${formDataBau.parr_nombre}`, 10, 190);
-        doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 200);
+        doc.setFontSize(12);
+        const currentDate = new Date().toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
+        doc.text(`Quito ${currentDate}`, 105, 30, null, null, 'center');
+
+        doc.setFontSize(14);
+        doc.text(`Partida de Confirmación`, 105, 50, null, null, 'center');
+
+        doc.setFontSize(12);
+        doc.text(`Fecha: ${formData.conf_fecha}`, 20, 70);
+        doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 20, 80);
+        doc.text(`Padre: ${formData.conf_padre_nombre}`, 20, 90);
+        doc.text(`Madre: ${formData.conf_madre_nombre}`, 20, 100);
+
+        doc.text(`Padrino/Madrina:`, 20, 110);
+        doc.text(`   ${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, 20, 120);
+        if (formData.conf_padrino2_nombre) {
+            doc.text(`   ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, 20, 130);
+        }
+
+        doc.text(`Ministro:`, 20, 140);
+        doc.text(`   ${formData.min_nombre}`, 20, 150);
+        doc.text(`Lugar: ${parroquiaEstable}`, 20, 160);
+
+        doc.text(`Bautizado en ${formDataBau.parr_nombre} ${formDataBau.ciu_nombre} ${formDataBau.bau_fecha}`, 20, 170);
+
+        doc.text(`Tomo: ${formData.conf_tomo}`, 20, 180);
+        doc.text(`Pág: ${formData.conf_pagina}`, 40, 180);
+        doc.text(`No: ${formData.conf_numero}`, 60, 180);
+
+        doc.text(`Son datos tomados fielmente del original.`, 105, 220, null, null, 'center');
+
+        doc.text(`F.`, 20, 250);
+        doc.text(`Vicario General / Vicario Episcopal`, 20, 260);
 
         const pdfBytes = doc.output('arraybuffer');
         const fileName = `certificado_${formData.conf_nombres}_${formData.conf_apellidos}_${now.format("YYYY-MM-DD_HH_mm_ss")}.pdf`;
         const dirPath = await documentDir();
-        const filePath = `${dirPath}\certificados\\${fileName}`;
+        const filePath = `${dirPath}\\certificados\\${fileName}`;
 
         await writeBinaryFile({ path: filePath, contents: pdfBytes }, { dir: BaseDirectory.Document });
         await invoke("open_file", { filepath: filePath });
+
+        // doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 10, 10);
+        // doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 10, 10);
+        // doc.text(`No. Confirmación: ${formData.conf_num_confirmacion}`, 10, 20);
+        // doc.text(`Fecha de Confirmación: ${formData.conf_fecha}`, 10, 30);
+        // doc.text(`Tomo: ${formData.conf_tomo}`, 10, 40);
+        // doc.text(`Página: ${formData.conf_pagina}`, 10, 50);
+        // doc.text(`Número: ${formData.conf_numero}`, 10, 60);
+        // doc.text(`Padre: ${formData.conf_padre_nombre}`, 10, 70);
+        // doc.text(`Madre: ${formData.conf_madre_nombre}`, 10, 80);
+        // doc.text(`Padrino 1: ${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, 10, 90);
+        // if (formData.conf_padrino2_nombre) {
+        //     doc.text(`Padrino 2: ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, 10, 100);
+        // }
+        // doc.text(`Parroquia: ${parroquiaEstable}`, 10, 110);
+        // doc.text(`Ministro: ${formData.min_nombre}`, 10, 120);
+        // doc.text(`Establecimiento: ${formData.est_nombre}`, 10, 130);
+
+        // doc.text(`Fecha de Bautizo: ${formDataBau.bau_fecha}`, 10, 140);
+        // doc.text(`Tomo Bautizo: ${formDataBau.bau_tomo}`, 10, 150);
+        // doc.text(`Página Bautizo: ${formDataBau.bau_pagina}`, 10, 160);
+        // doc.text(`Número Bautizo: ${formDataBau.bau_numero}`, 10, 170);
+        // doc.text(`Ciudad: ${formDataBau.ciu_nombre}`, 10, 180);
+        // doc.text(`Parroquia Bautizo: ${formDataBau.parr_nombre}`, 10, 190);
+        // doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 200);
+
+        // const pdfBytes = doc.output('arraybuffer');
+        // const fileName = `certificado_${formData.conf_nombres}_${formData.conf_apellidos}_${now.format("YYYY-MM-DD_HH_mm_ss")}.pdf`;
+        // const dirPath = await documentDir();
+        // const filePath = `${dirPath}\certificados\\${fileName}`;
+
+        // await writeBinaryFile(filePath, pdfBytes);
+        // invoke("open_file", { filepath: filePath });
     }
 
     const handleSubmit = () => {
