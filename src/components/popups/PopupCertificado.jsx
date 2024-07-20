@@ -209,9 +209,13 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
     async function generatePDF() {
         const doc = new jsPDF();
 
+        doc.setFont("times", "bold");
         doc.setFontSize(16);
+        doc.setTextColor(35, 46, 114);
         doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 105, 20, null, null, 'center');
 
+        doc.setFont("times", "normal");
+        doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
         const currentDate = new Date().toLocaleDateString('es-ES', {
             day: '2-digit',
@@ -220,9 +224,13 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         });
         doc.text(`Quito ${currentDate}`, 105, 30, null, null, 'center');
 
+        doc.setTextColor(35, 46, 114);
+        doc.setFont("times", "bold");
         doc.setFontSize(14);
         doc.text(`Partida de Confirmación`, 105, 50, null, null, 'center');
 
+        doc.setFont("times", "normal");
+        doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
         doc.text(`Fecha: ${formData.conf_fecha}`, 20, 70);
         doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 20, 80);

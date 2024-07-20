@@ -12,7 +12,6 @@ const Inicio = () => {
     try {
       const response = await invoke('get_all_parroquias');
       setParroquias(response);
-      setFilteredParroquias(response);
     } catch (error) {
       console.error(error);
     }
@@ -29,38 +28,48 @@ const Inicio = () => {
         <h1 id='nombre_inicio' >Bienvenido, {user.usu_nombre}</h1>
         <h1 id='vicaria_inicio'>Vicaria Episcopal Nuestra Señora de la Merced</h1>
       </div>
-      <div className='gridCentrao3 grid-3colum-equal'>
+      <div className='gridCentrao3 grid-3colum-inicio'>
         <div>
-          <Card sx={{ maxHeight: 230, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+          <Card sx={{ minHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
             <CardContent>
               <div >
                 <img src="src\images\confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
               </div>
-              <p>Agregar confirmado</p>
+              <strong>Agregar confirmado</strong>
             </CardContent>
           </Card>
         </div>
         <div>
-          <Card sx={{ maxHeight: 230, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+          <Card sx={{ maxHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
             <CardContent>
-              <p>Información cuenta</p>
-              <div className='card-interno overflow '>
-                <p>{user.usu_nombre}  {user.usu_apellido}</p>
-                <p>{user.usu_rol}</p>
-                <p>{user.usu_user}</p>
-                <p>{user.est_nombre}</p>
+              <div className='card-inicio'>
+                <div className='gridCentrao3'>
+                  <strong>Información cuentas</strong>
+                </div>
+
+                <div className='card-interno '>
+                  <p>{user.usu_nombre}  {user.usu_apellido}</p>
+                  <p>{user.usu_rol}</p>
+                  <p>{user.usu_user}</p>
+                  <p>{user.est_nombre}</p>
+                </div>
               </div>
+
             </CardContent>
           </Card>
         </div>
         <div>
-          <Card sx={{ maxHeight: 230, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+          <Card sx={{ maxHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
             <CardContent>
-              <p>Parroquias</p>
-              <div className='overflow card-interno'>
-                {parroquias.map((parroquia) => (
-                  <p key={parroquia.parr_id}>{parroquia.parr_nombre}</p>
-                ))}
+              <div className='card-inicio'>
+                <div className='gridCentrao3'>
+                  <strong>Parroquias</strong>
+                </div>
+                <div className='card-interno parr-inicio'>
+                  {parroquias.map((parroquia) => (
+                    <p key={parroquia.parr_id}>{parroquia.parr_nombre}</p>
+                  ))}
+                </div>
               </div>
             </CardContent>
           </Card>

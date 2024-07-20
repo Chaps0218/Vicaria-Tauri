@@ -76,10 +76,30 @@ body.dark-mode {
 }
 
 .card-interno {
+  overflow: auto;
+  height: 25vh;
   background-color: #CBB6B6;
   text-align: center;
-  border-radius: 3vh;
-  height: 50%;
+  border-radius: 3vh 0 3vh 3vh;
+  margin-top: 0%;
+}
+
+.card-interno p {
+  line-height: 0.5;
+}
+
+.parr-inicio p {
+  font-size: 1.4vmax;
+  line-height: 0.9;
+}
+
+.card-content {
+  place-items: center;
+}
+
+.card-content strong {
+  margin-bottom: 0;
+  display: block;
 }
 
 .grid-2col-unido {
@@ -157,6 +177,12 @@ form {
   place-items: center;
   width: 100%;
   height: auto;
+}
+
+.card-inicio {
+  display: grid;
+  grid-template-rows: 20% 50%;
+  grid-row-gap: 1.5vh;
 }
 
 .similarAccordion {
@@ -266,8 +292,17 @@ form {
 }
 
 .grid-3colum-equal {
-  grid-template-columns: repeat(3, 35.5%);
-  grid-column-gap: 0.66vw;
+  justify-content: center;
+  display: grid;
+  grid-template-columns: (3, 25.5%);
+  grid-column-gap: 4vw;
+}
+
+.grid-3colum-inicio {
+  justify-content: center;
+  display: grid;
+  grid-template-columns: 27.5% 27.5% 40%;
+  grid-column-gap: 1.7vw;
 }
 
 .grid-3row-equal {
