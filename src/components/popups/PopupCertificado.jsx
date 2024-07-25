@@ -219,13 +219,10 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         });
         doc.text(`Quito, ${currentDate}`, 200, 80, null, null, 'right');
 
-        const confDate = new Date(formData.conf_fecha).toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
+        let fechaconfjs = dayjs(formData.conf_fecha, 'YYYY-MM-DD').locale('es');
+        let fechaConfjsFormatted = fechaconfjs.format('DD [de] MMMM [de] YYYY');
 
-        doc.text(`Quito, ${confDate}`, doc.internal.getFontSize() * 2.5, 115);
+        doc.text(`Quito, ${fechaConfjsFormatted}`, doc.internal.getFontSize() * 2.5, 115);
         doc.text(`${formData.conf_nombres} ${formData.conf_apellidos}`, doc.internal.getFontSize() * 3.3, 127);
         doc.text(`${formData.conf_padre_nombre}`, doc.internal.getFontSize() * 2.5, 139);
         doc.text(`${formData.conf_madre_nombre}`, doc.internal.getFontSize() * 2.5, 151);
@@ -243,13 +240,10 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         doc.text(`${formData.conf_numero}`, doc.internal.getFontSize() * 9.5, 199);
 
         ///////////BAUTIZO/////////
-        const bautizoDate = new Date(formDataBau.bau_fecha).toLocaleDateString('es-ES', {
-            day: '2-digit',
-            month: 'long',
-            year: 'numeric'
-        });
+        let fechabaujs = dayjs(formDataBau.bau_fecha).locale('es');
+        let fechaBaufjsFormatted = fechabaujs.format('DD [de] MMMM [de] YYYY');
 
-        doc.text(`Bautizado en ${formDataBau.ciu_nombre}, ${formDataBau.parr_nombre}  ${bautizoDate}`, 10, 211);
+        doc.text(`Bautizado en ${formDataBau.ciu_nombre}, ${formDataBau.parr_nombre}, ${fechaBaufjsFormatted}`, 10, 211);
         // doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 210);
 
         doc.text(`${formDataBau.bau_tomo}`, doc.internal.getFontSize() * 2.54, 223);
