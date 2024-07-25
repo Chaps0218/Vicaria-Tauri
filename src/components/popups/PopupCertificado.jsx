@@ -161,8 +161,16 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         }
     }, [initialData, isOpen]);
 
+
+
+
+
     async function generatePDF() {
         const doc = new jsPDF();
+
+        var underline = new Image();
+        underline.src = 'src/images/underline.png';
+
 
         doc.addFont("src/fonts/georgiab.ttf", "georgia", "bold");
         doc.addFont("src/fonts/georgiaz.ttf", "georgia", "bolditalic");
@@ -173,6 +181,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         doc.setTextColor(35, 46, 114);
         doc.setFontSize(20);
         doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 105, 60, null, null, 'center');
+        doc.addImage(underline, 'PNG', 80, 61, 50, 10);
 
         doc.setFont("georgia", "bolditalic");
         doc.text(`Partida de Confirmación`, 105, 98, null, null, 'center');
@@ -227,7 +236,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         // }
 
         doc.text(`${formData.min_nombre}`, doc.internal.getFontSize() * 3.5, 175);
-        doc.text(`${parroquiaEstable}, ${formData.est_nombre}`, doc.internal.getFontSize() * 2.5, 187);
+        doc.text(`${formData.parr_nombre}, ${formData.est_nombre}`, doc.internal.getFontSize() * 2.5, 187);
 
         doc.text(`${formData.conf_tomo}`, doc.internal.getFontSize() * 2.4, 199);
         doc.text(`${formData.conf_pagina}`, doc.internal.getFontSize() * 6, 199);
@@ -280,6 +289,8 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
             console.log('Form validation failed:', errors);
         }
     };
+
+
 
     if (!isOpen) return null;
 

@@ -3,6 +3,7 @@ import { invoke } from '@tauri-apps/api/tauri';
 import { useUser } from '../UserContext';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import { Link } from 'react-router-dom';
 
 const Inicio = () => {
   const { user } = useUser();
@@ -17,7 +18,6 @@ const Inicio = () => {
     }
   }
 
-
   useEffect(() => {
     fetchParroquias();
   }, []);
@@ -29,16 +29,18 @@ const Inicio = () => {
         <h1 id='vicaria_inicio'>Vicaria Episcopal Nuestra Señora de la Merced</h1>
       </div>
       <div className='gridCentrao3 grid-3colum-inicio'>
-        <div>
-          <Card sx={{ minHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
-            <CardContent>
-              <div >
-                <img src="/images/confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
-              </div>
-              <strong>Agregar confirmado</strong>
-            </CardContent>
-          </Card>
-        </div>
+        <Link to="/confirmaciones" style={{ textDecoration: 'none' }}>
+          <div>
+            <Card sx={{ minHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+              <CardContent>
+                <div >
+                  <img src="/images/confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
+                </div>
+                <strong>Agregar confirmado</strong>
+              </CardContent>
+            </Card>
+          </div>
+        </Link>
         <div>
           <Card sx={{ maxHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
             <CardContent>
@@ -49,7 +51,8 @@ const Inicio = () => {
 
                 <div className='card-interno '>
                   <p>{user.usu_nombre}  {user.usu_apellido}</p>
-                  <p>{user.usu_rol}</p>
+                  {user.usu_rol === "Admin" ? <p>{"Administrador"}</p> :
+                    <p>{user.usu_rol}</p>}
                   <p>{user.usu_user}</p>
                   <p>{user.est_nombre}</p>
                 </div>

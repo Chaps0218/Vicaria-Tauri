@@ -170,6 +170,7 @@ form {
   place-items: center;
   width: 100%;
   height: auto;
+  text-align: center;
 }
 
 .gridCentrao-lista {
