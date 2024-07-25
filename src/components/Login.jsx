@@ -19,9 +19,7 @@ function Login() {
     <div className='gridCentrao bg_login'>
 
       <div className='grid-2col-unido'>
-        <div className='logo'>
-          <img src="/images/logo_6x.png" alt="Logo Vicaria"></img>
-        </div>
+
         <div className='login'>
           <form onSubmit={handleLogin}>
             <FormControl variant="standard">
@@ -65,6 +63,9 @@ function Login() {
             </Button>
             {errors.length > 0 && <div className='rojito'>{errors.join(', ')}</div>}
           </form>
+        </div>
+        <div className='logo'>
+          <img src="/images/logo_6x.png" alt="Logo Vicaria"></img>
         </div>
 
       </div>

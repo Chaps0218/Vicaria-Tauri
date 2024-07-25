@@ -31,10 +31,10 @@ const Inicio = () => {
       <div className='gridCentrao3 grid-3colum-inicio'>
         <Link to="/confirmaciones" style={{ textDecoration: 'none' }}>
           <div>
-            <Card sx={{ minHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+            <Card sx={{ minHeight: 200, backgroundColor: '#ced4da', borderRadius: 4 }}>
               <CardContent>
                 <div >
-                  <img src="/images/confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
+                  <img src="/images/confirmados2.jpg" alt="confirmados" width="100%" height="100"></img>
                 </div>
                 <strong>Agregar confirmado</strong>
               </CardContent>
@@ -42,7 +42,7 @@ const Inicio = () => {
           </div>
         </Link>
         <div>
-          <Card sx={{ maxHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+          <Card sx={{ maxHeight: 200, backgroundColor: '#ced4da', borderRadius: 4 }}>
             <CardContent>
               <div className='card-inicio'>
                 <div className='gridCentrao3'>
@@ -62,7 +62,7 @@ const Inicio = () => {
           </Card>
         </div>
         <div>
-          <Card sx={{ maxHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
+          <Card sx={{ maxHeight: 200, backgroundColor: '#ced4da', borderRadius: 4 }}>
             <CardContent>
               <div className='card-inicio'>
                 <div className='gridCentrao3'>
