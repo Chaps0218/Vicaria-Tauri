@@ -154,7 +154,7 @@ form {
 }
 
 .overflow {
-  height: 70vh;
+  height: 70%;
   overflow: auto;
 }
 
@@ -223,8 +223,8 @@ form {
 
 .gridCentraoNoFull {
   display: grid;
-  place-items: center;
   width: 90%;
+  place-items: center;
 }
 
 .gridCentraoButtons {
@@ -294,8 +294,8 @@ form {
 .grid-3colum-equal {
   justify-content: center;
   display: grid;
-  grid-template-columns: (3, 25.5%);
-  grid-column-gap: 4vw;
+  grid-template-columns: 33% 33% 33%;
+  grid-column-end: 1vw;
 }
 
 .grid-3colum-inicio {

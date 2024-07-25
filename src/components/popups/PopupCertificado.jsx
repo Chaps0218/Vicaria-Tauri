@@ -55,7 +55,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         bau_numero: '',
         ciu_nombre: '',
         parr_nombre: '',
-        min_nombre: '',
+        // min_nombre: '',
     });
 
     useEffect(() => {
@@ -67,14 +67,15 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 bau_numero: '',
                 ciu_nombre: '',
                 parr_nombre: '',
-                min_nombre: '',
+                // min_nombre: '',
             });
             setErrors({});
         }
     }, [isOpen]);
 
     const handleDateChange = (date) => {
-        setFormDataBau({ ...formData, conf_fecha: date });
+        console.log(date)
+        setFormDataBau({ ...formData, bau_fecha: date });
     };
 
     const handleChange = (event) => {
@@ -124,7 +125,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         if (!formDataBau.bau_numero) newErrors.bau_numero = true;
         if (!formDataBau.parr_nombre) newErrors.parr_nombre = true;
         if (!formDataBau.ciu_nombre) newErrors.ciu_nombre = true;
-        if (!formDataBau.min_nombre) newErrors.min_nombre = true;
+        // if (!formDataBau.min_nombre) newErrors.min_nombre = true;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -163,54 +164,97 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
     async function generatePDF() {
         const doc = new jsPDF();
 
-        doc.setFont("times", "bold");
-        doc.setFontSize(16);
-        doc.setTextColor(35, 46, 114);
-        doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 105, 20, null, null, 'center');
+        doc.addFont("src/fonts/georgiab.ttf", "georgia", "bold");
+        doc.addFont("src/fonts/georgiaz.ttf", "georgia", "bolditalic");
+        doc.addFont("src/fonts/VerdanaNow.ttf", "verdana", "normal");
+        doc.addFont("src/fonts/verdana-bold.ttf", "verdana", "bold");
 
-        doc.setFont("times", "normal");
+        doc.setFont("georgia", "bold");
+        doc.setTextColor(35, 46, 114);
+        doc.setFontSize(20);
+        doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 105, 60, null, null, 'center');
+
+        doc.setFont("georgia", "bolditalic");
+        doc.text(`Partida de Confirmación`, 105, 98, null, null, 'center');
+
+        ////verdana negrita
+        doc.setFont("verdana", "bold");
         doc.setTextColor(0, 0, 0);
         doc.setFontSize(12);
+
+        doc.text(`FECHA: `, 10, 115);
+        doc.text(`NOMBRES: `, 10, 127);
+        doc.text(`PADRE: `, 10, 139);
+        doc.text(`MADRE: `, 10, 151);
+        doc.text(`PADRINO/MADRINA: `, 10, 163);
+        doc.text(`MINISTRO: `, 10, 175);
+        doc.text(`LUGAR: `, 10, 187);
+
+        doc.text(`Tomo: `, 10, 199);
+        doc.text(`Página: `, 50, 199);
+        doc.text(`Número: `, 90, 199);
+
+
+        //BAUTIZO
+        doc.text(`Tomo: `, 10, 223);
+        doc.text(`Página: `, 50, 223);
+        doc.text(`Número: `, 90, 223);
+
+        // verdana normal
+        doc.setFont("verdana", "normal");
+
         const currentDate = new Date().toLocaleDateString('es-ES', {
             day: '2-digit',
             month: 'long',
             year: 'numeric'
         });
-        doc.text(`Quito ${currentDate}`, 105, 30, null, null, 'center');
+        doc.text(`Quito, ${currentDate}`, 200, 80, null, null, 'right');
 
-        doc.setTextColor(35, 46, 114);
-        doc.setFont("times", "bold");
-        doc.setFontSize(14);
-        doc.text(`Partida de Confirmación`, 105, 50, null, null, 'center');
+        const confDate = new Date(formData.conf_fecha).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
 
-        doc.setFont("times", "normal");
-        doc.setTextColor(0, 0, 0);
-        doc.setFontSize(12);
-        doc.text(`Fecha: ${formData.conf_fecha}`, 20, 70);
-        doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 20, 80);
-        doc.text(`Padre: ${formData.conf_padre_nombre}`, 20, 90);
-        doc.text(`Madre: ${formData.conf_madre_nombre}`, 20, 100);
+        doc.text(`Quito, ${confDate}`, doc.internal.getFontSize() * 2.5, 115);
+        doc.text(`${formData.conf_nombres} ${formData.conf_apellidos}`, doc.internal.getFontSize() * 3.3, 127);
+        doc.text(`${formData.conf_padre_nombre}`, doc.internal.getFontSize() * 2.5, 139);
+        doc.text(`${formData.conf_madre_nombre}`, doc.internal.getFontSize() * 2.5, 151);
 
-        doc.text(`Padrino/Madrina:`, 20, 110);
-        doc.text(`   ${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, 20, 120);
-        if (formData.conf_padrino2_nombre) {
-            doc.text(`   ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, 20, 130);
-        }
+        doc.text(`${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, doc.internal.getFontSize() * 5.3, 163);
+        // if (formData.conf_padrino2_nombre) {
+        //     doc.text(`   ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, doc.internal.getFontSize() * 2.5, 150);
+        // }
 
-        doc.text(`Ministro:`, 20, 140);
-        doc.text(`   ${formData.min_nombre}`, 20, 150);
-        doc.text(`Lugar: ${formData.parr_nombre}`, 20, 160);
+        doc.text(`${formData.min_nombre}`, doc.internal.getFontSize() * 3.5, 175);
+        doc.text(`${parroquiaEstable}, ${formData.est_nombre}`, doc.internal.getFontSize() * 2.5, 187);
 
-        doc.text(`Bautizado en ${formDataBau.parr_nombre} ${formDataBau.ciu_nombre} ${formDataBau.bau_fecha}`, 20, 170);
+        doc.text(`${formData.conf_tomo}`, doc.internal.getFontSize() * 2.4, 199);
+        doc.text(`${formData.conf_pagina}`, doc.internal.getFontSize() * 6, 199);
+        doc.text(`${formData.conf_numero}`, doc.internal.getFontSize() * 9.5, 199);
 
-        doc.text(`Tomo: ${formData.conf_tomo}`, 20, 180);
-        doc.text(`Pág: ${formData.conf_pagina}`, 40, 180);
-        doc.text(`No: ${formData.conf_numero}`, 60, 180);
+        ///////////BAUTIZO/////////
+        const bautizoDate = new Date(formDataBau.bau_fecha).toLocaleDateString('es-ES', {
+            day: '2-digit',
+            month: 'long',
+            year: 'numeric'
+        });
 
-        doc.text(`Son datos tomados fielmente del original.`, 105, 220, null, null, 'center');
+        doc.text(`Bautizado en ${formDataBau.ciu_nombre}, ${formDataBau.parr_nombre}  ${bautizoDate}`, 10, 211);
+        // doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 210);
 
-        doc.text(`F.`, 20, 250);
-        doc.text(`Vicario General / Vicario Episcopal`, 20, 260);
+        doc.text(`${formDataBau.bau_tomo}`, doc.internal.getFontSize() * 2.54, 223);
+        doc.text(`${formDataBau.bau_pagina}`, doc.internal.getFontSize() * 6, 223);
+        doc.text(`${formDataBau.bau_numero}`, doc.internal.getFontSize() * 9.5, 223);
+
+
+        doc.setFont("verdana", "bold");
+        doc.text(`Son datos tomados fielmente del original.`, 10, 235);
+
+        doc.setFont("helvetica", "bold");
+        doc.text(`F. ______________________________`, 150, 250, null, null, 'center');
+        doc.text(`P. Marco Gualoto Sotalín`, 150, 255, null, null, 'center');
+        doc.text(`Vicario Episcopal`, 150, 259, null, null, 'center');
 
         const pdfBytes = doc.output('arraybuffer');
         const fileName = `certificado_${formData.conf_nombres}_${formData.conf_apellidos}_${now.format("YYYY-MM-DD_HH_mm_ss")}.pdf`;
@@ -219,39 +263,6 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
         await writeBinaryFile({ path: filePath, contents: pdfBytes }, { dir: BaseDirectory.Document });
         await invoke("open_file", { filepath: filePath });
-
-        // doc.text(`CERTIFICADO DE CONFIRMACIÓN`, 10, 10);
-        // doc.text(`Nombres: ${formData.conf_nombres} ${formData.conf_apellidos}`, 10, 10);
-        // doc.text(`No. Confirmación: ${formData.conf_num_confirmacion}`, 10, 20);
-        // doc.text(`Fecha de Confirmación: ${formData.conf_fecha}`, 10, 30);
-        // doc.text(`Tomo: ${formData.conf_tomo}`, 10, 40);
-        // doc.text(`Página: ${formData.conf_pagina}`, 10, 50);
-        // doc.text(`Número: ${formData.conf_numero}`, 10, 60);
-        // doc.text(`Padre: ${formData.conf_padre_nombre}`, 10, 70);
-        // doc.text(`Madre: ${formData.conf_madre_nombre}`, 10, 80);
-        // doc.text(`Padrino 1: ${formData.conf_padrino1_nombre} ${formData.conf_padrino1_apellido}`, 10, 90);
-        // if (formData.conf_padrino2_nombre) {
-        //     doc.text(`Padrino 2: ${formData.conf_padrino2_nombre} ${formData.conf_padrino2_apellido}`, 10, 100);
-        // }
-        // doc.text(`Parroquia: ${parroquiaEstable}`, 10, 110);
-        // doc.text(`Ministro: ${formData.min_nombre}`, 10, 120);
-        // doc.text(`Establecimiento: ${formData.est_nombre}`, 10, 130);
-
-        // doc.text(`Fecha de Bautizo: ${formDataBau.bau_fecha}`, 10, 140);
-        // doc.text(`Tomo Bautizo: ${formDataBau.bau_tomo}`, 10, 150);
-        // doc.text(`Página Bautizo: ${formDataBau.bau_pagina}`, 10, 160);
-        // doc.text(`Número Bautizo: ${formDataBau.bau_numero}`, 10, 170);
-        // doc.text(`Ciudad: ${formDataBau.ciu_nombre}`, 10, 180);
-        // doc.text(`Parroquia Bautizo: ${formDataBau.parr_nombre}`, 10, 190);
-        // doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 200);
-
-        // const pdfBytes = doc.output('arraybuffer');
-        // const fileName = `certificado_${formData.conf_nombres}_${formData.conf_apellidos}_${now.format("YYYY-MM-DD_HH_mm_ss")}.pdf`;
-        // const dirPath = await documentDir();
-        // const filePath = `${dirPath}\certificados\\${fileName}`;
-
-        // await writeBinaryFile(filePath, pdfBytes);
-        // invoke("open_file", { filepath: filePath });
     }
 
     const handleSubmit = () => {
@@ -314,9 +325,12 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                     <p><strong>Padre:</strong> {formData.conf_padre_nombre}</p>
                                     <p><strong>Madre:</strong> {formData.conf_madre_nombre}</p>
                                     <div id="padrinos" className='gridCentrao2'>
+                                        <div><strong>Padrino/Madrina:</strong> {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
+                                    </div>
+                                    {/* <div id="padrinos" className='gridCentrao2'>
                                         <div><strong>Padrino:</strong> {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
                                         {initialData ? <div><strong>Madrina:</strong> {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</div> : null}
-                                    </div>
+                                    </div> */}
                                     <p><strong>Parroquia:</strong> {formData.parr_nombre}</p>
                                     <p><strong>Ministro:</strong> {formData.min_nombre}</p>
                                     <p><strong>Establecimiento:</strong> {formData.est_nombre}</p>
@@ -399,7 +413,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             fullWidth
                                         />
                                     </div>
-                                    <div className='input-separado'>
+                                    {/* <div className='input-separado'>
                                         <TextField
                                             label="Ministro de Bautizo"
                                             name="min_nombre"
@@ -411,15 +425,15 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             helperText={errors.min_nombre}
                                             fullWidth
                                         />
-                                    </div>
+                                    </div> */}
                                 </div>
                             </CardContent>
                         </Card>
                     </div>
                     <br></br>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
-                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
                         <ColorButton startIcon={<AssignmentIcon />} variant="contained" onClick={handleSubmit}>Generar</ColorButton>
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
                     </div>
                 </div>
             </div>

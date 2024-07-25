@@ -42,10 +42,16 @@
 .trioNum {
     padding-left: 5vw;
 }
-.input-separado{
+
+.input-separado {
     padding-top: 2.5vh;
-    
 }
+
+.input-separado-2 {
+    padding-top: 1.6vh;
+}
+
+
 .h2-est {
     margin-bottom: 6.5vmax;
 }

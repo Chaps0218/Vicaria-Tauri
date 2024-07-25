@@ -150,8 +150,8 @@ const PopupCambioPassword = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
-                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
                         <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
                     </div>
                 </div>
             </div>

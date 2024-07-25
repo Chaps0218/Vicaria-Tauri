@@ -165,38 +165,38 @@ function Confirmaciones() {
               </AccordionSummary>
               <AccordionDetails>
                 <div className='gridCentrao2 grid2-colum '>
-                  <div className='gridCentrao info'>
+                  <div className='gridCentrao info '>
 
                     <div className='gridCentrao2  grid-2colum-datos'>
-                      <strong>Padre: </strong>
+                      <strong className=''>Padre: </strong>
                       <div>
                         {confirmado.conf_padre_nombre}
                       </div>
-                      <strong>Madre: </strong>
-                      <div>
+                      <strong className='input-separado-2'>Madre: </strong>
+                      <div className='input-separado-2'>
                         {confirmado.conf_madre_nombre}
                       </div>
-                      <strong>Padrino: </strong>
-                      <div>
+                      <strong className='input-separado-2'>Padrino/Madrina: </strong>
+                      <div className='input-separado-2'>
                         {confirmado.conf_padrino1_nombre} {confirmado.conf_padrino1_apellido}
                       </div>
-                      <strong>Madrina: </strong>
+                      {/* <strong>Madrina: </strong>
                       <div>
                         {confirmado.conf_padrino2_nombre} {confirmado.conf_padrino2_apellido}
-                      </div>
-                      <strong>Ministro:</strong>
-                      <div>
+                      </div> */}
+                      <strong className='input-separado-2'>Ministro:</strong>
+                      <div className='input-separado-2'>
                         {confirmado.min_nombre}
                       </div>
-                      <strong>Establecimiento: </strong>
-                      <div>
+                      <strong className='input-separado-2'>Establecimiento: </strong>
+                      <div className='input-separado-2'>
                         {confirmado.est_nombre}
                       </div>
                     </div>
                     <div className='gridCentrao2 info-libro'>
-                      <strong>Tomo: </strong>
-                      <strong>Página: </strong>
-                      <strong>Número: </strong>
+                      <strong className='input-separado-2'>Tomo: </strong>
+                      <strong className='input-separado-2'>Página: </strong>
+                      <strong className='input-separado-2'>Número: </strong>
                       <div>
                         {confirmado.conf_tomo}
                       </div>

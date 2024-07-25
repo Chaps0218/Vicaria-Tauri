@@ -223,7 +223,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             />
                         </LocalizationProvider>
                     </div>
-                    <div className='gridCentraoNoFull grid-2colum-equal'>
+                    <div className='gridCentraoNoFull grid-2colum-equal input-separado'>
                         <TextField
                             fullWidth
                             label="Nombres del Confirmado"
@@ -249,7 +249,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             helperText={errors.conf_apellidos ? 'Campo obligatorio' : ''}
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-2colum-equal'>
+                    <div className='gridCentraoNoFull grid-2colum-equal input-separado'>
                         <TextField
                             fullWidth
                             label="Padre del Confirmado"
@@ -275,10 +275,10 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             helperText={errors.conf_madre_nombre ? 'Campo obligatorio' : ''}
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-2colum-equal'>
+                    <div className='gridCentraoNoFull grid-2colum-equal input-separado'>
                         <TextField
                             fullWidth
-                            label="Nombres Padrino 1"
+                            label="Nombres Padrino/Madrina"
                             name="conf_padrino1_nombre"
                             defaultValue="Small"
                             size="small"
@@ -290,7 +290,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                         />
                         <TextField
                             fullWidth
-                            label="Apellidos Padrino 1"
+                            label="Apellidos Padrino/Madrina"
                             name="conf_padrino1_apellido"
                             defaultValue="Small"
                             size="small"
@@ -301,7 +301,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             helperText={errors.conf_padrino1_apellido ? 'Campo obligatorio' : ''}
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-2colum-equal'>
+                    {/* <div className='gridCentraoNoFull grid-2colum-equal'>
                         <TextField
                             fullWidth
                             label="Nombres Padrino 2"
@@ -322,8 +322,8 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             onBlur={handleChange}
                             value={formData.conf_padrino2_apellido}
                         />
-                    </div>
-                    <div className='gridCentraoNoFull grid-2colum-equal'>
+                    </div> */}
+                    <div className='gridCentraoNoFull grid-2colum-equal  input-separado'>
                         <Autocomplete
                             fullWidth
                             options={ministros}
@@ -345,7 +345,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             renderInput={(params) => <TextField {...params} label="Establecimiento" />}
                         />
                     </div>
-                    <div className='gridCentraoNoFull grid-3colum-equal '>
+                    <div className='gridCentraoNoFull grid-3colum-equal  input-separado'>
                         <TextField
                             fullWidth
                             label="Tomo"
@@ -383,13 +383,14 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             helperText={errors.conf_numero ? 'Debe ser un número entero positivo' : ''}
                         />
                     </div>
-                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
-                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+                    <div className="gridCentraoButtons grid-2colum-equal-lessSpace  input-separado">
                         <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
+                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
+
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 
