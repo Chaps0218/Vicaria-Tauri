@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import '../css/estilosNavbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useUser } from '../UserContext';
@@ -34,8 +34,17 @@ const permisosData = [
 
 const Navbar = ({ onLogout }) => {
   const { user } = useUser();
-  const [active, setActive] = useState('Inicio');
+  const [active, setActive] = useState('');
   const [darkMode, setDarkMode] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    const currentItem = data.find(item => item.link === currentPath);
+    if (currentItem) {
+      setActive(currentItem.label);
+    }
+  }, [location]);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
