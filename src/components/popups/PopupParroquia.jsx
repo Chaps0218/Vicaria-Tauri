@@ -121,6 +121,7 @@ const PopupParroquia = ({ isOpen, onClose, onSave, initialData }) => {
                             error={errors.parr_nombre}
                             helperText={errors.parr_nombre}
                             fullWidth
+                            autoComplete='one-time-code'
                         />
                         <Autocomplete
                             fullWidth

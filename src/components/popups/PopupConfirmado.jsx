@@ -213,6 +213,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             InputLabelProps={{
                                 shrink: true,
                             }}
+                            autoComplete='one-time-code'
                         />
                         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                             <DatePicker
@@ -235,6 +236,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_nombres}
                             error={errors.conf_nombres}
                             helperText={errors.conf_nombres ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                         <TextField
                             fullWidth
@@ -247,6 +249,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_apellidos}
                             error={errors.conf_apellidos}
                             helperText={errors.conf_apellidos ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                     </div>
                     <div className='gridCentraoNoFull grid-2colum-equal input-separado'>
@@ -261,6 +264,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_padre_nombre}
                             error={errors.conf_padre_nombre}
                             helperText={errors.conf_padre_nombre ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                         <TextField
                             fullWidth
@@ -273,6 +277,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_madre_nombre}
                             error={errors.conf_madre_nombre}
                             helperText={errors.conf_madre_nombre ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                     </div>
                     <div className='gridCentraoNoFull grid-2colum-equal input-separado'>
@@ -287,6 +292,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_padrino1_nombre}
                             error={errors.conf_padrino1_nombre}
                             helperText={errors.conf_padrino1_nombre ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                         <TextField
                             fullWidth
@@ -299,6 +305,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_padrino1_apellido}
                             error={errors.conf_padrino1_apellido}
                             helperText={errors.conf_padrino1_apellido ? 'Campo obligatorio' : ''}
+                            autoComplete='one-time-code'
                         />
                     </div>
                     {/* <div className='gridCentraoNoFull grid-2colum-equal'>
@@ -357,6 +364,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_tomo}
                             error={errors.conf_tomo}
                             helperText={errors.conf_tomo ? 'Debe ser un número entero positivo' : ''}
+                            autoComplete='one-time-code'
                         />
                         <TextField
                             fullWidth
@@ -369,6 +377,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_pagina}
                             error={errors.conf_pagina}
                             helperText={errors.conf_pagina ? 'Debe ser un número entero positivo' : ''}
+                            autoComplete='one-time-code'
                         />
                         <TextField
                             fullWidth
@@ -381,6 +390,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                             value={formData.conf_numero}
                             error={errors.conf_numero}
                             helperText={errors.conf_numero ? 'Debe ser un número entero positivo' : ''}
+                            autoComplete='one-time-code'
                         />
                     </div>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace  input-separado">

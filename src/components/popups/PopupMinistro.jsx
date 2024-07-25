@@ -88,6 +88,7 @@ const PopupMinistro = ({ isOpen, onClose, onSave, initialData }) => {
                             error={errors.min_nombre}
                             helperText={errors.min_nombre}
                             fullWidth
+                            autoComplete='one-time-code'
                         />
                     </div>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">

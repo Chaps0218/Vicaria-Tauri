@@ -366,6 +366,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             value={formDataBau.bau_tomo}
                                             error={errors.bau_tomo}
                                             helperText={errors.bau_tomo ? 'Debe ser un número entero positivo' : ''}
+                                            autoComplete='one-time-code'
                                         />
                                         <TextField
                                             fullWidth
@@ -378,6 +379,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             value={formDataBau.bau_pagina}
                                             error={errors.bau_pagina}
                                             helperText={errors.bau_pagina ? 'Debe ser un número entero positivo' : ''}
+                                            autoComplete='one-time-code'
                                         />
                                         <TextField
                                             fullWidth
@@ -390,6 +392,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             value={formDataBau.bau_numero}
                                             error={errors.bau_numero}
                                             helperText={errors.bau_numero ? 'Debe ser un número entero positivo' : ''}
+                                            autoComplete='one-time-code'
                                         />
                                     </div>
                                     <div className='input-separado'>
@@ -403,6 +406,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             error={errors.ciu_nombre}
                                             helperText={errors.ciu_nombre}
                                             fullWidth
+                                            autoComplete='one-time-code'
                                         />
                                     </div>
                                     <div className='input-separado'>
@@ -416,6 +420,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             error={errors.parr_nombre}
                                             helperText={errors.parr_nombre}
                                             fullWidth
+                                            autoComplete='one-time-code'
                                         />
                                     </div>
                                     {/* <div className='input-separado'>

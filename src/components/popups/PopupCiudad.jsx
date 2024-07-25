@@ -88,6 +88,7 @@ const PopupCiudad = ({ isOpen, onClose, onSave, initialData }) => {
                             error={errors.ciu_nom}
                             helperText={errors.ciu_nom}
                             fullWidth
+                            autoComplete='one-time-code'
                         />
                     </div>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">

@@ -120,6 +120,7 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
                             error={errors.est_nombre}
                             helperText={errors.est_nombre}
                             fullWidth
+                            autoComplete='one-time-code'
                         />
                         <Autocomplete
                             fullWidth
