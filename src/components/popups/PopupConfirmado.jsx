@@ -26,7 +26,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
         min_id: 1,
         est_id: 1,
         conf_apellidos: '',
-        conf_fecha: now,
+        conf_fecha: now.format('YYYY-MM-DD'),
         conf_tomo: '',
         conf_pagina: '',
         conf_numero: '',
@@ -69,7 +69,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                 min_id: 1,
                 est_id: 1,
                 conf_apellidos: '',
-                conf_fecha: now,
+                conf_fecha: now.format('YYYY-MM-DD'),
                 conf_tomo: '',
                 conf_pagina: '',
                 conf_numero: '',
@@ -92,7 +92,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                 min_id: 1,
                 est_id: 1,
                 conf_apellidos: '',
-                conf_fecha: now,
+                conf_fecha: now.format('YYYY-MM-DD'),
                 conf_tomo: '',
                 conf_pagina: '',
                 conf_numero: '',
@@ -170,9 +170,6 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
             formData.conf_pagina = Number(formData.conf_pagina);
             formData.conf_numero = Number(formData.conf_numero);
             formData.conf_num_confirmacion = Number(formData.conf_num_confirmacion);
-            if (!initialData) {
-                formData.conf_fecha = formData.conf_fecha.format('YYYY-MM-DD')
-            }
             onSave(formData);
         }
     };
