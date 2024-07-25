@@ -63,7 +63,7 @@ function Login() {
               onClick={onLogin}>
               Iniciar Sesión
             </Button>
-            {errors.length > 0 && <div>{errors.join(', ')}</div>}
+            {errors.length > 0 && <div className='rojito'>{errors.join(', ')}</div>}
           </form>
         </div>
 
