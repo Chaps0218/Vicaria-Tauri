@@ -78,6 +78,7 @@ pub struct Confirmado {
     pub conf_padrino2_apellido: Option<String>,
     pub conf_fecha: String,
     pub parr_id: i32,
+    pub parr_nombre: String,
     pub conf_tomo: i32,
     pub conf_pagina: i32,
     pub conf_numero: i32,

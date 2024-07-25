@@ -26,55 +26,6 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
     const now = dayjs().locale('es');
     const [errors, setErrors] = useState({});
     const [parroquias, setParroquias] = useState([]);
-    const [ciudades, setCiudades] = useState([]);
-    const [ministros, setMinistros] = useState([]);
-    const [parroquiaEstable, setParroquiaEstable] = useState('');
-
-    const mostrarParroquia = () => {
-        parroquias.every((parroquia) => {
-            if (parroquia.parr_id === formData.parr_id) {
-                setParroquiaEstable(parroquia.parr_nombre);
-                return false;
-            } else return true
-        })
-    }
-
-    useEffect(() => {
-        const fetchCiudades = async () => {
-            try {
-                const response = await invoke('get_all_ciudades');
-                setCiudades(response);
-            } catch (error) {
-                console.error('Error fetching ciudades:', error);
-                // Maneja el error de alguna manera, por ejemplo, mostrando un mensaje al usuario
-            }
-        };
-
-        const fetchParroquias = async () => {
-            try {
-                const response = await invoke('get_all_parroquias');
-                setParroquias(response);
-                mostrarParroquia();
-            } catch (error) {
-                console.error('Error fetching parroquias:', error);
-                // Maneja el error de alguna manera
-            }
-        };
-
-        const fetchMinistros = async () => {
-            try {
-                const response = await invoke('get_all_ministros');
-                setMinistros(response);
-            } catch (error) {
-                console.error('Error fetching ministros:', error);
-                // Maneja el error de alguna manera
-            }
-        };
-
-        fetchCiudades();
-        fetchParroquias();
-        fetchMinistros();
-    }, []);
 
     const [formData, setFormData] = useState({
         conf_nombres: '',
@@ -82,6 +33,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         min_nombre: '',
         est_nombre: '',
         parr_id: '',
+        parr_nombre: '',
         conf_apellidos: '',
         conf_fecha: now.format("YYYY-MM-DD"),
         conf_tomo: '',
@@ -170,15 +122,16 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         if (!formDataBau.bau_tomo) newErrors.bau_tomo = true;
         if (!formDataBau.bau_pagina) newErrors.bau_pagina = true;
         if (!formDataBau.bau_numero) newErrors.bau_numero = true;
-        if (!formDataBau.parr_nombre) newErrors.parr_id = true;
-        if (!formDataBau.ciu_nombre) newErrors.ciu_id = true;
-        if (!formDataBau.min_nombre) newErrors.min_id = true;
+        if (!formDataBau.parr_nombre) newErrors.parr_nombre = true;
+        if (!formDataBau.ciu_nombre) newErrors.ciu_nombre = true;
+        if (!formDataBau.min_nombre) newErrors.min_nombre = true;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     useEffect(() => {
         if (initialData) {
+            console.log('initialData:', initialData);
             setFormData({
                 ...initialData,
             });
@@ -190,6 +143,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 min_nombre: '',
                 est_nombre: '',
                 parr_id: '',
+                parr_nombre: '',
                 conf_apellidos: '',
                 conf_fecha: now.format("YYYY-MM-DD"),
                 conf_tomo: '',
@@ -245,7 +199,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
         doc.text(`Ministro:`, 20, 140);
         doc.text(`   ${formData.min_nombre}`, 20, 150);
-        doc.text(`Lugar: ${parroquiaEstable}`, 20, 160);
+        doc.text(`Lugar: ${formData.parr_nombre}`, 20, 160);
 
         doc.text(`Bautizado en ${formDataBau.parr_nombre} ${formDataBau.ciu_nombre} ${formDataBau.bau_fecha}`, 20, 170);
 
@@ -363,7 +317,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                         <div><strong>Padrino:</strong> {formData.conf_padrino1_nombre} {formData.conf_padrino1_apellido}</div>
                                         {initialData ? <div><strong>Madrina:</strong> {formData.conf_padrino2_nombre} {formData.conf_padrino2_apellido}</div> : null}
                                     </div>
-                                    <p><strong>Parroquia:</strong> {parroquiaEstable}</p>
+                                    <p><strong>Parroquia:</strong> {formData.parr_nombre}</p>
                                     <p><strong>Ministro:</strong> {formData.min_nombre}</p>
                                     <p><strong>Establecimiento:</strong> {formData.est_nombre}</p>
                                 </div>

@@ -85,7 +85,7 @@ fn open_file(filepath: String) {
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let confirmados: Vec<Confirmado> = conn
-        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id order by conf.conf_id desc")
+        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, parr.parr_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id inner join parroquia as parr on est.parr_id = parr.parr_id order by conf.conf_id desc")
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
