@@ -27,9 +27,9 @@ const data = [
 ];
 
 const permisosData = [
-  { nivel: 1, nombre: "usuario" },
-  { nivel: 2, nombre: "admin" },
-  { nivel: 3, nombre: "superadmin" }
+  { nivel: 1, nombre: "Usuario" },
+  { nivel: 2, nombre: "Admin" },
+  { nivel: 3, nombre: "SuperAdmin" }
 ];
 
 const Navbar = ({ onLogout }) => {
@@ -42,10 +42,7 @@ const Navbar = ({ onLogout }) => {
     document.body.classList.toggle('dark-mode', !darkMode);
   };
 
-  // Obtener el nivel del usuario basado en su rol
   const usuarioNivel = permisosData.find(permiso => permiso.nombre === user.usu_rol)?.nivel;
-
-  // Filtrar los links según el nivel de permisos del usuario
   const links = data
     .filter(item => item.permisos <= usuarioNivel)
     .map((item) => (

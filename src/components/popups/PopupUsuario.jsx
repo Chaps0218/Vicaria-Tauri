@@ -26,7 +26,7 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
         est_id: '',
     });
 
-    const roles = [{ rol: 'admin' }, { rol: 'superadmin' }, { rol: 'usuario' }];
+    const roles = [{ rol: 'Admin' }, { rol: 'SuperAdmin' }, { rol: 'Usuario' }];
 
     const [errors, setErrors] = useState({});
     const [establecimientos, setEstablecimientos] = useState([]);
@@ -217,7 +217,7 @@ const PopupUsuario = ({ isOpen, onClose, onSave, initialData }) => {
                             fullWidth
                         />
                     </div>}
-                    {initialData ? (user.usu_rol === "superadmin" ? <div className='gridCentraoNoFull grid-2colum-equal'>
+                    {initialData ? (user.usu_rol === "SuperAdmin" ? <div className='gridCentraoNoFull grid-2colum-equal'>
                         <TextField
                             label="Contraseña"
                             name="usu_pass"
