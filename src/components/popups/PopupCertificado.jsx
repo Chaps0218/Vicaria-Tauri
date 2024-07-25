@@ -169,13 +169,13 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         const doc = new jsPDF();
 
         var underline = new Image();
-        underline.src = 'src/images/underline.png';
+        underline.src = '/images/underline.png';
 
 
-        doc.addFont("src/fonts/georgiab.ttf", "georgia", "bold");
-        doc.addFont("src/fonts/georgiaz.ttf", "georgia", "bolditalic");
-        doc.addFont("src/fonts/VerdanaNow.ttf", "verdana", "normal");
-        doc.addFont("src/fonts/verdana-bold.ttf", "verdana", "bold");
+        doc.addFont("/fonts/georgiab.ttf", "georgia", "bold");
+        doc.addFont("/fonts/georgiaz.ttf", "georgia", "bolditalic");
+        doc.addFont("/fonts/VerdanaNow.ttf", "verdana", "normal");
+        doc.addFont("/fonts/verdana-bold.ttf", "verdana", "bold");
 
         doc.setFont("georgia", "bold");
         doc.setTextColor(35, 46, 114);
