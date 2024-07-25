@@ -65,7 +65,7 @@ const Navbar = ({ onLogout }) => {
       <div className="navbarMain">
         <div className="header">
           <div className='aa gridCentrao3' >
-            <img src="src/images/logo_4x.png" alt="Logo Vicaria" width="120vw" height="120vh"></img>
+            <img src="/images/logo_4x.png" alt="Logo Vicaria" width="120vw" height="120vh"></img>
           </div>
         </div>
         {links}

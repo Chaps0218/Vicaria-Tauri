@@ -20,7 +20,7 @@ function Login() {
 
       <div className='grid-2col-unido'>
         <div className='logo'>
-          <img src="src/images/logo_6x.png" alt="Logo Vicaria"></img>
+          <img src="/images/logo_6x.png" alt="Logo Vicaria"></img>
         </div>
         <div className='login'>
           <form onSubmit={handleLogin}>

@@ -33,7 +33,7 @@ const Inicio = () => {
           <Card sx={{ minHeight: 200, backgroundColor: '#B5A7A7', borderRadius: 4 }}>
             <CardContent>
               <div >
-                <img src="src\images\confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
+                <img src="/images/confirmados.jpg" alt="confirmados" width="100%" height="100"></img>
               </div>
               <strong>Agregar confirmado</strong>
             </CardContent>

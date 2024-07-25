@@ -15,7 +15,7 @@ body {
 }
 
 .background {
-  background-image: url('src/images/bg_arcadia.jpg');
+  background-image: url('./images/bg_arcadia.jpg');
 }
 
 body.dark-mode {
@@ -47,7 +47,7 @@ body.dark-mode {
 }
 
 .header-inicio {
-  background-image: url('src/images/bg_inicio_ajus.png');
+  background-image: url('./images/bg_inicio_ajus.png');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-attachment: initial;
