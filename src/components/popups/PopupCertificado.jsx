@@ -46,41 +46,23 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         conf_padrino2_nombre: '',
         conf_padrino2_apellido: '',
         conf_num_confirmacion: '',
+        conf_bau_ciudad: '',
+        conf_bau_parroquia: '',
+        conf_bau_fecha: '',
+        conf_bau_tomo: 0,
+        conf_bau_pagina: 0,
+        conf_bau_numero: 0,
+        conf_bau_info: 0,
     });
-
-    const [formDataBau, setFormDataBau] = useState({
-        bau_fecha: now,
-        bau_tomo: '',
-        bau_pagina: '',
-        bau_numero: '',
-        ciu_nombre: '',
-        parr_nombre: '',
-        // min_nombre: '',
-    });
-
-    useEffect(() => {
-        if (!isOpen) {
-            setFormDataBau({
-                bau_fecha: now,
-                bau_tomo: '',
-                bau_pagina: '',
-                bau_numero: '',
-                ciu_nombre: '',
-                parr_nombre: '',
-                // min_nombre: '',
-            });
-            setErrors({});
-        }
-    }, [isOpen]);
 
     const handleDateChange = (date) => {
-        console.log(date)
-        setFormDataBau({ ...formData, bau_fecha: date });
+        console.log('date:', date);
+        setFormData({ ...formData, conf_bau_fecha: date });
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setFormDataBau((prevFormData) => ({
+        setFormData((prevFormData) => ({
             ...prevFormData,
             [name]: value,
         }));
@@ -95,37 +77,13 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         }
     };
 
-    // const handleAutocompleteChange = (event, value, field) => {
-    //     switch (field) {
-    //         case "ciu_id":
-    //             setFormDataBau((prevFormData) => ({
-    //                 ...prevFormData,
-    //                 [field]: value ? value.ciu_id : null,
-    //             }));
-    //             break
-    //         case "parr_id":
-    //             setFormDataBau((prevFormData) => ({
-    //                 ...prevFormData,
-    //                 [field]: value ? value.parr_id : null,
-    //             }));
-    //             break
-    //         case "min_id":
-    //             setFormDataBau((prevFormData) => ({
-    //                 ...prevFormData,
-    //                 [field]: value ? value.min_id : null,
-    //             }));
-    //             break
-    //     }
-    // };
-
     const validateForm = () => {
         const newErrors = {};
-        if (!formDataBau.bau_tomo) newErrors.bau_tomo = true;
-        if (!formDataBau.bau_pagina) newErrors.bau_pagina = true;
-        if (!formDataBau.bau_numero) newErrors.bau_numero = true;
-        if (!formDataBau.parr_nombre) newErrors.parr_nombre = true;
-        if (!formDataBau.ciu_nombre) newErrors.ciu_nombre = true;
-        // if (!formDataBau.min_nombre) newErrors.min_nombre = true;
+        if (!formData.conf_bau_tomo) newErrors.bau_tomo = true;
+        if (!formData.conf_bau_pagina) newErrors.bau_pagina = true;
+        if (!formData.conf_bau_numero) newErrors.bau_numero = true;
+        if (!formData.conf_bau_parroquia) newErrors.parr_nombre = true;
+        if (!formData.conf_bau_ciudad) newErrors.ciu_nombre = true;
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
@@ -157,13 +115,16 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 conf_padrino2_nombre: '',
                 conf_padrino2_apellido: '',
                 conf_num_confirmacion: '',
+                conf_bau_ciudad: '',
+                conf_bau_parroquia: '',
+                conf_bau_fecha: '',
+                conf_bau_tomo: 0,
+                conf_bau_pagina: 0,
+                conf_bau_numero: 0,
+                conf_bau_info: 0,
             });
         }
     }, [initialData, isOpen]);
-
-
-
-
 
     async function generatePDF() {
         const doc = new jsPDF();
@@ -240,15 +201,16 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         doc.text(`${formData.conf_numero}`, doc.internal.getFontSize() * 9.5, 199);
 
         ///////////BAUTIZO/////////
-        let fechabaujs = dayjs(formDataBau.bau_fecha).locale('es');
+        let fechabaujs = dayjs(formData.conf_bau_fecha, 'YYYY-MM-DD').locale('es');
+        //let fechabaujs = dayjs(formData.conf_bau_fecha).locale('es');
         let fechaBaufjsFormatted = fechabaujs.format('DD [de] MMMM [de] YYYY');
 
-        doc.text(`Bautizado en ${formDataBau.ciu_nombre}, ${formDataBau.parr_nombre}, ${fechaBaufjsFormatted}`, 10, 211);
-        // doc.text(`Ministro Bautizo: ${formDataBau.min_nombre}`, 10, 210);
+        doc.text(`Bautizado en ${formData.conf_bau_ciudad}, ${formData.conf_bau_parroquia}, ${fechaBaufjsFormatted}`, 10, 211);
+        // doc.text(`Ministro Bautizo: ${formData.conf_min_nombre}`, 10, 210);
 
-        doc.text(`${formDataBau.bau_tomo}`, doc.internal.getFontSize() * 2.54, 223);
-        doc.text(`${formDataBau.bau_pagina}`, doc.internal.getFontSize() * 6, 223);
-        doc.text(`${formDataBau.bau_numero}`, doc.internal.getFontSize() * 9.5, 223);
+        doc.text(`${formData.conf_bau_tomo}`, doc.internal.getFontSize() * 2.54, 223);
+        doc.text(`${formData.conf_bau_pagina}`, doc.internal.getFontSize() * 6, 223);
+        doc.text(`${formData.conf_bau_numero}`, doc.internal.getFontSize() * 9.5, 223);
 
 
         doc.setFont("verdana", "bold");
@@ -270,15 +232,16 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
     const handleSubmit = () => {
         if (validateForm()) {
-            formDataBau.bau_tomo = Number(formDataBau.bau_tomo);
-            formDataBau.bau_pagina = Number(formDataBau.bau_pagina);
-            formDataBau.bau_numero = Number(formDataBau.bau_numero);
+            formData.conf_bau_tomo = Number(formData.conf_bau_tomo);
+            formData.conf_bau_pagina = Number(formData.conf_bau_pagina);
+            formData.conf_bau_numero = Number(formData.conf_bau_numero);
             formData.conf_num_confirmacion = Number(formData.conf_num_confirmacion);
-            formDataBau.bau_fecha = formDataBau.bau_fecha.format('YYYY-MM-DD');
+            if (formData.conf_bau_info === 0) {
+                formData.conf_bau_info = 1;
+            }
 
-            console.log('Generating PDF with data:', formDataBau, formData);
             generatePDF();
-            onGenerate(formDataBau);
+            onGenerate(formData);
         } else {
             console.log('Form validation failed:', errors);
         }
@@ -349,7 +312,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="es">
                                         <DatePicker
                                             label="Fecha de Bautizo"
-                                            value={dayjs(formDataBau.bau_fecha).locale('es')}
+                                            value={dayjs(formData.conf_bau_fecha).locale('es')}
                                             onChange={handleDateChange}
                                             textField={(params) => <TextField {...params} />}
                                         />
@@ -358,12 +321,12 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                         <TextField
                                             fullWidth
                                             label="Tomo"
-                                            name="bau_tomo"
+                                            name="conf_bau_tomo"
                                             defaultValue="Small"
                                             size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={formDataBau.bau_tomo}
+                                            value={formData.conf_bau_tomo}
                                             error={errors.bau_tomo}
                                             helperText={errors.bau_tomo ? 'Debe ser un número entero positivo' : ''}
                                             autoComplete='one-time-code'
@@ -371,12 +334,12 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                         <TextField
                                             fullWidth
                                             label="Página"
-                                            name="bau_pagina"
+                                            name="conf_bau_pagina"
                                             defaultValue="Small"
                                             size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={formDataBau.bau_pagina}
+                                            value={formData.conf_bau_pagina}
                                             error={errors.bau_pagina}
                                             helperText={errors.bau_pagina ? 'Debe ser un número entero positivo' : ''}
                                             autoComplete='one-time-code'
@@ -384,12 +347,12 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                         <TextField
                                             fullWidth
                                             label="Número"
-                                            name="bau_numero"
+                                            name="conf_bau_numero"
                                             defaultValue="Small"
                                             size="small"
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            value={formDataBau.bau_numero}
+                                            value={formData.conf_bau_numero}
                                             error={errors.bau_numero}
                                             helperText={errors.bau_numero ? 'Debe ser un número entero positivo' : ''}
                                             autoComplete='one-time-code'
@@ -398,10 +361,10 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                     <div className='input-separado'>
                                         <TextField
                                             label="Ciudad de Bautizo"
-                                            name="ciu_nombre"
+                                            name="conf_bau_ciudad"
                                             defaultValue="Small"
                                             size="small"
-                                            value={formDataBau.ciu_nombre}
+                                            value={formData.conf_bau_ciudad}
                                             onChange={handleChange}
                                             error={errors.ciu_nombre}
                                             helperText={errors.ciu_nombre}
@@ -412,10 +375,10 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                     <div className='input-separado'>
                                         <TextField
                                             label="Parroquia de Bautizo"
-                                            name="parr_nombre"
+                                            name="conf_bau_parroquia"
                                             defaultValue="Small"
                                             size="small"
-                                            value={formDataBau.parr_nombre}
+                                            value={formData.conf_bau_parroquia}
                                             onChange={handleChange}
                                             error={errors.parr_nombre}
                                             helperText={errors.parr_nombre}

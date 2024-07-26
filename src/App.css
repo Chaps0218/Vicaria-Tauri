@@ -213,6 +213,10 @@ form {
   margin-bottom: 2vh;
 }
 
+.pb {
+  padding-bottom: 2vh;
+}
+
 .similarAccordion2 {
   border: 2px solid #919191;
   border-radius: 3vh;
@@ -245,6 +249,12 @@ form {
   place-items: center;
 }
 
+.gridCentraoNoFull2 {
+  display: grid;
+  width: 97%;
+  place-items: center;
+}
+
 .gridCentraoButtons {
   display: grid;
   place-items: center;
@@ -273,6 +283,16 @@ form {
 
 .grid-2colum-equal {
   grid-template-columns: 50% 50%;
+  grid-column-gap: 2vw;
+}
+
+.textoCentrao h3 {
+  text-align: center;
+  justify-content: center;
+}
+
+.grid-2colum-noequal {
+  grid-template-columns: 63% 37%;
   grid-column-gap: 2vw;
 }
 
@@ -310,10 +330,9 @@ form {
 }
 
 .grid-3colum-equal {
-  justify-content: center;
-  display: grid;
-  grid-template-columns: 33% 33% 33%;
+  grid-template-columns: 32% 32% 32%;
   grid-column-end: 1vw;
+  grid-column-gap: 1.7vw;
 }
 
 .grid-3colum-inicio {
@@ -413,7 +432,7 @@ form {
 }
 
 .grid-header-par {
-  grid-template-columns: 45% 35% 15%;
+  grid-template-columns: 50% 32% 10%;
   font-weight: bold;
 }
 

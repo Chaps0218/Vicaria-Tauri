@@ -85,7 +85,7 @@ fn open_file(filepath: String) {
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let confirmados: Vec<Confirmado> = conn
-        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, parr.parr_nombre, conf.conf_num_confirmacion from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id inner join parroquia as parr on est.parr_id = parr.parr_id order by conf.conf_id desc")
+        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, parr.parr_nombre, conf.conf_num_confirmacion, conf.conf_bau_ciudad, conf.conf_bau_parroquia, conf.conf_bau_fecha, conf.conf_bau_tomo, conf.conf_bau_pagina, conf.conf_bau_numero, conf.conf_bau_info from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id inner join parroquia as parr on est.parr_id = parr.parr_id order by conf.conf_id desc")
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
@@ -424,8 +424,8 @@ async fn handle_modify_ministro(input: Ministro) -> Result<String, String> {
 async fn handle_add_confirmado(input: ConfirmadoAdd) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let insert_query = r#"
-        INSERT INTO confirmado (usu_id, min_id, est_id, conf_nombres, conf_apellidos, conf_fecha, conf_tomo, conf_pagina, conf_numero, conf_padre_nombre, conf_madre_nombre, conf_padrino1_nombre, conf_padrino1_apellido, conf_padrino2_nombre, conf_padrino2_apellido, conf_num_confirmacion)
-        VALUES (:usu_id, :min_id, :est_id, :conf_nombres, :conf_apellidos, :conf_fecha, :conf_tomo, :conf_pagina, :conf_numero, :conf_padre_nombre, :conf_madre_nombre, :conf_padrino1_nombre, :conf_padrino1_apellido, :conf_padrino2_nombre, :conf_padrino2_apellido, :conf_num_confirmacion)
+        INSERT INTO confirmado (usu_id, min_id, est_id, conf_nombres, conf_apellidos, conf_fecha, conf_tomo, conf_pagina, conf_numero, conf_padre_nombre, conf_madre_nombre, conf_padrino1_nombre, conf_padrino1_apellido, conf_padrino2_nombre, conf_padrino2_apellido, conf_num_confirmacion, conf_bau_ciudad, conf_bau_parroquia, conf_bau_fecha, conf_bau_tomo, conf_bau_pagina, conf_bau_numero, conf_bau_info)
+        VALUES (:usu_id, :min_id, :est_id, :conf_nombres, :conf_apellidos, :conf_fecha, :conf_tomo, :conf_pagina, :conf_numero, :conf_padre_nombre, :conf_madre_nombre, :conf_padrino1_nombre, :conf_padrino1_apellido, :conf_padrino2_nombre, :conf_padrino2_apellido, :conf_num_confirmacion, :conf_bau_ciudad, :conf_bau_parroquia, :conf_bau_fecha, :conf_bau_tomo, :conf_bau_pagina, :conf_bau_numero, :conf_bau_info)
     "#;
 
     conn.exec_drop(
@@ -447,6 +447,13 @@ async fn handle_add_confirmado(input: ConfirmadoAdd) -> Result<String, String> {
             "conf_padrino2_nombre" => &input.conf_padrino2_nombre,
             "conf_padrino2_apellido" => &input.conf_padrino2_apellido,
             "conf_num_confirmacion" => &input.conf_num_confirmacion,
+            "conf_bau_ciudad" => &input.conf_bau_ciudad,
+            "conf_bau_parroquia" => &input.conf_bau_parroquia,
+            "conf_bau_fecha" => &input.conf_bau_fecha,
+            "conf_bau_tomo" => &input.conf_bau_tomo,
+            "conf_bau_pagina" => &input.conf_bau_pagina,
+            "conf_bau_numero" => &input.conf_bau_numero,
+            "conf_bau_info" => &input.conf_bau_info,
         },
     )
     .map_err(|e| e.to_string())?;
@@ -458,7 +465,8 @@ async fn handle_add_confirmado(input: ConfirmadoAdd) -> Result<String, String> {
 async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let modify_query = r#"
-        UPDATE confirmado SET min_id = :min_id, est_id = :est_id, conf_nombres = :conf_nombres, conf_apellidos = :conf_apellidos, conf_fecha = :conf_fecha, conf_tomo = :conf_tomo, conf_pagina = :conf_pagina, conf_numero = :conf_numero, conf_padre_nombre = :conf_padre_nombre, conf_madre_nombre = :conf_madre_nombre, conf_padrino1_nombre = :conf_padrino1_nombre, conf_padrino1_apellido = :conf_padrino1_apellido, conf_padrino2_nombre = :conf_padrino2_nombre, conf_padrino2_apellido = :conf_padrino2_apellido, conf_num_confirmacion = :conf_num_confirmacion WHERE conf_id = :conf_id
+        UPDATE confirmado SET min_id = :min_id, est_id = :est_id, conf_nombres = :conf_nombres, conf_apellidos = :conf_apellidos, conf_fecha = :conf_fecha, conf_tomo = :conf_tomo, conf_pagina = :conf_pagina, conf_numero = :conf_numero, conf_padre_nombre = :conf_padre_nombre, conf_madre_nombre = :conf_madre_nombre, conf_padrino1_nombre = :conf_padrino1_nombre, conf_padrino1_apellido = :conf_padrino1_apellido, conf_padrino2_nombre = :conf_padrino2_nombre, conf_padrino2_apellido = :conf_padrino2_apellido, conf_num_confirmacion = :conf_num_confirmacion, conf_bau_ciudad = :conf_bau_ciudad, conf_bau_parroquia = :conf_bau_parroquia, conf_bau_fecha = :conf_bau_fecha, conf_bau_tomo = :conf_bau_tomo, conf_bau_pagina = :conf_bau_pagina, conf_bau_numero = :conf_bau_numero, conf_bau_info = :conf_bau_info
+        WHERE conf_id = :conf_id
     "#;
 
     conn.exec_drop(
@@ -480,6 +488,13 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
             "conf_padrino2_nombre" => &input.conf_padrino2_nombre,
             "conf_padrino2_apellido" => &input.conf_padrino2_apellido,
             "conf_num_confirmacion" => &input.conf_num_confirmacion,
+            "conf_bau_ciudad" => &input.conf_bau_ciudad,
+            "conf_bau_parroquia" => &input.conf_bau_parroquia,
+            "conf_bau_fecha" => &input.conf_bau_fecha,
+            "conf_bau_tomo" => &input.conf_bau_tomo,
+            "conf_bau_pagina" => &input.conf_bau_pagina,
+            "conf_bau_numero" => &input.conf_bau_numero,
+            "conf_bau_info" => &input.conf_bau_info,
         },
     )
     .map_err(|e| e.to_string())?;

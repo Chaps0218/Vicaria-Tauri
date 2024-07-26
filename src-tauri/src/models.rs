@@ -85,6 +85,13 @@ pub struct Confirmado {
     pub min_nombre: String,
     pub est_nombre: String,
     pub conf_num_confirmacion: i32,
+    pub conf_bau_ciudad: Option<String>,
+    pub conf_bau_parroquia: Option<String>,
+    pub conf_bau_fecha: Option<String>,
+    pub conf_bau_tomo: Option<i32>,
+    pub conf_bau_pagina: Option<i32>,
+    pub conf_bau_numero: Option<i32>,
+    pub conf_bau_info: Option<i32>,
 }
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct ConfirmadoMod {
@@ -105,6 +112,13 @@ pub struct ConfirmadoMod {
     pub conf_pagina: i32,
     pub conf_numero: i32,
     pub conf_num_confirmacion: i32,
+    pub conf_bau_ciudad: Option<String>,
+    pub conf_bau_parroquia: Option<String>,
+    pub conf_bau_fecha: Option<String>,
+    pub conf_bau_tomo: Option<i32>,
+    pub conf_bau_pagina: Option<i32>,
+    pub conf_bau_numero: Option<i32>,
+    pub conf_bau_info: Option<i32>,
 }
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct ConfirmadoAdd {
@@ -124,6 +138,13 @@ pub struct ConfirmadoAdd {
     pub conf_pagina: i32,
     pub conf_numero: i32,
     pub conf_num_confirmacion: i32,
+    pub conf_bau_ciudad: Option<String>,
+    pub conf_bau_parroquia: Option<String>,
+    pub conf_bau_fecha: Option<String>,
+    pub conf_bau_tomo: Option<i32>,
+    pub conf_bau_pagina: Option<i32>,
+    pub conf_bau_numero: Option<i32>,
+    pub conf_bau_info: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]

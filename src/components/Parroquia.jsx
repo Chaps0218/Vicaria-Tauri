@@ -103,7 +103,7 @@ function Parroquia() {
                     <div className='gridCentrao-lista'>
                         {filteredParroquias.map((parroquia) => (
                             <div className='gridCentrao similarAccordion2' key={parroquia.parr_id}>
-                                <div className="gridCentrao grid-2colum-equal">
+                                <div className="gridCentrao grid-2colum-noequal textoCentrao">
                                     <h3>{parroquia.parr_nombre}</h3>
                                     <h3>{parroquia.ciu_nom}</h3>
                                 </div>

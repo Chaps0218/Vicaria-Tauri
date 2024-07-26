@@ -78,6 +78,17 @@ function Confirmaciones() {
   };
 
   const handleSavePopupCert = async (data) => {
+    try {
+      if (data.conf_id) {
+        console.log(data)
+        await invoke('handle_modify_confirmado', { input: data });
+      }
+      const updatedConfirmados = await invoke('get_all_confirmados');
+      setConfirmados(updatedConfirmados);
+      setFilteredConfirmados(updatedConfirmados);
+    } catch (error) {
+      console.error(error);
+    }
     handleClosePopupCert();
   };
 
@@ -133,8 +144,8 @@ function Confirmaciones() {
           InputProps={{
             startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
             style: {
-              padding: '3px 10px',  // Ajusta el padding según sea necesario
-              fontSize: '14px',  // Ajusta el tamaño de la fuente según sea necesario
+              padding: '3px 10px',
+              fontSize: '14px',
             },
           }}
           placeholder='Buscar'
@@ -228,6 +239,14 @@ function Confirmaciones() {
                         <AssignmentIcon />
                       </IconButton>
                     </Tooltip>
+                    <div>
+                      {confirmado.conf_bau_info === 1 ?
+                        <div className='gridCentrao2 noInfo'>
+                          <div>Contiene información del bautizo.</div>
+                        </div> : <div className='gridCentrao2 noInfo'>
+                          <div>Falta información del bautizo.</div>
+                        </div>}
+                    </div>
                   </div>
                 </div>
               </AccordionDetails>
