@@ -201,12 +201,12 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
             formData.conf_bau_numero = Number(formData.conf_bau_numero);
             formData.conf_bau_info = Number(formData.conf_bau_info);
             if (
-                (formData.conf_bau_fecha !== '' || formData.conf_bau_fecha !== null) &&
+                (formData.conf_bau_fecha !== '' && formData.conf_bau_fecha !== null) &&
                 formData.conf_bau_tomo !== 0 &&
                 formData.conf_bau_pagina !== 0 &&
                 formData.conf_bau_numero !== 0 &&
-                (formData.conf_bau_ciudad !== '' || formData.conf_bau_ciudad !== null) &&
-                (formData.conf_bau_parroquia !== '' || formData.conf_bau_parroquia !== null)
+                (formData.conf_bau_ciudad !== '' && formData.conf_bau_ciudad !== null) &&
+                (formData.conf_bau_parroquia !== '' && formData.conf_bau_parroquia !== null)
             ) {
                 formData.conf_bau_info = 1;
             } else {

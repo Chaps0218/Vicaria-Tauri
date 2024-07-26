@@ -239,12 +239,12 @@ function Confirmaciones() {
                         <AssignmentIcon />
                       </IconButton>
                     </Tooltip>
-                    <div>
+                    <div className='info-bautizo'>
                       {confirmado.conf_bau_info === 1 ?
                         <div className='gridCentrao2 noInfo'>
-                          <div>Contiene información del bautizo.</div>
+                          <div>Información de bautizo completa.</div>
                         </div> : <div className='gridCentrao2 noInfo'>
-                          <div>Falta información del bautizo.</div>
+                          <div>Falta información de bautizo.</div>
                         </div>}
                     </div>
                   </div>
