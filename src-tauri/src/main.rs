@@ -19,7 +19,7 @@ use tauri::Manager;
 use tauri::Window;
 
 async fn get_db_connection() -> Result<PooledConn, mysql::Error> {
-    let url = "mysql://root:password@localhost:3306/confirmaciones_arcadia";
+    let url = "mysql://root:password@localhost:3306/arcadia_pruebas";
     let pool = Pool::new(url)?;
     pool.get_conn()
 }
@@ -456,7 +456,7 @@ async fn handle_add_confirmado(input: ConfirmadoAdd) -> Result<String, String> {
             "conf_bau_info" => &input.conf_bau_info,
         },
     )
-    .map_err(|e| e.to_string())?;
+    .map_err(|e| format!("Insertion error: {}", e))?;
 
     Ok("Confirmado añadido".to_string())
 }
@@ -469,12 +469,12 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
         WHERE conf_id = :conf_id
     "#;
 
-    conn.exec_drop(
+    let result = conn.exec_drop(
         modify_query,
         params! {
             "conf_id" => &input.conf_id,
-            "est_id" => &input.est_id,
             "min_id" => &input.min_id,
+            "est_id" => &input.est_id,
             "conf_nombres" => &input.conf_nombres,
             "conf_apellidos" => &input.conf_apellidos,
             "conf_fecha" => &input.conf_fecha,
@@ -496,10 +496,19 @@ async fn handle_modify_confirmado(input: ConfirmadoMod) -> Result<String, String
             "conf_bau_numero" => &input.conf_bau_numero,
             "conf_bau_info" => &input.conf_bau_info,
         },
-    )
-    .map_err(|e| e.to_string())?;
+    );
 
-    Ok("Confirmado modificado".to_string())
+    match result {
+        Ok(_) => {
+            let affected_rows = conn.affected_rows();
+            if affected_rows == 0 {
+                Err("No confirmado found with the given ID".to_string())
+            } else {
+                Ok("Confirmado modificado".to_string())
+            }
+        }
+        Err(e) => Err(format!("Error modifying confirmado: {}", e)),
+    }
 }
 
 fn main() {
@@ -537,4 +546,248 @@ fn main() {
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use tokio;
+
+    #[tokio::test]
+    async fn test_login_success() {
+        let user_login = UserLogin {
+            usu_user: "teuser".to_string(),
+            usu_password: "testuser123".to_string(),
+        };
+
+        let result = login(user_login).await;
+        assert!(result.is_ok());
+        let user = result.unwrap();
+        assert_eq!(user.usu_user, "teuser");
+    }
+
+    #[tokio::test]
+    async fn test_login_failure() {
+        let user_login = UserLogin {
+            usu_user: "teuser".to_string(),
+            usu_password: "wrongpassword".to_string(),
+        };
+
+        let result = login(user_login).await;
+        assert!(result.is_err());
+    }
+
+    #[tokio::test]
+    async fn test_get_all_users() {
+        let result = get_all_users().await;
+        assert!(result.is_ok());
+        let users = result.unwrap();
+        assert!(!users.is_empty());
+    }
+
+    #[tokio::test]
+    async fn test_handle_add_and_modify_usuario() {
+        let user_add = UserAdd {
+            usu_nombre: "Test".to_string(),
+            usu_apellido: "User".to_string(),
+            usu_rol: "user".to_string(),
+            usu_user: "testuser_new".to_string(),
+            usu_password: "password123".to_string(),
+            est_id: 1,
+        };
+
+        let add_result = handle_add_usuario(user_add).await;
+        assert!(add_result.is_ok());
+        assert_eq!(add_result.unwrap(), "Usuario añadido");
+
+        let users = get_all_users().await.unwrap();
+        let added_user = users.iter().find(|u| u.usu_user == "testuser_new").unwrap();
+
+        let user_mod = UserMod {
+            usu_id: added_user.usu_id,
+            usu_nombre: "Updated".to_string(),
+            usu_apellido: "User".to_string(),
+            usu_rol: "admin".to_string(),
+            usu_user: "testuser_updated".to_string(),
+            est_id: 1,
+        };
+
+        let mod_result = handle_modify_usuario(user_mod).await;
+        assert!(mod_result.is_ok());
+        assert_eq!(mod_result.unwrap(), "Usuario modificado");
+
+        let updated_users = get_all_users().await.unwrap();
+        let updated_user = updated_users
+            .iter()
+            .find(|u| u.usu_id == added_user.usu_id)
+            .unwrap();
+        assert_eq!(updated_user.usu_user, "testuser_updated");
+        assert_eq!(updated_user.usu_rol, "admin");
+    }
+
+    #[tokio::test]
+    async fn test_ingreso_funcional_de_confirmado() {
+        let confirmado = ConfirmadoAdd {
+            usu_id: 1,
+            min_id: 1,
+            est_id: 1,
+            conf_nombres: "Juan".to_string(),
+            conf_apellidos: "Pérez".to_string(),
+            conf_fecha: "2021-01-01".to_string(),
+            conf_tomo: 1,
+            conf_pagina: 1,
+            conf_numero: 1,
+            conf_padre_nombre: Some("Juan".to_string()),
+            conf_madre_nombre: Some("María".to_string()),
+            conf_padrino1_nombre: Some("Juanito".to_string()),
+            conf_padrino1_apellido: Some("Pérez".to_string()),
+            conf_padrino2_nombre: Some("Juanita".to_string()),
+            conf_padrino2_apellido: Some("Pérez2".to_string()),
+            conf_num_confirmacion: 1,
+            conf_bau_ciudad: Some("City".to_string()),
+            conf_bau_parroquia: Some("Parish".to_string()),
+            conf_bau_fecha: Some("2021-01-01".to_string()),
+            conf_bau_tomo: Some(1),
+            conf_bau_pagina: Some(1),
+            conf_bau_numero: Some(1),
+            conf_bau_info: Some(0),
+        };
+
+        let result = handle_add_confirmado(confirmado).await;
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), "Confirmado añadido");
+    }
+
+    #[tokio::test]
+    async fn test_ingreso_no_funcional_de_confirmado() {
+        let confirmado = ConfirmadoAdd {
+            usu_id: 9999,
+            min_id: 1,
+            est_id: 1,
+            conf_nombres: "Juan".to_string(),
+            conf_apellidos: "Pérez".to_string(),
+            conf_fecha: "2021-01-01".to_string(),
+            conf_tomo: 1,
+            conf_pagina: 1,
+            conf_numero: 1,
+            conf_padre_nombre: Some("Juan".to_string()),
+            conf_madre_nombre: Some("María".to_string()),
+            conf_padrino1_nombre: Some("Juanito".to_string()),
+            conf_padrino1_apellido: Some("Pérez".to_string()),
+            conf_padrino2_nombre: Some("Juanita".to_string()),
+            conf_padrino2_apellido: Some("Pérez2".to_string()),
+            conf_num_confirmacion: 1,
+            conf_bau_ciudad: Some("City".to_string()),
+            conf_bau_parroquia: Some("Parish".to_string()),
+            conf_bau_fecha: Some("2021-01-01".to_string()),
+            conf_bau_tomo: Some(1),
+            conf_bau_pagina: Some(1),
+            conf_bau_numero: Some(1),
+            conf_bau_info: Some(0),
+        };
+
+        let result = handle_add_confirmado(confirmado).await;
+        assert!(result.is_err());
+        assert!(result.unwrap_err().contains("Insertion error"));
+    }
+
+    #[tokio::test]
+    async fn test_modificacion_funcional_de_confirmado() {
+        let confirmado_add = ConfirmadoAdd {
+            usu_id: 1,
+            min_id: 1,
+            est_id: 1,
+            conf_nombres: "Juan".to_string(),
+            conf_apellidos: "Pérez".to_string(),
+            conf_fecha: "2021-01-01".to_string(),
+            conf_tomo: 1,
+            conf_pagina: 1,
+            conf_numero: 1,
+            conf_padre_nombre: Some("Juan".to_string()),
+            conf_madre_nombre: Some("María".to_string()),
+            conf_padrino1_nombre: Some("Juanito".to_string()),
+            conf_padrino1_apellido: Some("Pérez".to_string()),
+            conf_padrino2_nombre: Some("Juanita".to_string()),
+            conf_padrino2_apellido: Some("Pérez2".to_string()),
+            conf_num_confirmacion: 1,
+            conf_bau_ciudad: Some("City".to_string()),
+            conf_bau_parroquia: Some("Parish".to_string()),
+            conf_bau_fecha: Some("2021-01-01".to_string()),
+            conf_bau_tomo: Some(1),
+            conf_bau_pagina: Some(1),
+            conf_bau_numero: Some(1),
+            conf_bau_info: Some(0),
+        };
+
+        let add_result = handle_add_confirmado(confirmado_add).await;
+        assert!(add_result.is_ok());
+
+        let confirmados = get_all_confirmados().await.unwrap();
+        let added_confirmado = confirmados.last().unwrap();
+
+        let confirmado_mod = ConfirmadoMod {
+            conf_id: added_confirmado.conf_id,
+            usu_id: 1,
+            min_id: 1,
+            est_id: 1,
+            conf_nombres: "Juan Modified".to_string(),
+            conf_apellidos: "Pérez Modified".to_string(),
+            conf_fecha: "2022-01-01".to_string(),
+            conf_tomo: 2,
+            conf_pagina: 2,
+            conf_numero: 2,
+            conf_padre_nombre: Some("Juan Modified".to_string()),
+            conf_madre_nombre: Some("María Modified".to_string()),
+            conf_padrino1_nombre: Some("Juanito Modified".to_string()),
+            conf_padrino1_apellido: Some("Pérez Modified".to_string()),
+            conf_padrino2_nombre: Some("Juanita Modified".to_string()),
+            conf_padrino2_apellido: Some("Pérez2 Modified".to_string()),
+            conf_num_confirmacion: 2,
+            conf_bau_ciudad: Some("City Modified".to_string()),
+            conf_bau_parroquia: Some("Parish Modified".to_string()),
+            conf_bau_fecha: Some("2022-01-01".to_string()),
+            conf_bau_tomo: Some(2),
+            conf_bau_pagina: Some(2),
+            conf_bau_numero: Some(2),
+            conf_bau_info: Some(1),
+        };
+
+        let mod_result = handle_modify_confirmado(confirmado_mod).await;
+        assert!(mod_result.is_ok());
+        assert_eq!(mod_result.unwrap(), "Confirmado modificado");
+    }
+
+    #[tokio::test]
+    async fn test_modificacion_no_funcional_de_confirmado() {
+        let confirmado_mod = ConfirmadoMod {
+            conf_id: 9999,
+            usu_id: 1,
+            min_id: 1,
+            est_id: 1,
+            conf_nombres: "Juan".to_string(),
+            conf_apellidos: "Pérez".to_string(),
+            conf_fecha: "2021-01-01".to_string(),
+            conf_tomo: 1,
+            conf_pagina: 1,
+            conf_numero: 1,
+            conf_padre_nombre: Some("Juan".to_string()),
+            conf_madre_nombre: Some("María".to_string()),
+            conf_padrino1_nombre: Some("Juanito".to_string()),
+            conf_padrino1_apellido: Some("Pérez".to_string()),
+            conf_padrino2_nombre: Some("Juanita".to_string()),
+            conf_padrino2_apellido: Some("Pérez2".to_string()),
+            conf_num_confirmacion: 1,
+            conf_bau_ciudad: Some("City".to_string()),
+            conf_bau_parroquia: Some("Parish".to_string()),
+            conf_bau_fecha: Some("2021-01-01".to_string()),
+            conf_bau_tomo: Some(1),
+            conf_bau_pagina: Some(1),
+            conf_bau_numero: Some(1),
+            conf_bau_info: Some(0),
+        };
+
+        let result = handle_modify_confirmado(confirmado_mod).await;
+        assert!(result.is_err());
+        assert_eq!(result.unwrap_err(), "No confirmado found with the given ID");
+    }
 }
