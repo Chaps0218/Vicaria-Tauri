@@ -133,14 +133,15 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
                             value={parroquias.find((parroquia) => parroquia.parr_id === formData.parr_id) || null}
                             renderInput={(params) => <TextField {...params} label="Parroquia" />}
                         />
-                        <div className='gridCentraoNoFull grid-2colum-equal'>
-                            <strong>Matriz:</strong>
+                        <div className='gridCentraoNoFull grid-2colum-noequal'>
+                            <strong>¿Este estrablecimiento es una Matriz?</strong>
                             <Checkbox
                                 checked={formData.est_b_matriz == 1 ? true : false}
                                 onChange={(event) => setFormData((prevFormData) => ({
                                     ...prevFormData,
                                     est_b_matriz: event.target.checked ? 1 : 0,
                                 }))}
+                                color="primary"
                             />
                         </div>
                     </div>
