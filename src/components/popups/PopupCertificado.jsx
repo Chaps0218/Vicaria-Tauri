@@ -32,6 +32,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         usu_id: user.usu_id,
         min_nombre: '',
         est_nombre: '',
+        est_b_matriz: 0,
         parr_id: '',
         parr_nombre: '',
         conf_apellidos: '',
@@ -90,7 +91,6 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
 
     useEffect(() => {
         if (initialData) {
-            console.log('initialData:', initialData);
             setFormData({
                 ...initialData,
             });
@@ -101,6 +101,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                 usu_id: user.usu_id,
                 min_nombre: '',
                 est_nombre: '',
+                est_b_matriz: 0,
                 parr_id: '',
                 parr_nombre: '',
                 conf_apellidos: '',
@@ -194,7 +195,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         // }
 
         doc.text(`${formData.min_nombre}`, doc.internal.getFontSize() * 3.5, 175);
-        doc.text(`${formData.parr_nombre}, ${formData.est_nombre}`, doc.internal.getFontSize() * 2.5, 187);
+        doc.text(`Parroquia ${formData.parr_nombre}${formData.est_b_matriz == 0 ? ', ' + formData.est_nombre : ''}`, doc.internal.getFontSize() * 2.5, 187);
 
         doc.text(`${formData.conf_tomo}`, doc.internal.getFontSize() * 2.4, 199);
         doc.text(`${formData.conf_pagina}`, doc.internal.getFontSize() * 6, 199);
@@ -205,7 +206,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
         //let fechabaujs = dayjs(formData.conf_bau_fecha).locale('es');
         let fechaBaufjsFormatted = fechabaujs.format('DD [de] MMMM [de] YYYY');
 
-        doc.text(`Bautizado en ${formData.conf_bau_ciudad}, ${formData.conf_bau_parroquia}, ${fechaBaufjsFormatted}`, 10, 211);
+        doc.text(`Lugar de Bautizmo: ${formData.conf_bau_ciudad}, ${formData.conf_bau_parroquia}, ${fechaBaufjsFormatted}`, 10, 211);
         // doc.text(`Ministro Bautizo: ${formData.conf_min_nombre}`, 10, 210);
 
         doc.text(`${formData.conf_bau_tomo}`, doc.internal.getFontSize() * 2.54, 223);

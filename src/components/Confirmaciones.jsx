@@ -80,7 +80,6 @@ function Confirmaciones() {
   const handleSavePopupCert = async (data) => {
     try {
       if (data.conf_id) {
-        console.log(data)
         await invoke('handle_modify_confirmado', { input: data });
       }
       const updatedConfirmados = await invoke('get_all_confirmados');

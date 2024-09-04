@@ -84,6 +84,7 @@ pub struct Confirmado {
     pub conf_numero: i32,
     pub min_nombre: String,
     pub est_nombre: String,
+    pub est_b_matriz: i32,
     pub conf_num_confirmacion: i32,
     pub conf_bau_ciudad: Option<String>,
     pub conf_bau_parroquia: Option<String>,
@@ -152,12 +153,14 @@ pub struct Establecimiento {
     pub est_id: i32,
     pub parr_id: i32,
     pub est_nombre: String,
+    pub est_b_matriz: i32,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
 pub struct EstablecimientoAdd {
     pub parr_id: i32,
     pub est_nombre: String,
+    pub est_b_matriz: i32,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]
@@ -166,6 +169,7 @@ pub struct EstablecimientoLista {
     pub parr_id: i32,
     pub est_nombre: String,
     pub parr_nombre: String,
+    pub est_b_matriz: i32,
 }
 
 #[derive(Serialize, Deserialize, FromRow)]

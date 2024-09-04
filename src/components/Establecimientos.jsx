@@ -105,7 +105,7 @@ function Establecimientos() {
                 <div className='overflow'>
                     <div className='gridCentrao-lista textoCentrao'>
                         {filteredEstablecimientos.map((establecimiento) => (
-                            <div className='gridCentrao similarAccordion pb' key={establecimiento.est_id}>
+                            <div className={`gridCentrao similarAccordion pb ${establecimiento.est_b_matriz == 1 ? 'CMatriz' : ''}`} key={establecimiento.est_id}>
                                 <div className="gridCentrao grid-2colum-equal">
                                     <h3>{establecimiento.est_nombre}</h3>
                                     <h3>{establecimiento.parr_nombre}</h3>

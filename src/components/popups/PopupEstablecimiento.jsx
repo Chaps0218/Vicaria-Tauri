@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import Checkbox from '@mui/material/Checkbox';
 import './popup.css';
 import '../../App.css';
 import { styled } from '@mui/material/styles';
@@ -15,6 +16,7 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
     const [formData, setFormData] = useState({
         est_nombre: '',
         parr_id: '',
+        est_b_matriz: 0,
     });
 
     const [errors, setErrors] = useState({});
@@ -43,6 +45,7 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
             setFormData({
                 est_nombre: '',
                 parr_id: '',
+                est_b_matriz: 0,
             });
             setErrors({});
         }
@@ -111,7 +114,7 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
             <div className="popup-content">
                 <h2 className='h2-est'>{initialData ? 'Editar Establecimiento' : 'Agregar Establecimiento'}</h2>
                 <div className="gridCentraoNoFull grid-2row-equal">
-                    <div className='gridCentraoNoFull grid-2row-equal'>
+                    <div className='gridCentraoNoFull grid-3row-equal-moreSpace'>
                         <TextField
                             label="Nombre del establecimiento"
                             name="est_nombre"
@@ -130,6 +133,16 @@ const PopupEstablecimiento = ({ isOpen, onClose, onSave, initialData }) => {
                             value={parroquias.find((parroquia) => parroquia.parr_id === formData.parr_id) || null}
                             renderInput={(params) => <TextField {...params} label="Parroquia" />}
                         />
+                        <div className='gridCentraoNoFull grid-2colum-equal'>
+                            <strong>Matriz:</strong>
+                            <Checkbox
+                                checked={formData.est_b_matriz == 1 ? true : false}
+                                onChange={(event) => setFormData((prevFormData) => ({
+                                    ...prevFormData,
+                                    est_b_matriz: event.target.checked ? 1 : 0,
+                                }))}
+                            />
+                        </div>
                     </div>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace">
                         <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>

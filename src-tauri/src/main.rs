@@ -85,7 +85,7 @@ fn open_file(filepath: String) {
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let confirmados: Vec<Confirmado> = conn
-        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, parr.parr_nombre, conf.conf_num_confirmacion, conf.conf_bau_ciudad, conf.conf_bau_parroquia, conf.conf_bau_fecha, conf.conf_bau_tomo, conf.conf_bau_pagina, conf.conf_bau_numero, conf.conf_bau_info from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id inner join parroquia as parr on est.parr_id = parr.parr_id order by conf.conf_id desc")
+        .query("select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, est.est_b_matriz, parr.parr_nombre, conf.conf_num_confirmacion, conf.conf_bau_ciudad, conf.conf_bau_parroquia, conf.conf_bau_fecha, conf.conf_bau_tomo, conf.conf_bau_pagina, conf.conf_bau_numero, conf.conf_bau_info from confirmado as conf inner join ministro as min on min.min_id = conf.min_id inner join establecimiento as est on est.est_id = conf.est_id inner join parroquia as parr on est.parr_id = parr.parr_id order by conf.conf_id desc")
         .map_err(|e| e.to_string())?;
 
     Ok(confirmados)
@@ -228,7 +228,7 @@ async fn get_all_establecimientos() -> Result<Vec<Establecimiento>, String> {
 async fn get_all_establecimientos_list() -> Result<Vec<EstablecimientoLista>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let establecimientos: Vec<EstablecimientoLista> = conn
-        .query("select est.est_id, parr.parr_id, est.est_nombre, parr.parr_nombre from establecimiento as est inner join parroquia as parr on est.parr_id = parr.parr_id")
+        .query("select est.est_id, parr.parr_id, est.est_nombre, parr.parr_nombre, est.est_b_matriz from establecimiento as est inner join parroquia as parr on est.parr_id = parr.parr_id")
         .map_err(|e| e.to_string())?;
 
     Ok(establecimientos)
@@ -238,8 +238,8 @@ async fn get_all_establecimientos_list() -> Result<Vec<EstablecimientoLista>, St
 async fn handle_add_establecimiento(input: EstablecimientoAdd) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let insert_query = r#"
-        INSERT INTO establecimiento (parr_id, est_nombre)
-        VALUES (:parr_id, :est_nombre)
+        INSERT INTO establecimiento (parr_id, est_nombre, est_b_matriz)
+        VALUES (:parr_id, :est_nombre, :est_b_matriz)
     "#;
 
     conn.exec_drop(
@@ -247,6 +247,7 @@ async fn handle_add_establecimiento(input: EstablecimientoAdd) -> Result<String,
         params! {
             "parr_id" => &input.parr_id,
             "est_nombre" => &input.est_nombre,
+            "est_b_matriz" => &input.est_b_matriz,
         },
     )
     .map_err(|e| e.to_string())?;
@@ -258,7 +259,7 @@ async fn handle_add_establecimiento(input: EstablecimientoAdd) -> Result<String,
 async fn handle_modify_establecimiento(input: Establecimiento) -> Result<String, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
     let modify_query = r#"
-        UPDATE establecimiento SET parr_id = :parr_id, est_nombre = :est_nombre WHERE est_id = :est_id
+        UPDATE establecimiento SET parr_id = :parr_id, est_nombre = :est_nombre, est_b_matriz = :est_b_matriz WHERE est_id = :est_id
     "#;
 
     conn.exec_drop(
@@ -267,6 +268,7 @@ async fn handle_modify_establecimiento(input: Establecimiento) -> Result<String,
             "est_id" => &input.est_id,
             "parr_id" => &input.parr_id,
             "est_nombre" => &input.est_nombre,
+            "est_b_matriz" => &input.est_b_matriz,
         },
     )
     .map_err(|e| e.to_string())?;
