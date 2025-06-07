@@ -9,3 +9,8 @@ Hacer el install
 ```bash
 npm install
 ```
+
+Construir con
+```bash
+npm run tauri build
+```
