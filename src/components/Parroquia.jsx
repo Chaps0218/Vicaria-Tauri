@@ -11,6 +11,7 @@ import TextField from '@mui/material/TextField';
 import { styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import '../App.css';
+import Pagination from '@mui/material/Pagination';
 
 import PopupParroquia from './popups/PopupParroquia';
 
@@ -20,6 +21,22 @@ function Parroquia() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupData, setPopupData] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const pageSize = 6;
+
+    useEffect(() => {
+        setPage(1);
+    }, [filteredParroquias.length, searchQuery]);
+
+    const paginatedParroquias = filteredParroquias.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const handleOpenPopup = (data = null) => {
         setPopupData(data);
@@ -101,7 +118,7 @@ function Parroquia() {
                 </div>
                 <div className='overflow'>
                     <div className='gridCentrao-lista'>
-                        {filteredParroquias.map((parroquia) => (
+                        {paginatedParroquias.map((parroquia) => (
                             <div className='gridCentrao similarAccordion2' key={parroquia.parr_id}>
                                 <div className="gridCentrao grid-2colum-noequal textoCentrao">
                                     <h3>{parroquia.parr_nombre}</h3>
@@ -119,6 +136,13 @@ function Parroquia() {
                             </div>
                         ))}
                     </div>
+                    <Pagination
+                        count={Math.ceil(filteredParroquias.length / pageSize)}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        style={{ marginTop: 16, marginBottom: 16 }}
+                    />
                 </div>
             </div>
             <div className='fab-container'>

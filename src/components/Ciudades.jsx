@@ -12,6 +12,7 @@ import { red } from '@mui/material/colors';
 import TextField from '@mui/material/TextField';
 import '../App.css';
 import PopupCiudad from './popups/PopupCiudad';
+import Pagination from '@mui/material/Pagination';
 
 function Ciudades() {
     const [ciudades, setCiudades] = useState([]);
@@ -19,6 +20,22 @@ function Ciudades() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupData, setPopupData] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const pageSize = 6;
+
+    useEffect(() => {
+        setPage(1);
+    }, [filteredCiudades.length, searchQuery]);
+
+    const paginatedCiudades = filteredCiudades.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const handleOpenPopup = (data = null) => {
         setPopupData(data);
@@ -51,7 +68,7 @@ function Ciudades() {
             setFilteredCiudades(ciudades);
         } else {
             const filtered = ciudades.filter((ciudad) =>
-                ciudad.ciudad_nombre.toLowerCase().includes(query)
+                ciudad.ciu_nom.toLowerCase().includes(query)
             );
             setFilteredCiudades(filtered);
         }
@@ -98,7 +115,7 @@ function Ciudades() {
                 </div>
                 <div className='overflow'>
                     <div className='gridCentrao-lista'>
-                        {filteredCiudades.map((ciudad) => (
+                        {paginatedCiudades.map((ciudad) => (
                             <div className='gridCentrao similarAccordion' key={ciudad.ciu_id}>
                                 <div className="gridCentrao">
                                     <h3>{ciudad.ciu_nom}</h3>
@@ -115,7 +132,13 @@ function Ciudades() {
                             </div>
                         ))}
                     </div>
-
+                    <Pagination
+                        count={Math.ceil(filteredCiudades.length / pageSize)}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        style={{ marginTop: 16, marginBottom: 16 }}
+                    />
                 </div>
             </div>
             <div className='fab-container'>

@@ -81,6 +81,17 @@ fn open_file(filepath: String) {
     }
 }
 
+// Confirmados commands
+
+#[tauri::command]
+async fn get_confirmados_count() -> Result<u64, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let count: Option<u64> = conn
+        .query_first("SELECT COUNT(*) FROM confirmado")
+        .map_err(|e| e.to_string())?;
+    Ok(count.unwrap_or(0))
+}
+
 #[tauri::command]
 async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
     let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
@@ -90,6 +101,66 @@ async fn get_all_confirmados() -> Result<Vec<Confirmado>, String> {
 
     Ok(confirmados)
 }
+
+#[tauri::command]
+async fn get_confirmados_paginated(offset: u64, limit: u64) -> Result<Vec<Confirmado>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let query = r#"
+        select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id,conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, est.est_b_matriz, parr.parr_nombre, conf.conf_num_confirmacion, conf.conf_bau_ciudad, conf.conf_bau_parroquia, conf.conf_bau_fecha, conf.conf_bau_tomo, conf.conf_bau_pagina, conf.conf_bau_numero, conf.conf_bau_info
+        from confirmado as conf
+        inner join ministro as min on min.min_id = conf.min_id
+        inner join establecimiento as est on est.est_id = conf.est_id
+        inner join parroquia as parr on est.parr_id = parr.parr_id
+        order by conf.conf_id desc
+        limit :limit offset :offset
+    "#;
+    let confirmados: Vec<Confirmado> = conn
+        .exec(query, params! { "limit" => limit, "offset" => offset })
+        .map_err(|e| e.to_string())?;
+    Ok(confirmados)
+}
+
+#[tauri::command]
+async fn search_confirmados(query: String, offset: u64, limit: u64) -> Result<Vec<Confirmado>, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let like_query = format!("%{}%", query);
+    let sql = r#"
+        select conf.conf_id, conf.usu_id, conf.min_id, conf.est_id, conf.conf_nombres, conf.conf_apellidos, conf.conf_padre_nombre, conf.conf_madre_nombre, conf.conf_padrino1_nombre, conf.conf_padrino1_apellido, conf.conf_padrino2_nombre, conf.conf_padrino2_apellido, conf.conf_fecha, conf.conf_tomo, conf.conf_pagina, conf.conf_numero, min.min_nombre, est.parr_id, est.est_nombre, est.est_b_matriz, parr.parr_nombre, conf.conf_num_confirmacion, conf.conf_bau_ciudad, conf.conf_bau_parroquia, conf.conf_bau_fecha, conf.conf_bau_tomo, conf.conf_bau_pagina, conf.conf_bau_numero, conf.conf_bau_info
+        from confirmado as conf
+        inner join ministro as min on min.min_id = conf.min_id
+        inner join establecimiento as est on est.est_id = conf.est_id
+        inner join parroquia as parr on est.parr_id = parr.parr_id
+        where conf.conf_nombres like :query
+           or conf.conf_apellidos like :query
+           or conf.conf_fecha like :query
+           or conf.conf_num_confirmacion like :query
+        order by conf.conf_id desc
+        limit :limit offset :offset
+    "#;
+    let confirmados: Vec<Confirmado> = conn
+        .exec(sql, params! { "query" => &like_query, "limit" => limit, "offset" => offset })
+        .map_err(|e| e.to_string())?;
+    Ok(confirmados)
+}
+
+#[tauri::command]
+async fn search_confirmados_count(query: String) -> Result<u64, String> {
+    let mut conn = get_db_connection().await.map_err(|e| e.to_string())?;
+    let like_query = format!("%{}%", query);
+    let sql = r#"
+        select count(*) from confirmado
+        where conf_nombres like :query
+           or conf_apellidos like :query
+           or conf_fecha like :query
+           or conf_num_confirmacion like :query
+    "#;
+    let count: Option<u64> = conn
+        .exec_first(sql, params! { "query" => &like_query })
+        .map_err(|e| e.to_string())?;
+    Ok(count.unwrap_or(0))
+}
+
+// Usuarios Command
 
 #[tauri::command]
 async fn get_all_users() -> Result<Vec<UserLista>, String> {
@@ -535,7 +606,11 @@ fn main() {
             get_all_parroquias,
             handle_add_parroquia,
             handle_modify_parroquia,
-            open_file
+            open_file,
+            get_confirmados_count,
+            get_confirmados_paginated,
+            search_confirmados,
+            search_confirmados_count,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

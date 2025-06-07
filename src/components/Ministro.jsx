@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupMinistro from './popups/PopupMinistro';
+import Pagination from '@mui/material/Pagination';
 
 function Ministro() {
     const [ministros, setMinistros] = useState([]);
@@ -19,6 +20,9 @@ function Ministro() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupData, setPopupData] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const pageSize = 6;
 
     const handleOpenPopup = (data = null) => {
         setPopupData(data);
@@ -29,6 +33,19 @@ function Ministro() {
         setIsPopupOpen(false);
         setPopupData(null);
     }
+
+    useEffect(() => {
+        setPage(1);
+    }, [filteredMinistros.length, searchQuery]);
+
+    const paginatedMinistros = filteredMinistros.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
 
     const fetchMinistros = async () => {
         try {
@@ -88,7 +105,7 @@ function Ministro() {
                     fullWidth
                     value={searchQuery}
                     onChange={handleSearch}
-                    style={{ marginBottom: '20px' }}
+                    style={{ marginBottom: '10px' }}
                     InputProps={{
                         startAdornment: <InputAdornment position="start"><SearchIcon /></InputAdornment>,
                     }}
@@ -99,7 +116,7 @@ function Ministro() {
                 </div>
                 <div className='overflow'>
                     <div className='gridCentrao-lista'>
-                        {filteredMinistros.map((ministro) => (
+                        {paginatedMinistros.map((ministro) => (
                             <div className='gridCentrao3 similarAccordion' key={ministro.min_id}>
                                 <div className="gridCentrao">
                                     <h3>{ministro.min_nombre}</h3>
@@ -116,7 +133,13 @@ function Ministro() {
                             </div>
                         ))}
                     </div>
-
+                    <Pagination
+                        count={Math.ceil(filteredMinistros.length / pageSize)}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        style={{ marginTop: 16, marginBottom: 16 }}
+                    />
                 </div>
             </div>
             <div className='fab-container'>

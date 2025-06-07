@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupEstablecimiento from './popups/PopupEstablecimiento';
+import Pagination from '@mui/material/Pagination';
 
 function Establecimientos() {
     const [establecimientos, setEstablecimientos] = useState([]);
@@ -19,6 +20,23 @@ function Establecimientos() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupData, setPopupData] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const pageSize = 5;
+
+    useEffect(() => {
+        setPage(1);
+    }, [filteredEstablecimientos.length, searchQuery]);
+
+    const paginatedEstablecimientos = filteredEstablecimientos.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
     const handleOpenPopup = (data = null) => {
         setPopupData(data);
         setIsPopupOpen(true);
@@ -104,7 +122,7 @@ function Establecimientos() {
                 </div>
                 <div className='overflow'>
                     <div className='gridCentrao-lista textoCentrao'>
-                        {filteredEstablecimientos.map((establecimiento) => (
+                        {paginatedEstablecimientos.map((establecimiento) => (
                             <div className={`gridCentrao similarAccordion pb ${establecimiento.est_b_matriz == 1 ? 'CMatriz' : ''}`} key={establecimiento.est_id}>
                                 <div className="gridCentrao grid-2colum-equal">
                                     <h3>{establecimiento.est_nombre}</h3>
@@ -122,6 +140,13 @@ function Establecimientos() {
                             </div>
                         ))}
                     </div>
+                    <Pagination
+                        count={Math.ceil(filteredEstablecimientos.length / pageSize)}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        style={{ marginTop: 16, marginBottom: 16 }}
+                    />
                 </div>
             </div>
             <div className='fab-container'>

@@ -16,6 +16,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
+import CircularProgress from '@mui/material/CircularProgress';
 import './popup.css';
 import '../../App.css';
 
@@ -50,6 +51,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
     const [errors, setErrors] = useState({});
     const [establecimientos, setEstablecimientos] = useState([]);
     const [ministros, setMinistros] = useState([]);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         const fetchEstablecimientos = async () => {
@@ -190,7 +192,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (validateForm()) {
             formData.conf_tomo = Number(formData.conf_tomo);
             formData.conf_pagina = Number(formData.conf_pagina);
@@ -212,7 +214,12 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
             } else {
                 formData.conf_bau_info = 0;
             }
-            onSave(formData);
+            setSaving(true);
+            try {
+                await onSave(formData);
+            } finally {
+                setSaving(false);
+            }
         }
     };
 
@@ -269,7 +276,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                                                 label="Fecha de Confirmación"
                                                 value={dayjs(formData.conf_fecha).locale('es')}
                                                 onChange={handleDateChange}
-                                                textField={(params) => <TextField {...params} />}
+                                                renderInput={(params) => <TextField {...params} />}
                                             />
                                         </LocalizationProvider>
                                     </div>
@@ -435,7 +442,7 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                                             label="Fecha de Bautizo"
                                             value={dayjs(formData.conf_bau_fecha).locale('es')}
                                             onChange={handleDateBauChange}
-                                            textField={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField {...params} />}
                                         />
                                     </LocalizationProvider>
                                     <div className='gridCentraoNoFull grid-3colum-equal input-separado'>
@@ -525,13 +532,24 @@ const PopupConfirmado = ({ isOpen, onClose, onSave, initialData }) => {
                 <br></br>
                 <div className='gridCentrao'>
                     <div className="gridCentraoButtons grid-2colum-equal-lessSpace  input-separado">
-                        <ColorButton startIcon={<SaveIcon />} variant="contained" onClick={handleSubmit}>Guardar</ColorButton>
-                        <ColorButtonRed startIcon={<CloseIcon />} variant="contained" onClick={onClose}>Cancelar</ColorButtonRed>
-
+                        <ColorButton
+                            startIcon={saving ? <CircularProgress size={20} color="inherit" /> : <SaveIcon />}
+                            variant="contained"
+                            onClick={handleSubmit}
+                            disabled={saving}
+                        >
+                            {saving ? 'Guardando...' : 'Guardar'}
+                        </ColorButton>
+                        <ColorButtonRed
+                            startIcon={<CloseIcon />}
+                            variant="contained"
+                            onClick={onClose}
+                            disabled={saving}
+                        >
+                            Cancelar
+                        </ColorButtonRed>
                     </div>
-
                 </div>
-
             </div>
         </div >
     );

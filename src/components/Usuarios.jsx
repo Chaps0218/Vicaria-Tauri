@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 import { red } from '@mui/material/colors';
 import '../App.css';
 import PopupUsuario from './popups/PopupUsuario';
+import Pagination from '@mui/material/Pagination';
 
 function Usuarios() {
     const [usuarios, setUsuarios] = useState([]);
@@ -19,6 +20,23 @@ function Usuarios() {
     const [searchQuery, setSearchQuery] = useState('');
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [popupData, setPopupData] = useState(null);
+
+    const [page, setPage] = useState(1);
+    const pageSize = 10;
+
+    useEffect(() => {
+        setPage(1);
+    }, [filteredUsuarios.length, searchQuery]);
+
+    const paginatedUsuarios = filteredUsuarios.slice(
+        (page - 1) * pageSize,
+        page * pageSize
+    );
+
+    const handlePageChange = (event, value) => {
+        setPage(value);
+    };
+
     const handleOpenPopup = (data = null) => {
         setPopupData(data);
         setIsPopupOpen(true);
@@ -104,13 +122,12 @@ function Usuarios() {
                 <div className='overflow'>
                     <div className='gridCentrao3'>
                         <div className='gridCentrao-lista'>
-                            {filteredUsuarios.map((usuario) => (
+                            {paginatedUsuarios.map((usuario) => (
                                 <div className='gridCentrao similarAccordionTaller' key={usuario.usu_id}>
                                     <h4>{usuario.usu_nombre} {usuario.usu_apellido}</h4>
                                     <p>{usuario.usu_rol}</p>
                                     <p>{usuario.usu_user}</p>
                                     <p>{usuario.est_nombre}</p>
-
                                     <div className="usuario-actions">
                                         <Tooltip title="Editar">
                                             <IconButton onClick={() => handleOpenPopup(usuario)}
@@ -121,10 +138,16 @@ function Usuarios() {
                                         </Tooltip>
                                     </div>
                                 </div>
-
                             ))}
                         </div>
                     </div>
+                    <Pagination
+                        count={Math.ceil(filteredUsuarios.length / pageSize)}
+                        page={page}
+                        onChange={handlePageChange}
+                        color="primary"
+                        style={{ marginTop: 16, marginBottom: 16 }}
+                    />
                 </div>
             </div>
             <div className='fab-container'>
