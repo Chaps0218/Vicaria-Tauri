@@ -315,7 +315,7 @@ function PopupCertificado({ isOpen, onClose, onGenerate, initialData }) {
                                             label="Fecha de Bautizo"
                                             value={dayjs(formData.conf_bau_fecha).locale('es')}
                                             onChange={handleDateChange}
-                                            textField={(params) => <TextField {...params} />}
+                                            renderInput={(params) => <TextField {...params} />}
                                         />
                                     </LocalizationProvider>
                                     <div className='gridCentraoNoFull grid-3colum-equal input-separado'>
